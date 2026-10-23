@@ -3,7 +3,6 @@
  * Production Automated AI News Generation Script
  * -----------------------------------------------------------------------
  * Platform: somaliglobalnews.com
- * Engine: @google/genai SDK
  * Output: public/data/news.json
  */
 
@@ -19,7 +18,6 @@ if (!fs.existsSync(DATA_DIR)) {
 // Read Gemini API key from environment
 const apiKey = process.env.GEMINI_API_KEY;
 
-// Standard fallback dataset in case API key is missing or call fails
 function getFallbackArticles() {
   return [
     {
@@ -63,17 +61,13 @@ async function generateSomaliGlobalNews() {
   console.log("🚀 Starting news aggregation for somaliglobalnews.com...");
 
   if (!apiKey) {
-    console.warn("⚠️ Warning: GEMINI_API_KEY is missing. Writing standard fallback news payload.");
+    console.warn("⚠️ GEMINI_API_KEY is missing. Saving fallback dataset.");
     savePayload(getFallbackArticles());
     return;
   }
 
   try {
-    // Dynamic ESM import for @google/genai package
-    const { GoogleGenAI } = await import('@google/genai');
-    const ai = new GoogleGenAI({ apiKey });
-
-    const prompt = `Act as Chief Editor of somaliglobalnews.com. Generate 5 breaking news items regarding Somalia, Horn of Africa, and global Somali diaspora. Output strictly a JSON array without markdown formatting:
+    const promptText = `Act as Chief Editor of somaliglobalnews.com. Output ONLY a valid JSON array of 5 breaking news items regarding Somalia and the Somali diaspora with this structure:
 [
   {
     "id": "slug-id",
@@ -81,42 +75,46 @@ async function generateSomaliGlobalNews() {
     "category": "Economy",
     "location": "Mogadishu",
     "summary": "Short 2 sentence summary",
-    "content": "Full article body",
+    "content": "Full article body content",
     "sources": ["SGN Desk"],
     "publishedAt": "2026-10-23T00:00:00Z",
     "imageUrl": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
   }
 ]`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: { temperature: 0.2 }
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: promptText }] }]
+      })
     });
 
-    const responseText = response.text || "";
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-    // Clean potential markdown backticks safely using regex replacement
-    const cleanedText = responseText
-      .replace(/^
-```(?:json)?/i, '')
-      .replace(/
-```$/g, '')
-      .trim();
+    const data = await response.json();
+    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    let cleanedText = rawText.trim();
+    cleanedText = cleanedText.replace(/^
+```(?:json)?/i, '').replace(/```$/g, '').trim();
 
     let articles;
     try {
       articles = JSON.parse(cleanedText);
     } catch (parseErr) {
-      console.warn("⚠️ JSON parse error, using structured fallback articles.");
+      console.warn("⚠️ JSON parse error, using standard fallback dataset.");
       articles = getFallbackArticles();
     }
 
     savePayload(articles);
 
   } catch (error) {
-    console.error("⚠️ API call encountered an error:", error.message);
-    console.log("Writing verified fallback news to ensure deployment succeeds...");
+    console.error("⚠️ API call issue:", error.message);
     savePayload(getFallbackArticles());
   }
 }
