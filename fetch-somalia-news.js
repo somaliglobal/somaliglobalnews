@@ -96,20 +96,13 @@ async function generateSomaliGlobalNews() {
 
     const responseText = response.text || "";
 
-    // Safely strip potential markdown backticks without syntax errors
-    let cleanedText = responseText.trim();
-    if (cleanedText.startsWith("
-```json")) {
-      cleanedText = cleanedText.slice(7);
-    } else if (cleanedText.startsWith("
-```")) {
-      cleanedText = cleanedText.slice(3);
-    }
-    if (cleanedText.endsWith("
-```")) {
-      cleanedText = cleanedText.slice(0, -3);
-    }
-    cleanedText = cleanedText.trim();
+    // Clean potential markdown backticks safely using regex replacement
+    const cleanedText = responseText
+      .replace(/^
+```(?:json)?/i, '')
+      .replace(/
+```$/g, '')
+      .trim();
 
     let articles;
     try {
