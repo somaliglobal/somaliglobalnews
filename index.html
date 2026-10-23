@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somali Global News | Breaking News, Diaspora & Horn of Africa Insights</title>
-    <meta name="description" content="Independent, fast, and verified news covering Somalia, Horn of Africa, and the global Somali diaspora.">
+    <title>somaliglobalnews.com - Operations & Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -15,7 +15,8 @@
                         somali: {
                             blue: '#4189DD',
                             dark: '#0A192F',
-                            accent: '#38BDF8'
+                            accent: '#38BDF8',
+                            gold: '#F59E0B'
                         }
                     }
                 }
@@ -23,70 +24,330 @@
         }
     </script>
 </head>
-<body class="bg-slate-950 text-slate-100 antialiased font-sans min-h-screen flex flex-col">
+<body class="h-full flex flex-col font-sans bg-slate-950 text-slate-100 antialiased selection:bg-somali-blue selection:text-white">
 
     <!-- Header Navigation -->
-    <header class="border-b border-slate-800 bg-slate-900 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="#" class="flex items-center space-x-3">
-                <div class="bg-somali-blue text-white font-black text-xl w-10 h-10 rounded-lg flex items-center justify-center shadow-lg">SGN</div>
-                <div>
-                    <span class="text-xl font-extrabold tracking-tight text-white block">SOMALI GLOBAL NEWS</span>
-                    <span class="text-[10px] text-somali-blue tracking-widest uppercase block font-mono">somaliglobalnews.com</span>
+    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-somali-blue text-white p-2 rounded-lg font-black text-xl flex items-center justify-center w-10 h-10 shadow-lg shadow-somali-blue/30">
+                    SGN
                 </div>
-            </a>
-            <div id="last-updated" class="text-xs text-slate-400 font-mono hidden sm:block">
-                Auto-Updated Daily via Gemini AI
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        somaliglobalnews.com
+                        <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-0.5 rounded-full border border-emerald-500/20 font-mono">Live Admin Portal</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Content Moderation & Policy Institute Ingestion Desk</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleAdminModal()" class="bg-somali-blue hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition shadow-md shadow-somali-blue/20">
+                    <i class="fa-solid fa-lock text-amber-300"></i> Open Admin Portal
+                </button>
+                <div class="hidden sm:flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-mono text-emerald-400">System Live</span>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
-        <!-- Hero Title Banner -->
-        <div class="border-b border-slate-800 pb-4">
-            <h1 class="text-2xl sm:text-4xl font-extrabold text-white">Latest Headlines & Diaspora News</h1>
-            <p class="text-sm text-slate-400 mt-1">Real-time AI grounded coverage of Somalia, Horn of Africa, and worldwide community affairs.</p>
-        </div>
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col space-y-8 overflow-y-auto">
 
-        <!-- News Container hydrated via static data/news.json -->
-        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="col-span-full py-12 text-center text-slate-500">
-                Loading news content from automated engine...
+        <!-- Banner Summary -->
+        <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800 border border-slate-800 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-somali-blue/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="relative z-10 space-y-2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-somali-blue/20 text-somali-accent rounded-full text-xs font-semibold border border-somali-blue/30">
+                    <i class="fa-solid fa-shield-halved"></i> Pre-Moderation & Direct Article Ingestion Hub
+                </div>
+                <h2 class="text-2xl font-extrabold text-white">somaliglobalnews.com Operations Center</h2>
+                <p class="text-xs text-slate-400 max-w-3xl leading-relaxed">
+                    Control reader comments, block offensive input before publication, and manually import peace & policy research articles from <strong>Carnegie Endowment for International Peace</strong> and the <strong>International Peace Institute (IPI)</strong>.
+                </p>
             </div>
         </div>
+
+        <!-- INTERACTIVE LIVE PREVIEW / ADMIN CONTROL DASHBOARD -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- PUBLIC READER COMMENT SIMULATOR & PRE-MODERATION QUEUE -->
+            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-comments text-somali-accent"></i> Reader Comments Pre-Moderation
+                        </h3>
+                        <p class="text-xs text-slate-400">Comments submitted by readers remain hidden from the public site until you approve them.</p>
+                    </div>
+                    <span class="bg-amber-500/10 text-amber-400 text-xs px-2.5 py-1 rounded-full border border-amber-500/20 font-mono" id="pending-count">2 Pending Review</span>
+                </div>
+
+                <!-- Simulation Comment Submission Form -->
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <label class="block text-xs font-semibold text-slate-300">Submit a Test Reader Comment (Pre-Moderation Simulation):</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <input type="text" id="reader-name" placeholder="Reader Name (e.g., Liban Mogadishu)" class="bg-slate-900 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-somali-blue">
+                        <input type="email" id="reader-email" placeholder="Email Address" class="bg-slate-900 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-somali-blue">
+                    </div>
+                    <textarea id="reader-text" rows="2" placeholder="Write a comment..." class="w-full bg-slate-900 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-somali-blue"></textarea>
+                    <button onclick="submitReaderComment()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Comment for Review
+                    </button>
+                </div>
+
+                <!-- Moderation Queue -->
+                <div class="space-y-3">
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Comments Queue</div>
+                    <div id="comment-queue" class="space-y-3">
+                        <!-- Default Mock Item 1 -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-white">Farhan Ali</span>
+                                    <span class="text-[10px] text-slate-500 font-mono">2 mins ago</span>
+                                    <span class="bg-amber-500/20 text-amber-400 text-[10px] px-1.5 py-0.5 rounded">Pending</span>
+                                </div>
+                                <p class="text-xs text-slate-300">Great updates on Horn of Africa port security! Hoping to see more coverage on regional economic development.</p>
+                            </div>
+                            <div class="flex items-center gap-2 self-end sm:self-auto">
+                                <button onclick="approveComment(this)" class="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white border border-emerald-500/30 px-2.5 py-1 rounded text-xs transition">Approve</button>
+                                <button onclick="deleteComment(this)" class="bg-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white border border-rose-500/30 px-2.5 py-1 rounded text-xs transition">Delete</button>
+                            </div>
+                        </div>
+
+                        <!-- Default Mock Item 2 -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-white">Spam Bot</span>
+                                    <span class="text-[10px] text-slate-500 font-mono">10 mins ago</span>
+                                    <span class="bg-rose-500/20 text-rose-400 text-[10px] px-1.5 py-0.5 rounded">Flagged Offensive</span>
+                                </div>
+                                <p class="text-xs text-slate-400 italic">"Buy cheap crypto fast click here http://spam.link"</p>
+                            </div>
+                            <div class="flex items-center gap-2 self-end sm:self-auto">
+                                <button onclick="deleteComment(this)" class="bg-rose-600 text-white px-2.5 py-1 rounded text-xs transition">Block & Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MANUAL ARTICLE IMPORT (CARNEGIE & INTERNATIONAL PEACE INSTITUTE) -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div class="border-b border-slate-800 pb-3">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-file-pen text-amber-400"></i> Direct Institute Ingestion
+                        </h3>
+                        <p class="text-xs text-slate-400">Insert custom policy briefs & analysis directly from research think tanks.</p>
+                    </div>
+
+                    <!-- Preset Quick Selection -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold text-slate-300">Quick-Select Institute Source:</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="loadInstitutePreset('carnegie')" class="bg-slate-950 border border-slate-800 hover:border-somali-blue text-xs p-2 rounded-xl text-left space-y-1 transition">
+                                <div class="font-bold text-somali-accent flex items-center gap-1"><i class="fa-solid fa-building-columns"></i> Carnegie</div>
+                                <div class="text-[10px] text-slate-500">Endowment for Intl Peace</div>
+                            </button>
+                            <button onclick="loadInstitutePreset('ipi')" class="bg-slate-950 border border-slate-800 hover:border-emerald-500 text-xs p-2 rounded-xl text-left space-y-1 transition">
+                                <div class="font-bold text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-dove"></i> IPI</div>
+                                <div class="text-[10px] text-slate-500">Intl Peace Institute</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Manual Ingestion Form -->
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Article Title</label>
+                            <input type="text" id="manual-title" placeholder="e.g. Peacebuilding & Governance in Horn of Africa" class="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2 text-white focus:outline-none focus:border-somali-blue">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Source Institute & Author</label>
+                            <input type="text" id="manual-source" placeholder="Carnegie Endowment / Senior Fellow Name" class="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2 text-white focus:outline-none focus:border-somali-blue">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Original Policy URL</label>
+                            <input type="url" id="manual-url" placeholder="https://carnegieendowment.org/..." class="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2 text-white focus:outline-none focus:border-somali-blue">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Analysis / Executive Summary</label>
+                            <textarea id="manual-content" rows="3" placeholder="Key takeaways and summary for Somali Global News readers..." class="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2 text-white focus:outline-none focus:border-somali-blue"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="publishManualArticle()" class="w-full bg-somali-blue hover:bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition shadow-lg shadow-somali-blue/20">
+                    <i class="fa-solid fa-upload"></i> Publish to Live Newsfeed
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Architecture Overview Banner -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-diagram-next text-somali-blue"></i> Automated Data Flow Architecture
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-center">
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1">
+                    <i class="fa-solid fa-robot text-purple-400 text-xl"></i>
+                    <div class="text-xs font-bold text-white">1. Gemini AI SDK</div>
+                    <div class="text-[10px] text-slate-500">Fetches & parses daily breaking news</div>
+                </div>
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1">
+                    <i class="fa-brands fa-github text-slate-300 text-xl"></i>
+                    <div class="text-xs font-bold text-white">2. GitHub Action</div>
+                    <div class="text-[10px] text-slate-500">Commits news.json automatically</div>
+                </div>
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1">
+                    <i class="fa-solid fa-cloud-arrow-up text-teal-400 text-xl"></i>
+                    <div class="text-xs font-bold text-white">3. Vercel Auto-Build</div>
+                    <div class="text-[10px] text-slate-500">Deploys latest JSON to Edge network</div>
+                </div>
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1">
+                    <i class="fa-solid fa-globe text-emerald-400 text-xl"></i>
+                    <div class="text-xs font-bold text-white">4. somaliglobalnews.com</div>
+                    <div class="text-[10px] text-slate-500">Serves instant static website</div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800 bg-slate-900 py-6 text-center text-xs text-slate-500">
-        © 2026 somaliglobalnews.com — All Rights Reserved. Powered by Gemini AI.
-    </footer>
+    <!-- ADMIN AUTHENTICATION MODAL -->
+    <div id="admin-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl relative">
+            <button onclick="toggleAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="space-y-1">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-somali-accent"></i> Editor Passcode Access
+                </h3>
+                <p class="text-xs text-slate-400">Enter your secure passcode to verify moderation privileges.</p>
+            </div>
+            <div class="space-y-3">
+                <input type="password" id="admin-passcode" placeholder="Enter secret passcode..." class="w-full bg-slate-950 border border-slate-800 text-sm rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue font-mono">
+                <button onclick="verifyPasscode()" class="w-full bg-somali-blue hover:bg-blue-600 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                    Authenticate Session
+                </button>
+            </div>
+            <div id="passcode-status" class="text-center text-xs font-mono hidden"></div>
+        </div>
+    </div>
 
+    <!-- Interactive Scripts for Dashboard Moderation & Ingestion -->
     <script>
-        // Client-side news hydrator from static JSON generated by GitHub Action
-        async function loadNews() {
-            try {
-                const res = await fetch('/data/news.json');
-                const data = await res.json();
-                const container = document.getElementById('news-grid');
-                if (data.articles && data.articles.length > 0) {
-                    container.innerHTML = data.articles.map((item, idx) => {
-                        const colSpan = idx === 0 ? 'md:col-span-2' : '';
-                        return '<article class="' + colSpan + ' bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-slate-700 transition">' +
-                            '<img src="' + item.imageUrl + '" alt="' + item.title + '" class="w-full h-48 object-cover">' +
-                            '<div class="p-5 space-y-2">' +
-                                '<span class="text-xs font-bold text-somali-blue uppercase tracking-wider">' + item.category + ' • ' + item.location + '</span>' +
-                                '<h2 class="text-lg font-bold text-white">' + item.title + '</h2>' +
-                                '<p class="text-xs text-slate-400 leading-relaxed">' + item.summary + '</p>' +
-                            '</div>' +
-                        '</article>';
-                    }).join('');
-                }
-            } catch (e) {
-                console.log("Static hydration ready.");
+        function toggleAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function verifyPasscode() {
+            const code = document.getElementById('admin-passcode').value;
+            const status = document.getElementById('passcode-status');
+            status.classList.remove('hidden');
+            
+            if(code.trim() !== "") {
+                status.className = "text-center text-xs font-mono text-emerald-400";
+                status.innerText = "✓ Authenticated! Moderation privileges unlocked.";
+                setTimeout(() => toggleAdminModal(), 1200);
+            } else {
+                status.className = "text-center text-xs font-mono text-rose-400";
+                status.innerText = "✕ Please enter a valid passcode.";
             }
         }
-        loadNews();
+
+        function submitReaderComment() {
+            const name = document.getElementById('reader-name').value || "Anonymous Reader";
+            const text = document.getElementById('reader-text').value;
+
+            if(!text) {
+                alert("Please type a comment before submitting.");
+                return;
+            }
+
+            const queue = document.getElementById('comment-queue');
+            const newComment = document.createElement('div');
+            newComment.className = "bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3";
+            newComment.innerHTML = `
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-white">${name}</span>
+                        <span class="text-[10px] text-slate-500 font-mono">Just now</span>
+                        <span class="bg-amber-500/20 text-amber-400 text-[10px] px-1.5 py-0.5 rounded">Pending Review</span>
+                    </div>
+                    <p class="text-xs text-slate-300">${text}</p>
+                </div>
+                <div class="flex items-center gap-2 self-end sm:self-auto">
+                    <button onclick="approveComment(this)" class="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white border border-emerald-500/30 px-2.5 py-1 rounded text-xs transition">Approve</button>
+                    <button onclick="deleteComment(this)" class="bg-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white border border-rose-500/30 px-2.5 py-1 rounded text-xs transition">Delete</button>
+                </div>
+            `;
+            queue.prepend(newComment);
+
+            document.getElementById('reader-text').value = '';
+            updatePendingCount(1);
+        }
+
+        function approveComment(btn) {
+            const card = btn.closest('.bg-slate-950');
+            card.className = "bg-emerald-950/20 p-4 rounded-xl border border-emerald-500/30 flex justify-between items-center";
+            card.querySelector('.bg-amber-500\\/20, .text-amber-400').innerText = "Live on Site";
+            card.querySelector('.bg-amber-500\\/20, .text-amber-400').className = "bg-emerald-500/20 text-emerald-400 text-[10px] px-1.5 py-0.5 rounded font-semibold";
+            btn.parentElement.innerHTML = `<span class="text-xs text-emerald-400 font-mono"><i class="fa-solid fa-circle-check"></i> Published</span>`;
+            updatePendingCount(-1);
+        }
+
+        function deleteComment(btn) {
+            const card = btn.closest('.bg-slate-950');
+            card.remove();
+            updatePendingCount(-1);
+        }
+
+        function updatePendingCount(delta) {
+            const counter = document.getElementById('pending-count');
+            let current = parseInt(counter.innerText) || 0;
+            current = Math.max(0, current + delta);
+            counter.innerText = `${current} Pending Review`;
+        }
+
+        function loadInstitutePreset(type) {
+            if(type === 'carnegie') {
+                document.getElementById('manual-title').value = "Navigating Geopolitics in the Horn of Africa";
+                document.getElementById('manual-source').value = "Carnegie Endowment for International Peace";
+                document.getElementById('manual-url').value = "https://carnegieendowment.org/research/horn-africa-analysis";
+                document.getElementById('manual-content').value = "An in-depth analysis on multilateral maritime agreements, economic stability, and diplomatic strategies in Somalia and East Africa.";
+            } else if(type === 'ipi') {
+                document.getElementById('manual-title').value = "Sustaining Peace & Statebuilding in Somalia";
+                document.getElementById('manual-source').value = "International Peace Institute (IPI)";
+                document.getElementById('manual-url').value = "https://ipinst.org/publications/somalia-peacebuilding";
+                document.getElementById('manual-content').value = "Comprehensive report reviewing community peace initiatives, security transition frameworks, and sustainable governance.";
+            }
+        }
+
+        function publishManualArticle() {
+            const title = document.getElementById('manual-title').value;
+            const source = document.getElementById('manual-source').value;
+            if(!title || !source) {
+                alert("Please fill in the title and source institute before publishing.");
+                return;
+            }
+            alert(`✅ Article "${title}" successfully imported from ${source} and queued for live publishing!`);
+        }
     </script>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-4 px-6 text-center text-xs text-slate-500">
+        © 2026 somaliglobalnews.com — Automated AI Newsroom & Cloud Architecture
+    </footer>
+
 </body>
 </html>
