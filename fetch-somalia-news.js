@@ -9,7 +9,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { GoogleGenAI } = require('@google/genai');
 
 // Ensure output directory exists
 const DATA_DIR = path.join(__dirname, 'public', 'data');
@@ -20,7 +19,7 @@ if (!fs.existsSync(DATA_DIR)) {
 // Read Gemini API key from environment
 const apiKey = process.env.GEMINI_API_KEY;
 
-// Fallback dataset in case API key is missing or call fails
+// Standard fallback dataset in case API key is missing or call fails
 function getFallbackArticles() {
   return [
     {
@@ -70,7 +69,10 @@ async function generateSomaliGlobalNews() {
   }
 
   try {
+    // Dynamic ESM import for @google/genai package
+    const { GoogleGenAI } = await import('@google/genai');
     const ai = new GoogleGenAI({ apiKey });
+
     const prompt = `Act as Chief Editor of somaliglobalnews.com. Generate 5 breaking news items regarding Somalia, Horn of Africa, and global Somali diaspora. Output strictly a JSON array without markdown formatting:
 [
   {
@@ -93,8 +95,21 @@ async function generateSomaliGlobalNews() {
     });
 
     const responseText = response.text || "";
-    const cleanedText = responseText.replace(/^
-```json/g, '').replace(/```$/g, '').trim();
+
+    // Safely strip potential markdown backticks without syntax errors
+    let cleanedText = responseText.trim();
+    if (cleanedText.startsWith("
+```json")) {
+      cleanedText = cleanedText.slice(7);
+    } else if (cleanedText.startsWith("
+```")) {
+      cleanedText = cleanedText.slice(3);
+    }
+    if (cleanedText.endsWith("
+```")) {
+      cleanedText = cleanedText.slice(0, -3);
+    }
+    cleanedText = cleanedText.trim();
 
     let articles;
     try {
@@ -107,7 +122,7 @@ async function generateSomaliGlobalNews() {
     savePayload(articles);
 
   } catch (error) {
-    console.error("⚠️ API call encounter:", error.message);
+    console.error("⚠️ API call encountered an error:", error.message);
     console.log("Writing verified fallback news to ensure deployment succeeds...");
     savePayload(getFallbackArticles());
   }
