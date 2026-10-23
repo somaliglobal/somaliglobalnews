@@ -49,9 +49,9 @@ Use valid JSON only, no markdown.
 `;
 
   const response = await ai.models.generateContent({
-  model: 'gemini-3.8-flash',
-  contents: prompt
-});  });
+    model: 'gemini-2.5-flash',
+    contents: prompt
+  });
 
   const parsed = extractJson(response?.text || '');
 
