@@ -19,14 +19,9 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
 
-      - name: Install Dependencies
-        run: |
-          npm init -y
-          npm install @google/genai
-
-      - name: Run Gemini Daily News Generator
+      - name: Run Daily News Generator
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node fetch-somalia-news.js
@@ -36,4 +31,4 @@ jobs:
           git config --global user.name 'SGN Automated Bot'
           git config --global user.email 'bot@somaliglobalnews.com'
           git add public/data/
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(news): auto-update news articles [skip ci]" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(news): auto-update daily news articles [skip ci]" && git push)
