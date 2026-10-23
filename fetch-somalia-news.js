@@ -1,6 +1,4 @@
-Copy this snippet for `fetch-somalia-news.js`:
 
-```javascript
 /**
  * fetch-somalia-news.js
  * Production Automated AI News Generation Script
