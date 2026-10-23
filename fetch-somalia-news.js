@@ -11,12 +11,6 @@ const path = require('path');
 
 // Ensure output directory exists
 const DATA_DIR = path.join(__dirname, 'public', 'data');
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
-// Read Gemini API key from environment
-const apiKey = process.env.GEMINI_API_KEY;
 
 function getFallbackArticles() {
   return [
@@ -46,6 +40,9 @@ function getFallbackArticles() {
 }
 
 function savePayload(articles) {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
   const payload = {
     lastUpdated: new Date().toISOString(),
     site: "somaliglobalnews.com",
@@ -57,66 +54,75 @@ function savePayload(articles) {
   console.log("✅ Successfully written news payload to " + jsonPath);
 }
 
-async function generateSomaliGlobalNews() {
-  console.log("🚀 Starting news aggregation for somaliglobalnews.com...");
-
-  if (!apiKey) {
-    console.warn("⚠️ GEMINI_API_KEY is missing. Saving fallback dataset.");
-    savePayload(getFallbackArticles());
-    return;
+function cleanMarkdownJson(text) {
+  let cleaned = text.trim();
+  if (cleaned.indexOf("
+```json") === 0) {
+    cleaned = cleaned.substring(7);
+  } else if (cleaned.indexOf("
+```") === 0) {
+    cleaned = cleaned.substring(3);
   }
+  if (cleaned.endsWith("
+```")) {
+    cleaned = cleaned.substring(0, cleaned.length - 3);
+  }
+  return cleaned.trim();
+}
 
+async function main() {
   try {
-    const promptText = `Act as Chief Editor of somaliglobalnews.com. Output ONLY a valid JSON array of 5 breaking news items regarding Somalia and the Somali diaspora with this structure:
-[
-  {
-    "id": "slug-id",
-    "title": "Article Title",
-    "category": "Economy",
-    "location": "Mogadishu",
-    "summary": "Short 2 sentence summary",
-    "content": "Full article body content",
-    "sources": ["SGN Desk"],
-    "publishedAt": "2026-10-23T00:00:00Z",
-    "imageUrl": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
-  }
-]`;
+    console.log("🚀 Starting news aggregation for somaliglobalnews.com...");
+    const apiKey = process.env.GEMINI_API_KEY;
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    if (!apiKey) {
+      console.warn("⚠️ GEMINI_API_KEY environment variable is not defined. Using fallback news data.");
+      savePayload(getFallbackArticles());
+      return;
+    }
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const promptText = "Act as Chief Editor of somaliglobalnews.com. Output ONLY a raw JSON array of 5 news articles regarding Somalia and the Somali diaspora. Do not include markdown code block syntax. Format: [{\"id\":\"slug\",\"title\":\"Title\",\"category\":\"Economy\",\"location\":\"Mogadishu\",\"summary\":\"Summary text\",\"content\":\"Full content\",\"sources\":[\"SGN Desk\"],\"publishedAt\":\"2026-10-23T00:00:00Z\",\"imageUrl\":\"[https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80](https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80)\"}]";
+
+    const endpoint = "[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=)" + apiKey;
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: promptText }] }]
       })
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (!res.ok) {
+      console.warn("⚠️ API call returned status " + res.status + ". Using fallback news.");
+      savePayload(getFallbackArticles());
+      return;
     }
 
-    const data = await response.json();
+    const data = await res.json();
     const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-
-    let cleanedText = rawText.trim();
-    cleanedText = cleanedText.replace(/^
-```(?:json)?/i, '').replace(/```$/g, '').trim();
+    const cleanedText = cleanMarkdownJson(rawText);
 
     let articles;
     try {
       articles = JSON.parse(cleanedText);
     } catch (parseErr) {
-      console.warn("⚠️ JSON parse error, using standard fallback dataset.");
+      console.warn("⚠️ JSON parse error. Using fallback articles.");
       articles = getFallbackArticles();
     }
 
     savePayload(articles);
 
   } catch (error) {
-    console.error("⚠️ API call issue:", error.message);
+    console.error("⚠️ Execution error caught:", error.message);
     savePayload(getFallbackArticles());
   }
 }
 
-generateSomaliGlobalNews();
+main().then(() => {
+  process.exit(0);
+}).catch((err) => {
+  console.error("⚠️ Global error caught:", err);
+  savePayload(getFallbackArticles());
+  process.exit(0);
+});
