@@ -38,3 +38,11 @@ jobs:
           git add public/data/news.json || true
           git commit -m "chore(news): auto-update breaking news wire feed [skip ci]" || echo "No changes to commit"
           git push origin HEAD:${{ github.ref_name }} || echo "Push skipped or no changes"
+```eof
+
+***
+
+### How to update:
+1. Open `.github/workflows/daily-news.yml` in your repository.
+2. Replace all its content with the code above.
+3. Commit the changes and trigger the workflow under the **Actions** tab on GitHub!
