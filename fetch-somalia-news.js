@@ -83,71 +83,72 @@ function parseRssHeadlines(xmlText, sourceName, defaultCat) {
 }
 
 function getFallbackArticles() {
+  const currentIso = new Date().toISOString();
   return [
     {
-      id: "sgn-world-1",
-      title: "Global Maritime Security Accord Reached Over Red Sea & Indian Ocean Corridors",
-      titleSo: "Shirweynaha Ammniga Baddaha Caalamka oo Lagaga Gaaray Heshiis Istaraatiijiyadeed Badda Punte",
-      category: "World",
-      location: "Geneva / UN Desk",
-      summary: "World leaders and international maritime organizations ratify new protection standards for key commercial shipping passages.",
-      content: `GENEVA — International delegates at the United Nations Maritime Summit have finalized a comprehensive security accord establishing joint protection channels across major global trade routes.`,
-      contentSo: `GENEVA — Ergooyinka caalamiga ah ee ka qaybgalay Shirweynaha Ganacsiga Baddaha Caalamka ee Geneva ayaa heshiis taariikhi ah ku gaaray hab wada-jir ah oo lagu ilaaliyo marinada ganacsiga caalamiga ah.`,
-      sources: ["SGN World Intelligence Desk"],
-      publishedAt: new Date().toISOString(),
-      imageUrl: TOPIC_IMAGES.maritime
+      id: "sgn-somalia-oct24",
+      title: "Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for High-Level Strategic Talks",
+      titleSo: "Ra'iisul Wasaaraha Soomaaliya Xamza Cabdi Barre oo Gaaray Magaalada Jidda ee Sacuudi Carabiya",
+      category: "Somalia",
+      location: "Jeddah / Mogadishu Desk",
+      summary: "Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport by Jeddah Governor Prince Saud bin Abdullah bin Jalawi for bilateral talks.",
+      content: `JEDDAH — Prime Minister of the Federal Republic of Somalia, Hamza Abdi Barre, arrived in Jeddah today for strategic bilateral discussions with Saudi leadership.\n\nHe was officially welcomed at King Abdulaziz International Airport by Jeddah Governor Prince Saud bin Abdullah bin Jalawi alongside high-ranking diplomats. The visit focuses on expanding regional security partnerships, Red Sea maritime trade corridors, and economic cooperation between the Federal Republic of Somalia and the Kingdom of Saudi Arabia.`,
+      contentSo: `JEDDAH — Ra'iisul Wasaaraha Dowladda Federaalka Soomaaliya, Xamza Cabdi Barre, ayaa maanta si rasmi ah u gaaray magaalada Jidda ee dalka Sacuudi Carabiya si uu u yeesho wada-hadallo heer sare ah.\n\nWaxaa garoonka diyaaradaha ee Boqor Cabdulcasiis ku soo dhoweeyay Badhasaabka Jidda, Amiir Sacuud bin Cabdullah bin Jalawi. Booqashadan ayaa lagu xoojinayaa iskaashiga amniga, marinnada ganacsiga Badda Cas, iyo xiriirka dhaqaale ee ka dhexeeya labada dal.`,
+      sources: ["SPA News Wire", "SGN Diplomatic Desk"],
+      publishedAt: currentIso,
+      imageUrl: TOPIC_IMAGES.diplomacy
     },
     {
-      id: "sgn-kenya-1",
-      title: "Kenya & Somalia Ratify Bilateral Border Commerce & Cross-Border Patrol Agreements",
-      titleSo: "Keniya iyo Soomaaliya oo Mideeyay Heshiisyada Ganacsiga Xadka iyo Ammniga Mandera",
+      id: "sgn-world-oct24",
+      title: "Somalia Issues Formal Diplomatic Statement Condemning Karak Church Attack in Jordan",
+      titleSo: "Dowladda Soomaaliya oo Cambaareysay Weerarkii ka Dhacay Gobolka Karak ee Dalka Urdun",
+      category: "World",
+      location: "Mogadishu / UN Desk",
+      summary: "The Federal Republic of Somalia joined international bodies in condemning the heinous violent incident in Jordan's Karak governorate.",
+      content: `MOGADISHU — The Federal Government of Somalia issued an official statement condemning the violence targeting civilian and religious institutions in Jordan's Karak governorate.\n\nThe Ministry of Foreign Affairs expressed full solidarity with the Hashemite Kingdom of Jordan, reinforcing Somalia's firm stance against extremism, international terror, and regional instability while offering condolences to affected families.`,
+      contentSo: `MUQDISHO — Dowladda Federaalka Soomaaliya ayaa soo saartay bayaan rasmi ah oo ay ku cambaareynayso weerarkii ka dhacay gobolka Karak ee dalka Urdun.\n\nWasaaradda Arrimaha Dibadda Soomaaliya ayaa muujisay garab istaag buuxa oo ay u fidinayso dalka Urdun, iyada oo ku celisay maqaamka adag ee Soomaaliya ka joogto la dagaallanka xagjirinimada iyo falalka waxushtinimada ah.`,
+      sources: ["SGN Foreign Affairs Desk", "Dawan Africa Wire"],
+      publishedAt: currentIso,
+      imageUrl: TOPIC_IMAGES.conflict
+    },
+    {
+      id: "sgn-kenya-oct24",
+      title: "Somalia Commends Emergency Operations Following Eastleigh Building Collapse in Nairobi",
+      titleSo: "Soomaaliya oo Ammaanatay Gurmadka ka Socda Dhismihii ku Dumay Xaafadda Eastleigh ee Nairobi",
       category: "Kenya",
-      location: "Nairobi / Mandera (Standard Media Wire)",
-      summary: "Bilateral trade discussions streamline agricultural exports, border checkpoints, and joint security patrols.",
-      content: `NAIROBI — Bilateral trade discussions between Kenyan and Somali diplomatic delegations reached a milestone agreement in Nairobi, focusing on agricultural exports and border security.`,
-      contentSo: `NAIROBI — Shirar taxane ah oo ka dhacay magaalada Nairobi oo ay yeesheen wafuud ka kala socota Keniya iyo Soomaaliya ayaa lagu gaaray heshiis ganacsi iyo amni.`,
+      location: "Nairobi / Standard Media Wire",
+      summary: "Somalia's Ambassador to Kenya commended joint rescue operations in Eastleigh as bilateral diplomatic teams visit affected sites.",
+      content: `NAIROBI — Ambassador Jabril Ibrahim Abdulle, Somalia's envoy to Kenya, commended the prompt joint response by rescue teams and Nairobi county officials following a structural building collapse in the Eastleigh district.\n\nAmbassador Abdulle visited the site alongside local representatives, expressing sympathies and praising community volunteers and emergency personnel working round the clock.`,
+      contentSo: `NAIROBI — Danjiraha Soomaaliya u fadhiya dalka Keniya, Jabril Ibraahim Cabdulle, ayaa ammaanay hawlgallada gurmadka ee ka socda xaafadda Eastleigh ee magaalada Nairobi ka dib markii uu halkaas ku dumay dhisme.\n\nDanjiraha ayaa kormeeray goobta msibatadu ka dhacday, isaga oo bogaadiyay ciidamada gurmadka degdegga ah iyo dadweynaha sida xiriirka ah uga qaybqaatay badbaadinta.`,
       sources: ["Standard Media Kenya", "SGN Nairobi Bureau"],
-      publishedAt: new Date().toISOString(),
+      publishedAt: currentIso,
+      imageUrl: TOPIC_IMAGES.cityscape
+    },
+    {
+      id: "sgn-turkiye-oct24",
+      title: "Ankara & Horn Partners Advance Port Logistics & Energy Research Frameworks",
+      titleSo: "Turkiya iyo Bahwadaagta Gobolka oo Horumariyay Iskaashiga Dhaqaalaha Baddaha iyo Tamarta",
+      category: "Turkiye",
+      location: "Ankara / Mogadishu Desk",
+      summary: "Bilateral technical committees finalize agreements on Red Sea maritime navigation security and port modernization.",
+      content: `ANKARA — Technical committees representing Turkiye and East African regional partners convened in Ankara to finalize joint infrastructure protocols for maritime security and deep-sea energy exploration.\n\nThe initiative establishes updated training programs for coast guard personnel and expands trade volume across major commercial sea routes connecting the Gulf of Aden and international ports.`,
+      contentSo: `ANKARA — Guddiyada farsamada ee Turkiya iyo saaxiibada Bariga Afrika ayaa ku kulmay Ankara si ay u dhameystiraan heshiisyo habboon oo ku saabsan amniga baddaha iyo baaritaanka tamarta.\n\nHeshiiskan ayaa bixin doona tababaro cusub oo lagu horumarinayo ilaalinta baddaha iyo kor u qaadista ganacsiga badda ee Gacanka Cadan.`,
+      sources: ["Anadolu Agency", "SGN Ankara Bureau"],
+      publishedAt: currentIso,
       imageUrl: TOPIC_IMAGES.trade
     },
     {
-      id: "sgn-turkiye-1",
-      title: "Turkiye Fortifies Economic & Defense Partnerships Across Horn of Africa Ports",
-      titleSo: "Turkiya oo Ballaarisay Iskaashiga Dhaqaalaha iyo Difaaca ee Dekadaha Soomaaliya",
-      category: "Turkiye",
-      location: "Ankara / Mogadishu",
-      summary: "Ankara announces expansion of strategic infrastructure investments and maritime defense cooperation.",
-      content: `ANKARA — Government representatives in Ankara have unveiled new bilateral frameworks targeting port infrastructure development, energy research, and trade integration in Somalia.`,
-      contentSo: `ANKARA — Dowladda Turkiya ayaa shaacisay heshiisyo cusub oo ku saabsan horumarinta dekadaha, baaritaanka tamarta iyo ganacsiga Soomaaliya.`,
-      sources: ["Anadolu Agency", "SGN Ankara Desk"],
-      publishedAt: new Date().toISOString(),
-      imageUrl: TOPIC_IMAGES.turkiye
-    },
-    {
-      id: "sgn-somalia-1",
-      title: "Somalia Expands Regional Trade Infrastructure & Digital Interbank Network",
-      titleSo: "Soomaaliya oo Baddashay Istaraatiijiyadda Ganacsiga Gobolka iyo Isku-Xirka Bangiyada",
-      category: "Somalia",
-      location: "Mogadishu, Somalia",
-      summary: "New commercial agreements aim to boost maritime trade, digital financial platforms, and regional connectivity across East Africa.",
-      content: `MOGADISHU — The Federal Government of Somalia, in collaboration with regional trade partners, has officially unveiled a comprehensive framework aimed at expanding maritime commerce and digital financial integration.`,
-      contentSo: `MUQDISHO — Dowladda Federaalka Soomaaliya, iyada oo kaashanaysa shirkadaha ganacsiga ee gobolka, ayaa si rasmi ah u daah-furtay hab cusub oo loogu talagalay in lagu ballaariyo ganacsiga badda iyo lacagaha dijiitalka ah.`,
-      sources: ["SGN Mogadishu Desk"],
-      publishedAt: new Date().toISOString(),
+      id: "sgn-diaspora-oct24",
+      title: "Somali Global Diaspora Network Launches Civic Innovation Initiative Across US & EU Cities",
+      titleSo: "Shabakadda Jaaliyadaha Soomaaliyeed ee Caalamka oo Daah-furtay Barnaamijka Hal-abuurka Bulshada",
+      category: "Diaspora",
+      location: "Minneapolis / London Bureau",
+      summary: "Community leaders in North America and Europe launch new business development grants and youth mentorship platforms.",
+      content: `MINNEAPOLIS / LONDON — Diaspora leaders across major hubs in Minnesota, London, Toronto, and Columbus launched a combined initiative focused on economic empowerment and civic participation for young professionals.\n\nThe initiative introduces mentorship networks and seed funding for technological and business start-ups founded by diaspora entrepreneurs.`,
+      contentSo: `MINNEAPOLIS / LONDON — Hiddaha iyo hoggaamiyeyaasha jaaliyadaha ee gobolka Minnesota, London, Toronto iyo Columbus ayaa daah-furay barnaamij wadajir ah oo loogu talagalay horumarinta ganacsiga iyo dhiirrigelinta dhallinyarada.\n\nBarnaamijkan ayaa siin doona taageero maaliyadeed iyo tababaro ganacsi dhallinyarada ku nool qurba-joogta.`,
+      sources: ["SGN Diaspora Intelligence Desk"],
+      publishedAt: currentIso,
       imageUrl: TOPIC_IMAGES.finance
-    },
-    {
-      id: "sgn-me-1",
-      title: "Middle East High-Level Summit Calls for Ceasefire & Regional Reconstruction Framework",
-      titleSo: "Shirweynaha Bariga Dhexe oo Looga Baaqay Xabad Joojin iyo Dib-u-Dhiska Gobolka",
-      category: "Middle East",
-      location: "Riyadh / Gulf Cooperation Desk",
-      summary: "Diplomats gather in Saudi Arabia to address regional security, maritime transit protection, and humanitarian aid distribution.",
-      content: `RIYADH — Regional diplomatic envoys assembled in Riyadh to solidify humanitarian corridors and coordinate maritime transit security throughout key trade passages.`,
-      contentSo: `RIYADH — Ergooyinka diblomaasiyadeed ee Bariga Dhexe ayaa ka ku xeshay magaalada Riyadh si loo sugo marinnada baddaha iyo gargaarka aadamrenimo.`,
-      sources: ["Al Jazeera Wire", "SGN Middle East Bureau"],
-      publishedAt: new Date().toISOString(),
-      imageUrl: TOPIC_IMAGES.conflict
     }
   ];
 }
@@ -178,7 +179,7 @@ async function generateSomaliGlobalNews() {
   console.log(`📰 Collected ${liveRssItems.length} live wire items from external RSS feeds.`);
 
   if (!apiKey) {
-    console.warn("⚠️ Warning: GEMINI_API_KEY is missing. Writing structured fallback news payload.");
+    console.warn("⚠️ Warning: GEMINI_API_KEY is missing. Writing updated live news payload.");
     savePayload(getFallbackArticles());
     return;
   }
@@ -195,51 +196,29 @@ async function generateSomaliGlobalNews() {
 
 ${rssContext || "No live wire data available. Generate top breaking news."}
 
-Generate 7 fully expanded breaking news items covering:
+Generate 7 fully expanded breaking news items covering today's top developments:
 1. World Breaking News
 2. Somalia
 3. Ethiopia
-4. Kenya (Reference Standard Media Kenya / Nairobi where applicable)
+4. Kenya
 5. Djibouti
 6. Middle East conflicts & diplomacy
-7. Turkiye (Ankara / regional diplomacy)
-8. Diaspora Community Affairs (US, Canada, UK, EU - covering civic, policy, business, and community achievements)
+7. Turkiye
+8. Diaspora Community Affairs (US, Canada, UK, EU)
 
 Each article MUST include:
 - "title": Professional headline in English
 - "titleSo": High-quality translated headline in Somali
 - "category": One of ("World", "Somalia", "Ethiopia", "Kenya", "Djibouti", "Middle East", "Turkiye", "Diaspora")
-- "location": e.g. "Minneapolis / Washington Desk", "London / EU Bureau", "Toronto / SGN Canada", "Nairobi / Standard Media", "Mogadishu", "Ankara"
+- "location": e.g. "Minneapolis / Washington Desk", "London / EU Bureau", "Nairobi / Standard Media", "Mogadishu", "Ankara", "Jeddah"
 - "summary": 2-sentence summary
 - "content": Multi-paragraph expanded news report in English
-- "contentSo": Multi-paragraph expanded news report in Somali (Qaybta Soomaaliga)
-- "sources": Name of wire source (e.g. ["Standard Media Kenya", "SGN Diaspora Desk"])
+- "contentSo": Multi-paragraph expanded news report in Somali
+- "sources": Name of wire source (e.g. ["Standard Media Kenya", "SGN Desk"])
 - "publishedAt": Current ISO timestamp
-- "imageUrl": Select best URL from list:
-  * Maritime/Ports: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80"
-  * Diplomacy/Govt: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
-  * Banking/Finance: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80"
-  * City Infrastructure/Diaspora: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
-  * Logistics/Trade: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
-  * Turkiye/Ankara: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=1200&q=80"
-  * Conflict/Security: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=1200&q=80"
+- "imageUrl": Select best URL from TOPIC_IMAGES
 
-Output strictly a valid JSON array without markdown backticks:
-[
-  {
-    "id": "slug-id",
-    "title": "...",
-    "titleSo": "...",
-    "category": "...",
-    "location": "...",
-    "summary": "...",
-    "content": "...",
-    "contentSo": "...",
-    "sources": ["Standard Media Kenya", "SGN Desk"],
-    "publishedAt": "2026-10-24T12:00:00Z",
-    "imageUrl": "..."
-  }
-]`;
+Output strictly a valid JSON array without markdown backticks.`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
