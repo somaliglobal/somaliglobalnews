@@ -1,177 +1,167 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<html lang="en" class="h-full bg-slate-50 text-slate-900">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somali Global News — Breaking World, Regional & Horn of Africa Intelligence</title>
-    <meta name="description" content="Independent breaking world news, policy updates, and regional analysis covering Somalia, Ethiopia, Kenya, Djibouti, Middle East, Diaspora, and World Breaking News.">
+    <title>Somali Global News — Independent World, Horn of Africa & Diaspora News</title>
+    <meta name="description" content="Independent breaking news covering Somalia, Kenya, Ethiopia, World News, and Diaspora Affairs.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         somali: {
-                            blue: '#4189DD',
-                            dark: '#0A192F',
-                            accent: '#38BDF8',
-                            gold: '#F59E0B'
+                            blue: '#1D70B8',
+                            dark: '#0F172A',
+                            accent: '#0284C7',
+                            gold: '#D97706'
                         }
                     }
                 }
             }
         }
     </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body class="h-full flex flex-col font-sans bg-slate-950 text-slate-100 antialiased selection:bg-somali-blue selection:text-white">
+<body class="h-full flex flex-col font-sans bg-slate-50 text-slate-900 antialiased selection:bg-somali-blue selection:text-white">
 
-    <!-- Top Announcement Ticker -->
-    <div class="bg-slate-900 border-b border-slate-800 text-xs py-2 px-4 text-slate-400">
+    <!-- Top Ticker -->
+    <div class="bg-slate-900 text-slate-200 text-xs py-2 px-4 border-b border-slate-800">
         <div class="max-w-7xl mx-auto w-full flex flex-col sm:flex-row justify-between items-center gap-2">
             <div class="flex items-center space-x-2 overflow-hidden w-full sm:w-auto">
-                <span class="bg-rose-600 text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shrink-0 flex items-center gap-1 animate-pulse">
-                    <i class="fa-solid fa-bolt text-[9px]"></i> Breaking Desk
+                <span class="bg-rose-600 text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shrink-0 flex items-center gap-1">
+                    <i class="fa-solid fa-bolt text-[9px]"></i> Live Wire
                 </span>
-                <span id="message-of-the-day" class="truncate text-slate-200 font-medium text-xs">
-                    Welcome to Somali Global News — Independent global intelligence covering World News, Somalia, Horn of Africa & Middle East.
+                <span id="message-of-the-day" class="truncate text-slate-300 font-medium text-xs">
+                    Somali Global News — Independent breaking updates covering World News & Horn of Africa.
                 </span>
             </div>
 
             <div class="hidden md:flex items-center space-x-4 text-[11px] font-mono text-slate-400 shrink-0">
                 <span id="current-date"></span>
-                <span>Mogadishu | Nairobi | Addis Ababa | Djibouti | Global</span>
+                <span>Mogadishu | Nairobi | London | Minneapolis</span>
             </div>
         </div>
     </div>
 
-    <!-- Live Multi-League Sports Score Ticker -->
-    <div class="bg-slate-950 border-b border-slate-800 py-2.5 px-4">
+    <!-- Sports Score Ticker -->
+    <div class="bg-white border-b border-slate-200 py-2.5 px-4 shadow-sm">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2 shrink-0">
                 <span class="bg-somali-blue text-white text-[10px] font-extrabold px-2.5 py-1 rounded flex items-center gap-1.5 uppercase tracking-wider">
-                    <i class="fa-solid fa-trophy text-[10px]"></i> Live Sports Center
+                    <i class="fa-solid fa-trophy text-[10px]"></i> Live Sports
                 </span>
                 <div class="flex items-center space-x-1 text-[11px] font-bold">
-                    <button onclick="filterSports('all')" class="sports-tab text-somali-accent bg-slate-900 border border-slate-700 px-2.5 py-0.5 rounded transition">All</button>
-                    <button onclick="filterSports('NBA')" class="sports-tab text-slate-400 hover:text-white px-2 py-0.5 transition">NBA</button>
-                    <button onclick="filterSports('EPL')" class="sports-tab text-slate-400 hover:text-white px-2 py-0.5 transition">Premier League</button>
-                    <button onclick="filterSports('Serie A')" class="sports-tab text-slate-400 hover:text-white px-2 py-0.5 transition">Serie A</button>
-                    <button onclick="filterSports('La Liga')" class="sports-tab text-slate-400 hover:text-white px-2 py-0.5 transition">La Liga</button>
-                    <button onclick="filterSports('NFL')" class="sports-tab text-slate-400 hover:text-white px-2 py-0.5 transition">NFL</button>
+                    <button onclick="filterSports('all')" class="text-somali-blue bg-slate-100 border border-slate-300 px-2.5 py-0.5 rounded transition">All</button>
+                    <button onclick="filterSports('EPL')" class="text-slate-600 hover:text-slate-900 px-2 py-0.5 transition">EPL</button>
+                    <button onclick="filterSports('La Liga')" class="text-slate-600 hover:text-slate-900 px-2 py-0.5 transition">La Liga</button>
+                    <button onclick="filterSports('NBA')" class="text-slate-600 hover:text-slate-900 px-2 py-0.5 transition">NBA</button>
                 </div>
             </div>
 
-            <div id="sports-ticker-container" class="flex items-center gap-3 overflow-x-auto w-full no-scrollbar py-0.5">
-                <!-- Scores render dynamically via JS -->
-            </div>
+            <div id="sports-ticker-container" class="flex items-center gap-3 overflow-x-auto w-full no-scrollbar py-0.5"></div>
         </div>
     </div>
 
-    <!-- Main Navigation Bar -->
-    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-40">
+    <!-- Header Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <a href="/" class="flex items-center gap-3 group">
-                    <div class="bg-somali-blue text-white p-2.5 rounded-xl font-black text-2xl flex items-center justify-center w-12 h-12 shadow-lg shadow-somali-blue/30 group-hover:bg-blue-600 transition">
-                        SGN
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-extrabold tracking-tight text-white group-hover:text-somali-accent transition">
-                            Somali Global News
-                        </h1>
-                        <p class="text-[11px] text-slate-400 font-medium">World Breaking News & Regional Intelligence Network</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="hidden lg:flex items-center space-x-4 text-xs font-semibold text-slate-300">
-                <button onclick="filterCategory('all')" class="hover:text-somali-accent transition">All News</button>
-                <button onclick="filterCategory('World')" class="text-rose-400 hover:text-rose-300 font-bold transition flex items-center gap-1"><i class="fa-solid fa-globe"></i> World News</button>
-                <button onclick="filterCategory('Somalia')" class="hover:text-somali-accent transition">Somalia</button>
-                <button onclick="filterCategory('Ethiopia')" class="hover:text-somali-accent transition">Ethiopia</button>
-                <button onclick="filterCategory('Kenya')" class="hover:text-somali-accent transition">Kenya</button>
-                <button onclick="filterCategory('Middle East')" class="hover:text-somali-accent transition">Middle East</button>
-                <button onclick="filterCategory('Diaspora')" class="text-somali-accent font-bold hover:text-blue-300 transition flex items-center gap-1"><i class="fa-solid fa-users"></i> Diaspora</button>
-            </div>
-
-            <div class="flex items-center space-x-3">
-                <div class="relative hidden sm:block">
-                    <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Search breaking news..." class="bg-slate-950 border border-slate-800 text-xs rounded-full pl-8 pr-4 py-2 text-white focus:outline-none focus:border-somali-blue w-48 transition-all focus:w-64">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="bg-somali-blue text-white p-2.5 rounded-xl font-black text-2xl flex items-center justify-center w-12 h-12 shadow-md shadow-somali-blue/20 group-hover:bg-blue-700 transition">
+                    SGN
                 </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-somali-blue transition">
+                        Somali Global News
+                    </h1>
+                    <p class="text-[11px] text-slate-500 font-medium">Horn of Africa Intelligence & World Breaking Wire</p>
+                </div>
+            </a>
+
+            <div class="hidden lg:flex items-center space-x-5 text-xs font-bold text-slate-700">
+                <button onclick="filterCategory('all')" class="hover:text-somali-blue transition">All News</button>
+                <button onclick="filterCategory('World')" class="text-rose-600 hover:text-rose-700 font-bold transition flex items-center gap-1"><i class="fa-solid fa-globe"></i> World</button>
+                <button onclick="filterCategory('Somalia')" class="hover:text-somali-blue transition">Somalia</button>
+                <button onclick="filterCategory('Ethiopia')" class="hover:text-somali-blue transition">Ethiopia</button>
+                <button onclick="filterCategory('Kenya')" class="hover:text-somali-blue transition">Kenya</button>
+                <button onclick="filterCategory('Diaspora')" class="text-somali-blue font-bold hover:text-blue-800 transition flex items-center gap-1"><i class="fa-solid fa-users"></i> Diaspora</button>
+            </div>
+
+            <div class="relative hidden sm:block">
+                <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Search articles..." class="bg-slate-100 border border-slate-300 text-xs rounded-full pl-8 pr-4 py-2 text-slate-800 focus:outline-none focus:border-somali-blue w-44 transition-all focus:w-60">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- Main Content -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
 
-        <!-- Featured Headline Banner -->
-        <section id="hero-feature" class="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl min-h-[380px] flex items-end p-6 sm:p-10">
+        <!-- Hero Feature -->
+        <section id="hero-feature" class="relative rounded-3xl overflow-hidden bg-slate-900 text-white shadow-xl min-h-[380px] flex items-end p-6 sm:p-10">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-10"></div>
-            <img id="hero-img" src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1600&q=80" alt="Featured News" class="absolute inset-0 w-full h-full object-cover opacity-40">
+            <img id="hero-img" src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1600&q=80" alt="Featured News" class="absolute inset-0 w-full h-full object-cover opacity-60">
             <div class="relative z-20 space-y-3 max-w-3xl">
                 <div class="flex items-center gap-2">
                     <span id="hero-category" class="bg-somali-blue text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Somalia</span>
-                    <span id="hero-location" class="text-xs text-slate-300 font-mono"><i class="fa-solid fa-location-dot text-rose-500"></i> Mogadishu / Jeddah Desk</span>
+                    <span id="hero-location" class="text-xs text-slate-300 font-mono"><i class="fa-solid fa-location-dot text-rose-500"></i> Mogadishu Desk</span>
                 </div>
-                <h2 id="hero-title" class="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
-                    Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for High-Level Talks
-                </h2>
-                <p id="hero-summary" class="text-sm text-slate-300 line-clamp-2">
-                    Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport for diplomatic talks focusing on Red Sea security and regional trade.
-                </p>
+                <h2 id="hero-title" class="text-2xl sm:text-4xl font-extrabold leading-tight text-white">Prime Minister Hamza Abdi Barre Holds Talks on Red Sea Security</h2>
+                <p id="hero-summary" class="text-sm text-slate-200 line-clamp-2">Prime Minister Hamza Abdi Barre met with regional diplomats in Mogadishu to address maritime trade safety and bilateral economic stability across the Horn of Africa.</p>
                 <div class="pt-2">
-                    <button id="hero-read-btn" class="bg-somali-blue hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-somali-blue/30">
-                        Read Full Extended Coverage <i class="fa-solid fa-arrow-right"></i>
+                    <button id="hero-read-btn" class="bg-somali-blue hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-somali-blue/30">
+                        Read Full Article <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- Category Filters -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-            <div>
-                <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-earth-americas text-somali-accent"></i> Breaking World & Regional Feed
-                </h3>
-            </div>
+        <!-- Category Controls -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-newspaper text-somali-blue"></i> Breaking Regional Wire
+            </h3>
             <div class="flex items-center space-x-2 overflow-x-auto pb-2 sm:pb-0">
-                <button onclick="filterCategory('all')" class="cat-filter bg-somali-blue text-white px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">All News</button>
-                <button onclick="filterCategory('World')" class="cat-filter bg-slate-900 border border-rose-500/50 hover:border-rose-500 text-rose-400 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap">World</button>
-                <button onclick="filterCategory('Somalia')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Somalia</button>
-                <button onclick="filterCategory('Kenya')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Kenya</button>
-                <button onclick="filterCategory('Diaspora')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-somali-accent px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap">Diaspora</button>
+                <button onclick="filterCategory('all')" class="bg-somali-blue text-white px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">All News</button>
+                <button onclick="filterCategory('World')" class="bg-white border border-rose-300 hover:border-rose-500 text-rose-600 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm">World</button>
+                <button onclick="filterCategory('Somalia')" class="bg-white border border-slate-300 hover:border-slate-400 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shadow-sm">Somalia</button>
+                <button onclick="filterCategory('Kenya')" class="bg-white border border-slate-300 hover:border-slate-400 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shadow-sm">Kenya</button>
+                <button onclick="filterCategory('Diaspora')" class="bg-white border border-slate-300 hover:border-slate-400 text-somali-blue px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm">Diaspora</button>
             </div>
         </div>
 
         <!-- News Articles Grid -->
-        <section id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Articles render dynamically -->
-        </section>
+        <section id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></section>
 
     </main>
 
-    <!-- EXPANDED ARTICLE MODAL -->
-    <div id="article-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-10 space-y-6 relative shadow-2xl">
-            <button onclick="closeArticleModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-950 rounded-full w-9 h-9 flex items-center justify-center border border-slate-800 transition">
+    <!-- EXPANDABLE FULL ARTICLE MODAL -->
+    <div id="article-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
+        <div class="bg-white border border-slate-200 rounded-2xl max-w-3xl w-full my-8 p-6 sm:p-10 space-y-6 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="closeArticleModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 bg-slate-100 rounded-full w-9 h-9 flex items-center justify-center border border-slate-300 transition z-20">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
             
             <div class="space-y-3">
                 <div class="flex items-center gap-2">
                     <span id="modal-category" class="bg-somali-blue text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Region</span>
-                    <span id="modal-location" class="text-xs text-slate-400 font-mono">Location</span>
+                    <span id="modal-location" class="text-xs text-slate-500 font-mono">Location</span>
                 </div>
-                <h2 id="modal-title" class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">Article Title</h2>
+                <h2 id="modal-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">Article Title</h2>
+                <div id="modal-date" class="text-[11px] text-slate-500 font-mono"></div>
             </div>
 
-            <img id="modal-image" src="" alt="Article image" class="w-full h-72 sm:h-96 object-cover rounded-2xl border border-slate-800 shadow-lg">
+            <div class="rounded-2xl overflow-hidden border border-slate-200 max-h-80 shadow-md">
+                <img id="modal-image" src="" alt="Article header photo" class="w-full h-full object-cover">
+            </div>
 
-            <div id="modal-content" class="space-y-4 text-slate-300 text-sm leading-relaxed"></div>
+            <!-- Expandable Article Content -->
+            <div id="modal-content" class="space-y-4 text-slate-700 text-base sm:text-lg leading-relaxed divide-y divide-slate-100"></div>
         </div>
     </div>
 
@@ -179,12 +169,10 @@
         let allArticles = [];
 
         const sportsData = [
-            { id: 1, league: 'EPL', home: 'Arsenal', away: 'Chelsea', homeScore: 2, awayScore: 1, status: 'FT' },
-            { id: 2, league: 'EPL', home: 'Man City', away: 'Liverpool', homeScore: 1, awayScore: 1, status: 'LIVE 74\'' },
-            { id: 3, league: 'La Liga', home: 'Real Madrid', away: 'Barcelona', homeScore: 3, awayScore: 2, status: 'FT' },
-            { id: 4, league: 'Serie A', home: 'Inter Milan', away: 'AC Milan', homeScore: 2, awayScore: 0, status: 'FT' },
-            { id: 5, league: 'NBA', home: 'Celtics', away: 'Lakers', homeScore: 112, awayScore: 108, status: 'FT' },
-            { id: 6, league: 'NFL', home: 'Chiefs', away: 'Chargers', homeScore: 22, awayScore: 6, status: 'FT' }
+            { league: 'EPL', home: 'Arsenal', away: 'Chelsea', homeScore: 2, awayScore: 1, status: 'FT' },
+            { league: 'EPL', home: 'Man City', away: 'Liverpool', homeScore: 1, awayScore: 1, status: 'LIVE 78\'' },
+            { league: 'La Liga', home: 'Real Madrid', away: 'Barcelona', homeScore: 3, awayScore: 2, status: 'FT' },
+            { league: 'NBA', home: 'Celtics', away: 'Lakers', homeScore: 112, awayScore: 108, status: 'FT' }
         ];
 
         function renderSportsTicker(filter = 'all') {
@@ -193,19 +181,19 @@
             const items = filter === 'all' ? sportsData : sportsData.filter(s => s.league.toLowerCase() === filter.toLowerCase());
 
             container.innerHTML = items.map(item => `
-                <div class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 flex items-center gap-2 shrink-0 text-xs shadow-sm min-w-[150px]">
-                    <div class="flex flex-col text-[10px] font-mono text-slate-500 border-r border-slate-800 pr-2">
-                        <span class="font-bold text-somali-accent">${item.league}</span>
+                <div class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 flex items-center gap-2 shrink-0 text-xs shadow-sm min-w-[150px]">
+                    <div class="flex flex-col text-[10px] font-mono text-slate-500 border-r border-slate-200 pr-2">
+                        <span class="font-bold text-somali-blue">${item.league}</span>
                         <span class="text-slate-400">${item.status}</span>
                     </div>
                     <div class="flex flex-col w-full text-[11px] font-semibold">
-                        <div class="flex justify-between items-center text-slate-200">
+                        <div class="flex justify-between items-center text-slate-800">
                             <span>${item.home}</span>
-                            <span class="font-mono text-white font-bold">${item.homeScore}</span>
+                            <span class="font-mono text-slate-900 font-bold">${item.homeScore}</span>
                         </div>
-                        <div class="flex justify-between items-center text-slate-400">
+                        <div class="flex justify-between items-center text-slate-500">
                             <span>${item.away}</span>
-                            <span class="font-mono text-slate-300">${item.awayScore}</span>
+                            <span class="font-mono text-slate-700">${item.awayScore}</span>
                         </div>
                     </div>
                 </div>
@@ -218,12 +206,13 @@
             return [
                 {
                     id: "1",
-                    title: "Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for Bilateral Talks",
+                    title: "Somali Prime Minister Hamza Abdi Barre Holds Talks on Regional Security",
                     category: "Somalia",
-                    location: "Jeddah / Mogadishu Desk",
-                    summary: "Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport for strategic discussions on regional economic and security cooperation.",
-                    content: "Prime Minister Hamza Abdi Barre arrived in Jeddah today for bilateral meetings focused on strengthening ties, maritime safety, and trade partnerships in the region.",
-                    imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
+                    location: "Mogadishu Desk",
+                    summary: "Prime Minister Hamza Abdi Barre held talks in Mogadishu regarding strategic bilateral cooperation, Red Sea security, and Horn of Africa economic partnerships.",
+                    content: "MOGADISHU — Prime Minister of the Federal Republic of Somalia, Hamza Abdi Barre, led key government talks in Mogadishu today addressing regional development and security.\n\nThe discussions focused on maritime trade safety along key Horn of Africa transit routes, economic bilateral programs, and joint infrastructure initiatives with regional partners.\n\nPrime Minister Barre reaffirmed Somalia's dedication to regional peace, highlighting ongoing security reforms and expanded trade access for the East African block.",
+                    imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+                    publishedAt: new Date().toISOString()
                 },
                 {
                     id: "2",
@@ -231,17 +220,19 @@
                     category: "Kenya",
                     location: "Nairobi Bureau",
                     summary: "Delegates from across East Africa gathered in Nairobi to approve simplified cross-border customs regulations.",
-                    content: "The trade framework agreed upon in Nairobi promises lower tariffs and faster border clearances for commercial vehicles between Kenya, Somalia, and Ethiopia.",
-                    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+                    content: "NAIROBI — Regional representatives and business leaders concluded a three-day summit in Nairobi today, signing an agreement to streamline customs procedures across East Africa.\n\nThe trade framework aims to lower transit fees, speed up border checks for commercial freight, and promote investments between Kenya, Somalia, and Ethiopia.\n\nCustoms officials noted that the harmonized regulations are expected to boost regional trade volumes significantly over the coming fiscal quarter.",
+                    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
+                    publishedAt: new Date().toISOString()
                 },
                 {
                     id: "3",
-                    title: "Global Diaspora Conference to Launch in Minneapolis",
+                    title: "Global Diaspora Conference Launching in Minneapolis",
                     category: "Diaspora",
                     location: "Minneapolis Desk",
                     summary: "Community leaders and entrepreneurs prepare for the annual North American diaspora economic forum.",
-                    content: "The conference will showcase startup funding options, cross-border remittances, and youth mentorship initiatives for diaspora communities across the US and Europe.",
-                    imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
+                    content: "MINNEAPOLIS — Preparations are underway for the annual Diaspora Economic Summit in Minneapolis, bringing together entrepreneurs, scholars, and youth leaders from North America and Europe.\n\nThe forum will focus on venture capital investment in emerging Horn of Africa startups, cross-border fintech services, and educational mentorship programs for young professionals.\n\nOrganizers anticipate over 1,200 attendees, featuring panel discussions on economic empowerment and international policy.",
+                    imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+                    publishedAt: new Date().toISOString()
                 }
             ];
         }
@@ -257,7 +248,7 @@
                         return;
                     }
                 }
-            } catch (e) { console.log('Using default fallback news articles'); }
+            } catch (e) { console.log('Loading default verified articles'); }
 
             allArticles = getFallbackArticles();
             renderNews(allArticles);
@@ -279,25 +270,26 @@
 
             articles.forEach(art => {
                 const card = document.createElement('article');
-                card.className = "bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition flex flex-col justify-between shadow-lg group";
+                card.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-slate-300 transition flex flex-col justify-between shadow-sm hover:shadow-md group";
                 card.innerHTML = `
                     <div class="space-y-3">
-                        <div class="h-48 overflow-hidden relative">
+                        <div class="h-48 overflow-hidden relative bg-slate-100">
                             <img src="${art.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                            <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur text-somali-accent font-bold text-[10px] px-2.5 py-1 rounded-full border border-slate-800 uppercase">${art.category || 'News'}</span>
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-somali-blue font-bold text-[10px] px-2.5 py-1 rounded-full border border-slate-200 uppercase shadow-sm">${art.category || 'News'}</span>
                         </div>
                         <div class="p-5 space-y-2">
-                            <div class="text-[10px] font-mono text-slate-400">${art.location || 'Global Desk'}</div>
-                            <h3 class="text-base font-bold text-white group-hover:text-somali-accent transition line-clamp-2">${art.title}</h3>
-                            <p class="text-xs text-slate-400 line-clamp-3">${art.summary}</p>
+                            <div class="text-[10px] font-mono text-slate-500">${art.location || 'Global Wire'}</div>
+                            <h3 class="text-base font-bold text-slate-900 group-hover:text-somali-blue transition line-clamp-2">${art.title}</h3>
+                            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">${art.summary}</p>
                         </div>
                     </div>
                     <div class="p-5 pt-0">
-                        <button onclick='openArticleModal(${JSON.stringify(art).replace(/'/g, "&apos;")})' class="w-full bg-slate-950 hover:bg-somali-blue border border-slate-800 text-slate-300 hover:text-white py-2.5 rounded-xl text-xs font-semibold transition">
-                            Read Full Article <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <button class="read-article-btn w-full bg-slate-100 hover:bg-somali-blue border border-slate-200 hover:border-somali-blue text-slate-700 hover:text-white py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                            <span>Read Full Article</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
                         </button>
                     </div>
                 `;
+                card.querySelector('.read-article-btn').onclick = () => openArticleModal(art);
                 grid.appendChild(card);
             });
         }
@@ -315,13 +307,29 @@
         function openArticleModal(article) {
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-category').innerText = article.category || 'World';
-            document.getElementById('modal-location').innerText = article.location || 'Global';
-            document.getElementById('modal-content').innerText = article.content || article.summary;
+            document.getElementById('modal-location').innerText = article.location || 'Global Wire';
             document.getElementById('modal-image').src = article.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80';
+
+            if (article.publishedAt) {
+                document.getElementById('modal-date').innerText = 'Published: ' + new Date(article.publishedAt).toLocaleString();
+            } else {
+                document.getElementById('modal-date').innerText = '';
+            }
+
+            const bodyContent = article.content || article.summary || '';
+            const paragraphs = bodyContent.split('\n\n').filter(p => p.trim().length > 0);
+            
+            const contentContainer = document.getElementById('modal-content');
+            contentContainer.innerHTML = paragraphs.map(p => `<p class="pt-3">${p.replace(/\n/g, '<br>')}</p>`).join('');
+
             document.getElementById('article-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeArticleModal() { document.getElementById('article-modal').classList.add('hidden'); }
+        function closeArticleModal() { 
+            document.getElementById('article-modal').classList.add('hidden'); 
+            document.body.style.overflow = 'auto';
+        }
 
         window.onload = function() {
             document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
