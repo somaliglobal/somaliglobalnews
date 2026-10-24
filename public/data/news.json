@@ -1,60 +1,45 @@
 {
-  "updatedAt": "2026-10-24T21:35:44.736Z",
-  "count": 6,
+  "updatedAt": "2026-10-24T22:36:21.170Z",
+  "count": 3,
   "articles": [
     {
-      "id": 1,
-      "category": "Horn of Africa / Somalia",
-      "headline": "Mogadishu Hosts Historic EAC Security Integration Summit",
-      "summary": "Following its full integration into the East African Community, Somalia today hosted regional leaders to finalize a unified maritime security framework. President Hassan Sheikh Mohamud emphasized the 'Blue Economy' as a pillar for regional stability, while the AU transition mission successfully handed over the final strategic sectors to the Somali National Army.",
-      "date": "October 14, 2026",
-      "source": "East African News Network",
-      "publishedAt": "2026-10-24T21:35:44.736Z"
+      "id": "art-fallback-1",
+      "title": "Somali Cabinet Approves National Port Security Modernization Initiative",
+      "title_so": "Golaha Wasiirada Soomaaliya Oo Anshixiyay Qorshaha Casriyeinta Amniga Dekadaha",
+      "category": "Somalia",
+      "location": "Mogadishu Desk",
+      "summary": "The federal cabinet has endorsed a new security and infrastructure strategy across maritime ports to bolster international trade and regional connectivity.",
+      "summary_so": "Golaha wasiirada ayaa ansixiyay qorshe cusub oo lagu ilaalinayo amnigiyada iyo kaabayaasha dekadaha Soomaaliya si loo horumariyo ganacsiga caalamiga ah.",
+      "content": "MOGADISHU — Somalia's Council of Ministers has formally approved a national port security modernization plan aimed at expanding trade facilities across the Mogadishu Port and coastal regions. Senior officials highlighted the collaboration with regional partners to streamline Customs operations and ensure safe maritime logistics.",
+      "content_so": "MOGADISHU — Golaha Wasiirada Soomaaliya ayaa si rasmi ah u ansixiyay qorshaha casriyeinta amniga dekadaha waxaana la filayaa inuu kordhiyo fursadaha ganacsiga. Wasiirada ayaa xusay in tallaabadan ay sare u qaadi doonto xiriirka ganacsi ee gobolka.",
+      "imageUrl": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+      "publishedAt": "2026-10-24T22:36:20.961Z"
     },
     {
-      "id": 2,
-      "category": "Middle East Diplomacy",
-      "headline": "Riyadh-Tehran Infrastructure Pact Signals New Era of Regional Connectivity",
-      "summary": "Diplomats from Saudi Arabia and Iran signed a landmark agreement in Muscat today, outlining a joint railway project connecting the Persian Gulf to the Mediterranean. The deal is seen as a major breakthrough in Middle East diplomacy, significantly reducing trade tensions and fostering economic interdependency in the post-oil transition era.",
-      "date": "October 14, 2026",
-      "source": "Al-Monitor Global",
-      "publishedAt": "2026-10-24T21:35:44.736Z"
+      "id": "art-fallback-2",
+      "title": "Horn of Africa Diplomatic Forum Addresses Regional Security and Trade Partnerships",
+      "title_so": "Shirka D dibomaasiyadeed ee Geeska Afrika Oo Laguga Hadlay Amniga iyo Ganacsiga",
+      "category": "Ethiopia",
+      "location": "Addis Ababa Bureau",
+      "summary": "Regional envoys gathered in Addis Ababa to discuss ongoing bilateral trade pacts and peace initiatives across the Horn of Africa.",
+      "summary_so": "Wakiillada gobolka oo ku kulmay Addis Ababa ayaa ka wada hadlay heshiisyada ganacsiga iyo dadaallada nabadroolinta Geeska Afrika.",
+      "content": "ADDIS ABABA — Representatives from Eastern African nations met today to discuss infrastructure integration, joint trade initiatives, and regional conflict prevention strategies. The summit focused on bolstering cooperation between neighboring nations to enhance economic resiliency.",
+      "content_so": "ADDIS ABABA — Wakiillada waddamada Bariga Afrika ayaa maanta ku kulmay magaala-madaxda Itoobiya si ay uga wada hadlaan isku-xirka kaabayaasha dhaqaalaha iyo nabadda gobolka.",
+      "imageUrl": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80",
+      "publishedAt": "2026-10-24T22:36:20.961Z"
     },
     {
-      "id": 3,
-      "category": "Somali Diaspora Events",
-      "headline": "Global Somali Tech Summit in London Announces $50M Venture Fund",
-      "summary": "The 2026 Global Somali Diaspora Summit concluded today in London with the launch of the 'Nomad-Tech Fund.' The initiative, led by diaspora entrepreneurs from Minneapolis, Toronto, and Oslo, aims to seed 100 new startups in Mogadishu and Hargeisa, focusing on AI-driven agriculture and fintech solutions for the Horn of Africa.",
-      "date": "October 14, 2026",
-      "source": "The Diaspora Weekly",
-      "publishedAt": "2026-10-24T21:35:44.736Z"
-    },
-    {
-      "id": 4,
-      "category": "Sports - NBA/NFL",
-      "headline": "NFL London Series: Jaguars Edge Out Victory; NBA Pre-season Stars Emerge",
-      "summary": "In a thrilling Week 6 matchup at Wembley Stadium, the Jacksonville Jaguars defeated the Chicago Bears 31-28. Meanwhile, in the NBA, rookie sensations from the 2026 Draft are making headlines in pre-season openers, with the San Antonio Spurs' revamped roster looking like a Western Conference powerhouse.",
-      "date": "October 14, 2026",
-      "source": "Global Sports Report",
-      "publishedAt": "2026-10-24T21:35:44.736Z"
-    },
-    {
-      "id": 5,
-      "category": "Sports - European Football",
-      "headline": "Champions League: Barcelona Dominates Matchday 3 as Yamal Hits Brace",
-      "summary": "Lamine Yamal continued his meteoric rise, scoring two goals in Barcelona’s 4-0 routing of Bayern Munich in the 2026/27 Champions League league phase. In the Premier League, Arsenal maintains a three-point lead at the top of the table heading into the international break.",
-      "date": "October 14, 2026",
-      "source": "EuroGoal Daily",
-      "publishedAt": "2026-10-24T21:35:44.736Z"
-    },
-    {
-      "id": 6,
-      "category": "Key World News",
-      "headline": "UN Announces Breakthrough in Global Carbon Capture Standards",
-      "summary": "At the mid-term climate review in Geneva, United Nations officials announced a breakthrough in international carbon credit regulations. This new framework allows developing nations to monetize large-scale reforestation projects more effectively, with significant funding directed toward the Green Carbon Wall initiative across the Sahel and Horn of Africa.",
-      "date": "October 14, 2026",
-      "source": "International Herald Tribune",
-      "publishedAt": "2026-10-24T21:35:44.736Z"
+      "id": "art-fallback-3",
+      "title": "Champions League Quarterfinals Heat Up as European Giants Secure Victories",
+      "title_so": "Ciyaaraha Horyaallada Yurub Oo Maraya Meel Xasaasi Ah",
+      "category": "Sports",
+      "location": "Sports Desk",
+      "summary": "Top clubs in Premier League, La Liga, and Serie A gear up for critical weekend fixtures following exciting mid-week European matches.",
+      "summary_so": "Kooxaha ugu waaweyn Premier League, La Liga iyo Serie A ayaa u preparesgaroobaya ciyaaraha todobaadka iyadoo tartanku aad u kululaaday.",
+      "content": "LONDON — The European football calendar reaches a critical stage with Premier League leaders locking horns with title rivals, while La Liga and Serie A giants prepare for high-stakes matches. Fans are anticipating thrilling action across all major European leagues.",
+      "content_so": "LONDON — Tartanka ciyaaraha kubadda cagta ee Yurub ayaa maraya meel aad u xiiso badan, iyadoo kooxaha ugu waaweyn ay u tartamayaan horyaallada Ingiriiska, Spain iyo Italy.",
+      "imageUrl": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
+      "publishedAt": "2026-10-24T22:36:20.961Z"
     }
   ]
 }
