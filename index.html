@@ -94,7 +94,7 @@
         <!-- Featured Headline Banner -->
         <section id="hero-feature" class="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl min-h-[380px] flex items-end p-6 sm:p-10">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-10"></div>
-            <img id="hero-img" src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1600&q=80" alt="Featured News" class="absolute inset-0 w-full h-full object-cover opacity-40">
+            <img id="hero-img" src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1600&q=80" alt="Featured News" class="absolute inset-0 w-full h-full object-cover opacity-40">
             <div class="relative z-20 space-y-3 max-w-3xl">
                 <div class="flex items-center gap-2">
                     <span id="hero-category" class="bg-rose-600 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">World News</span>
@@ -228,7 +228,6 @@
 
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
 
-        // Load Message of the Day from Local Storage or default
         const savedMessage = localStorage.getItem('sgn_message_of_the_day');
         if (savedMessage) {
             document.getElementById('message-of-the-day').innerText = savedMessage;
@@ -264,20 +263,16 @@
 ### Strategic Global Directives:
 * **Enhanced Escort Systems:** Multi-nation naval coordination task forces to secure international cargo vessels.
 * **Port Digital Standardization:** Unified digital clearance protocols to prevent maritime logistics bottlenecks.
-* **Climate Resilience Capital:** $1.2B global green port infrastructure fund dedicated to modernizing emerging port hubs.
-
-Diplomats noted that ensuring open, predictable sea corridors remains paramount for preventing international inflation and stabilizing cross-continental trade flows.`,
+* **Climate Resilience Capital:** $1.2B global green port infrastructure fund dedicated to modernizing emerging port hubs.`,
                         contentSo: `GENEVA — Ergooyinka caalamiga ah ee ka qaybgalay Shirweynaha Ganacsiga iyo Baddaha Caalamka ee Geneva ayaa heshiis taariikhi ah ku gaaray hab wada-jir ah oo lagu ilaaliyo marinada ganacsiga caalamiga ah ee Badda Cas iyo Badweynta Hindiya.
 
 ### Qodobada Shirka Caalamiga Ah:
 * **Ilaalinta Maraakiibta:** Wada-shaqaynta maraakiibta dagaalka ee waddamada caalamka si loo ilaaliyo xamuulka ganacsiga.
 * **Standardization-ka Dekadaha:** Nidaam dijiital ah oo mideysan si loogu dedejiyo kormeerka xamuulka badda.
-* **Maalgelinta Cagaaran:** Sanduuq lacagaha oo dhan $1.2 bilyan oo dollar oo loogu talagalay casriyeynta dekadaha.
-
-Mowqifkan caalamiga ah ayaa la kỳ filayaa inuu si weyn u xalliyo dib-u-dhaca ku yimaada ganacsiga caalamiga ah iyo xaaladaha dhaqaale ee gobolka.`,
+* **Maalgelinta Cagaaran:** Sanduuq lacagaha oo dhan $1.2 bilyan oo dollar oo loogu talagalay casriyeynta dekadaha.`,
                         sources: ["SGN World Intelligence Desk", "UN Press"],
                         publishedAt: new Date().toISOString(),
-                        imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
+                        imageUrl: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80"
                     },
                     {
                         id: "sgn-1",
@@ -286,25 +281,11 @@ Mowqifkan caalamiga ah ayaa la kỳ filayaa inuu si weyn u xalliyo dib-u-dhaca k
                         category: "Somalia",
                         location: "Mogadishu, Somalia",
                         summary: "Somalia accelerates economic integration through new digital trade clearing systems, port modernizations, and cross-border financial protocols.",
-                        content: `MOGADISHU — The Federal Government of Somalia, in collaboration with regional trade partners and private sector stakeholders, has officially unveiled a comprehensive framework aimed at expanding maritime commerce and digital financial integration across East Africa.
-
-### Key Strategic Pillars:
-* **Digital Settlement Networks:** Direct interbank transfer mechanisms connecting Mogadishu's financial institutions with East African clearinghouses.
-* **Port Infrastructure Expansion:** Upgraded port facilities at Mogadishu and Kismayo to double container throughput capacity.
-* **Customs Streamlining:** Tariff harmonization agreements designed to accelerate agricultural and consumer trade routes.
-
-Ministerial representatives highlighted that the new digital protocols will significantly reduce transactional friction for cross-border merchants, enabling real-time settlements and standardizing export compliance standards. Commercial banks across Mogadishu have already begun implementing the unified gateway.`,
-                        contentSo: `MUQDISHO — Dowladda Federaalka Soomaaliya, iyada oo kaashanaysa shirkadaha ganacsiga ee gobolka iyo qaybaha gaarka loo leeyahay, ayaa si rasmi ah u daah-furtay hab cusub oo loogu talagalay in lagu ballaariyo ganacsiga badda iyo isku-xirka lacagaha dijiitalka ah ee Bariga Afrika.
-
-### Qodobada Hadafka Leh:
-* **Nidaamka Dijiitalka ah:** Isku-xirka tooska ah ee bangiyada Muqdisho iyo xarrumaha maaliyadeed ee gobolka.
-* **Kabayasha Dekadaha:** Casriyeynta dekadaha Muqdisho iyo Kismaayo si loo kordhiyo awoodda xamuulka badda.
-* **Fududeynta Kastamka:** Heshiisyo lagu mideynayo cashuuraha ganacsiga si loo dardargeliyo ganacsiga sahayda iyo beeraha.
-
-Wasiirro iyo mas'uuliyiin ka tirsan dowladda ayaa sheegay in talaabadan ay si weyn u yareyn doonto dib-u-dhaca maaliyadeed ee ganacsatada, iyadoo u sahlaysa in si degdeg ah oo aamin ah ay u maareeyaan xawaaladaha iyo heshiisyada ganacsi.`,
-                        sources: ["SGN Mogadishu Bureau", "Ministry of Commerce"],
+                        content: `MOGADISHU — The Federal Government of Somalia, in collaboration with regional trade partners and private sector stakeholders, has officially unveiled a comprehensive framework.`,
+                        contentSo: `MUQDISHO — Dowladda Federaalka Soomaaliya, iyada oo kaashanaysa shirkadaha ganacsiga ee gobolka iyo qaybaha gaarka loo leeyahay, ayaa si rasmi ah u daah-furtay hab cusub.`,
+                        sources: ["SGN Mogadishu Bureau"],
                         publishedAt: new Date().toISOString(),
-                        imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
+                        imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80"
                     },
                     {
                         id: "sgn-2",
@@ -312,26 +293,12 @@ Wasiirro iyo mas'uuliyiin ka tirsan dowladda ayaa sheegay in talaabadan ay si we
                         titleSo: "Keniya iyo Soomaaliya oo Mideeyay Heshiisyada Ganacsiga Xadka iyo Ammniga Gobolka",
                         category: "Kenya",
                         location: "Nairobi / Mandera",
-                        summary: "New bilateral agreements streamline agricultural exports, border checkpoints, and joint security patrols along the Mandera-Lugh corridor.",
-                        content: `NAIROBI / MANDERA — Bilateral trade discussions between Kenyan and Somali diplomatic delegations reached a milestone agreement in Nairobi, finalizing streamlined border customs and joint economic protocols along key border points.
-
-### Strategic Accord Details:
-* **Border Trade Corridors:** Fast-track customs clearing lanes for perishable agricultural goods and local livestock trade.
-* **Joint Security Patrols:** Enhanced security coordination along Mandera, El Wak, and Liboi border posts.
-* **Community Transit Passports:** Simplified electronic verification for border communities engaged in daily commerce.
-
-The agreement is anticipated to double cross-border trade volume within the next fiscal quarter while strengthening peace and counter-smuggling initiatives along the shared border.`,
-                        contentSo: `NAIROBI / MANDERA — Shirar taxane ah oo ka dhacay magaalada Nairobi oo ay yeesheen wafuud ka kala socota Keniya iyo Soomaaliya ayaa lagu gaaray heshiis taariikhi ah oo lagu habaynayo ganacsiga xadka iyo ammniga gobolka.
-
-### Qodobada Heshiiska:
-* **Wadooyinka Ganacsiga Xadka:** Fududeynta kormeerka kastamka ee alaabta beeraha iyo xoolaha nool.
-* **Iskaashiga Ammniga:** Xoojinta wada-shaqaynta ciidamada labada dhinac ee ku sugan Mandheera, Cill-waaq iyo Libooy.
-* **Waraaqaha Transit-ka Soohdinta:** Fududeynta kaadhadhka elektaroonigga ah ee dadka deegaanka ku nool xadka.
-
-Heshiiskan ayaa la kỳ filayaa inuu laba jeer kordhiyo mugga ganacsiga labada dhinac, isagoo sidoo kale xoojinaya nabadda iyo iskaashiga gobolka.`,
-                        sources: ["SGN Nairobi Bureau", "East African Trade Desk"],
+                        summary: "New bilateral agreements streamline agricultural exports, border checkpoints, and joint security patrols.",
+                        content: `NAIROBI — Bilateral trade discussions between Kenyan and Somali diplomatic delegations reached a milestone agreement in Nairobi.`,
+                        contentSo: `NAIROBI — Shirar taxane ah oo ka dhacay magaalada Nairobi oo ay yeesheen wafuud ka kala socota Keniya iyo Soomaaliya ayaa lagu gaaray heshiis taariikhi ah.`,
+                        sources: ["SGN Nairobi Bureau"],
                         publishedAt: new Date().toISOString(),
-                        imageUrl: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
+                        imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
                     },
                     {
                         id: "sgn-3",
@@ -339,26 +306,12 @@ Heshiiskan ayaa la kỳ filayaa inuu laba jeer kordhiyo mugga ganacsiga labada d
                         titleSo: "Shirkii Diblomaasiyadda Geeska Afrika oo ku Soo Gaba-gaboobay Addis Ababa",
                         category: "Ethiopia",
                         location: "Addis Ababa, Ethiopia",
-                        summary: "Regional ministers address trade routes, infrastructure funding, and diplomatic resolutions during the annual diplomatic forum.",
-                        content: `ADDIS ABABA — The annual Horn of Africa Diplomatic Forum concluded in Addis Ababa with regional representatives reaffirming commitments to sovereign dialogue, transit infrastructure, and economic regionalism.
-
-### Major Outcomes:
-* **Logistical Connectivity:** Joint initiatives to improve transit roads connecting coastal ports with landlocked trade hubs.
-* **Diplomatic Communication Channels:** Direct communication task forces established for conflict resolution and maritime stability.
-* **Climate Resilient Agricultural Networks:** Multi-state coordination on water resource management and drought mitigation.
-
-Diplomats stressed that regional prosperity requires open transit routes and sustained political dialogue across all partner nations in the Horn.`,
-                        contentSo: `ADDIS ABABA — Shirweynaha Nabadda iyo Iskaashiga Geeska Afrika oo ka dhacay magaalada Addis Ababa ayaa lagu soo gaba-gabeeyay go'aamo lagu xoojinayo nabadda, jidadka ganacsiga, iyo xasilloonida gobolka.
-
-### Natiijooyinka Shirka:
-* **Isku-Xirka Jidadka:** Tallaabooyin wada-jir ah oo lagu pobcinayo jidadka isku xira dekadaha iyo magaalooyinka waaweyn.
-* **Wada-hadalka Diblomaasiyadeed:** Dhisidda komishano joogto ah oo ka shaqeeya nabadda iyo badda Red Sea.
-* **Ilaalinta Deegaanka iyo Beeraha:** Wada-shaqayn ku saabsan maareynta biyaha iyo ka hortagga abaarahada.
-
-Diblomaasiyiinta ayaa carrabka ku adkeeyay in horumarka gobolku ku xiran yahay iskaashi dhab ah iyo jidad ganacsi oo furan.`,
-                        sources: ["SGN Addis Ababa Desk", "Horn Policy Institute"],
+                        summary: "Regional ministers address trade routes, infrastructure funding, and diplomatic resolutions.",
+                        content: `ADDIS ABABA — The annual Horn of Africa Diplomatic Forum concluded in Addis Ababa with regional representatives reaffirming commitments.`,
+                        contentSo: `ADDIS ABABA — Shirweynaha Nabadda iyo Iskaashiga Geeska Afrika oo ka dhacay magaalada Addis Ababa ayaa lagu soo gaba-gabeeyay go'aamo.`,
+                        sources: ["SGN Addis Ababa Desk"],
                         publishedAt: new Date().toISOString(),
-                        imageUrl: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80"
+                        imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
                     },
                     {
                         id: "sgn-4",
@@ -367,49 +320,21 @@ Diblomaasiyiinta ayaa carrabka ku adkeeyay in horumarka gobolku ku xiran yahay i
                         category: "Djibouti",
                         location: "Djibouti City, Djibouti",
                         summary: "Djibouti launches state-of-the-art container tracking and maritime cargo facilities near Bab-el-Mandeb.",
-                        content: `DJIBOUTI CITY — The Port Authority of Djibouti has officially commissioned a modernized maritime cargo hub equipped with real-time tracking systems and green energy power grids along the Bab-el-Mandeb strait.
-
-### Terminal Upgrades:
-* **Automated Container Dispatch:** High-speed cranes reducing cargo turnaround time by 35%.
-* **Solar-Powered Warehousing:** Sustainable logistics units designed for chilled agricultural storage.
-* **Red Sea Route Security Integration:** Enhanced radar and maritime monitoring systems for commercial vessels.
-
-This investment reinforces Djibouti's positioning as an essential transshipment hub connecting East African markets with Europe and Asia.`,
-                        contentSo: `MAGAALADA JABUUTI — Maamulka Dekadaha ee Jabuuti ayaa daah-furay kabayaal casri ah oo loogu talagalay maareynta xamuulka badda cas iyo isku xirka ganacsiga Bariga Afrika iyo caalamka.
-
-### Warbixinta Dekada Cusub:
-* **Maamulka Wiishashka Dijiitalka:** Fududeynta rarida iyo dejinta konteenarrada oo lagu kordhiyay 35%.
-* **Kaydadka Tamarta Qorraxda:** Goobo loogu talagalay kaydinta cuntada iyo miraha oo ku shaqeeya tamarta qorraxda.
-* **Ilaalinta Badda Cas:** Nidaamka raadarka casriga ah oo la socda ilaalinta maraakiibta ganacsiga.
-
-Mashruucan ayaa sii xoojinaya doorka muhiimka ah ee Jabuuti ku leedahay marinka Badda Cas iyo ganacsiga caalamiga ah.`,
+                        content: `DJIBOUTI CITY — The Port Authority of Djibouti has officially commissioned a modernized maritime cargo hub equipped with real-time tracking systems.`,
+                        contentSo: `MAGAALADA JABUUTI — Maamulka Dekadaha ee Jabuuti ayaa daah-furay kabayaal casri ah oo loogu talagalay maareynta xamuulka badda cas.`,
                         sources: ["SGN Djibouti Bureau"],
                         publishedAt: new Date().toISOString(),
                         imageUrl: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80"
                     },
                     {
                         id: "sgn-5",
-                        title: "Gulf & Middle East Consortium Directs Clean Energy Capital into Horn Ports",
-                        titleSo: "Maalgashadayasha Bariga Dhexe oo Maalgelinaya Mashariicda Tamarta Cusboonaata ee Geeska Afrika",
+                        title: "Gulf Consortium Directs Clean Energy Capital into Horn Ports",
+                        titleSo: "Maalgashadayasha Bariga Dhexe oo Maalgelinaya Mashariicda Tamarta Cusboonaata",
                         category: "Middle East",
                         location: "Riyadh / Abu Dhabi",
                         summary: "Consortium commits $450M toward solar arrays, coastal desalination, and cold-chain storage across East Africa.",
-                        content: `RIYADH — Renewable energy investment firms from Saudi Arabia and the UAE have signed multi-billion dollar framework development agreements to construct solar power grids and water desalination infrastructure across coastal Horn of Africa ports.
-
-### Investment Breakdown:
-* **Solar Grid Installations:** 150MW capacity solar arrays dedicated to port facilities and surrounding commercial zones.
-* **Coastal Desalination Plants:** High-capacity clean water facilities targeting maritime hubs.
-* **Cold-Chain Logistics:** Refrigerated agricultural holding facilities for regional exporters.
-
-The joint investment venture targets project initialization within the coming quarter, boosting clean energy availability across the region.`,
-                        contentSo: `RIYADH — Shirkado waaweyn oo ka socda Saudi Arabia iyo UAE ayaa saxiixay heshiisyo lagu maalgelinayo tamarta qorraxda iyo dhismaha goobaha kaydinta ee dekadaha Bariga Afrika.
-
-### Faahfaahinta Maalgelinta:
-* **Tamarta Qorraxda:** Dhismaha shabakado soosaara 150MW oo koronto ah oo la siinayo dekadaha.
-* **Biyo-Saffaynta Badda:** Warshado waaweyn oo biyaha badda ka dhiga kuwo la cabbi karo.
-* **Kaydadka Xsubilka:** Goobo qaboojiyayaal ah oo loogu talagalay kaydinta khadradka iyo hเนื้อ doofaarka ama xoolaha.
-
-Mashaariicdan ayaa la kỳ filayaa inay si weyn u taageeraan korva kordhi doona kobaca dhaqaalaha ee gobolka Bariga Afrika.`,
+                        content: `RIYADH — Renewable energy investment firms from Saudi Arabia and the UAE have signed multi-billion dollar framework development agreements.`,
+                        contentSo: `RIYADH — Shirkado waaweyn oo ka socda Saudi Arabia iyo UAE ayaa saxiixay heshiisyo lagu maalgelinayo tamarta qorraxda.`,
                         sources: ["SGN Middle East Bureau"],
                         publishedAt: new Date().toISOString(),
                         imageUrl: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80"
@@ -422,7 +347,6 @@ Mashaariicdan ayaa la kỳ filayaa inay si weyn u taageeraan korva kordhi doona 
         function renderNews(articles) {
             if(!articles || articles.length === 0) return;
 
-            // Render Hero Banner
             const hero = articles[0];
             document.getElementById('hero-title').innerText = hero.title;
             document.getElementById('hero-summary').innerText = hero.summary;
@@ -431,7 +355,6 @@ Mashaariicdan ayaa la kỳ filayaa inay si weyn u taageeraan korva kordhi doona 
             if (hero.imageUrl) document.getElementById('hero-img').src = hero.imageUrl;
             document.getElementById('hero-read-btn').onclick = () => openArticleModal(hero);
 
-            // Render Grid
             const grid = document.getElementById('articles-grid');
             grid.innerHTML = '';
 
