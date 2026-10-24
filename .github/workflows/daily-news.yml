@@ -38,6 +38,3 @@ jobs:
           git add public/data/news.json || true
           git commit -m "chore(news): auto-update breaking news wire feed [skip ci]" || echo "No changes to commit"
           git push origin HEAD:${{ github.ref_name }} || echo "Push skipped or no changes"
-```eof
-
-Save this into your file, commit it, and that YAML syntax error will be completely gone!
