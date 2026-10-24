@@ -30,7 +30,6 @@
     <!-- Top Announcement Ticker & Message of the Day -->
     <div class="bg-slate-900 border-b border-slate-800 text-xs py-2 px-4 text-slate-400">
         <div class="max-w-7xl mx-auto w-full flex flex-col sm:flex-row justify-between items-center gap-2">
-            <!-- Dynamic Message of the Day Bar -->
             <div class="flex items-center space-x-2 overflow-hidden w-full sm:w-auto">
                 <span class="bg-rose-600 text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shrink-0 flex items-center gap-1 animate-pulse">
                     <i class="fa-solid fa-bolt text-[9px]"></i> Breaking Desk
@@ -50,7 +49,7 @@
         </div>
     </div>
 
-    <!-- Live Multi-League Sports Score Ticker (NBA, Premier League, Serie A, La Liga, NFL) -->
+    <!-- Live Multi-League Sports Score Ticker -->
     <div class="bg-slate-950 border-b border-slate-800 py-2.5 px-4">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2 shrink-0">
@@ -109,9 +108,6 @@
                     <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Search breaking news..." class="bg-slate-950 border border-slate-800 text-xs rounded-full pl-8 pr-4 py-2 text-white focus:outline-none focus:border-somali-blue w-48 transition-all focus:w-64">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
                 </div>
-                <a href="/admin" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg font-mono border border-slate-700 transition flex items-center gap-1">
-                    <i class="fa-solid fa-user-shield text-somali-accent"></i> Admin
-                </a>
             </div>
         </div>
     </header>
@@ -122,17 +118,17 @@
         <!-- Featured Headline Banner -->
         <section id="hero-feature" class="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl min-h-[380px] flex items-end p-6 sm:p-10">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-10"></div>
-            <img id="hero-img" src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1600&q=80" alt="Featured News" class="absolute inset-0 w-full h-full object-cover opacity-40">
+            <img id="hero-img" src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1600&q=80" alt="Featured News" class="absolute inset-0 w-full h-full object-cover opacity-40">
             <div class="relative z-20 space-y-3 max-w-3xl">
                 <div class="flex items-center gap-2">
-                    <span id="hero-category" class="bg-rose-600 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">World News</span>
-                    <span id="hero-location" class="text-xs text-slate-300 font-mono"><i class="fa-solid fa-location-dot text-rose-500"></i> Global Desk / UN</span>
+                    <span id="hero-category" class="bg-somali-blue text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Somalia</span>
+                    <span id="hero-location" class="text-xs text-slate-300 font-mono"><i class="fa-solid fa-location-dot text-rose-500"></i> Jeddah / Mogadishu Desk</span>
                 </div>
                 <h2 id="hero-title" class="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
-                    Global Trade & Security Summit Addresses Strategic Maritime Corridors
+                    Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for High-Level Strategic Talks
                 </h2>
                 <p id="hero-summary" class="text-sm text-slate-300 line-clamp-2">
-                    World leaders gather to finalize international commercial maritime security pacts and strategic trade infrastructure investments.
+                    Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport by Jeddah Governor Prince Saud bin Abdullah bin Jalawi for bilateral talks.
                 </p>
                 <div class="pt-2">
                     <button id="hero-read-btn" class="bg-somali-blue hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-somali-blue/30">
@@ -351,19 +347,20 @@
         }
 
         function getFallbackArticles() {
+            const currentIso = new Date().toISOString();
             return [
                 {
-                    id: "sgn-world-1",
-                    title: "Global Maritime Security Summit Reaches Accord on Critical Trade Corridors",
-                    titleSo: "Shirweynaha Ammniga Baddaha Caalamka oo Lagag Gaaray Heshiis Istaraatiijiyadeed oo Baddaha Ah",
-                    category: "World",
-                    location: "Geneva / UN Desk",
-                    summary: "World leaders and international maritime organizations ratify new protection standards for key commercial shipping passages.",
-                    content: `GENEVA — International delegates at the United Nations Maritime Summit have finalized a comprehensive security accord establishing joint protection channels across major global trade routes.`,
-                    contentSo: `GENEVA — Ergooyinka caalamiga ah ee ka qaybgalay Shirweynaha Ganacsiga Baddaha Caalamka ee Geneva ayaa heshiis taariikhi ah ku gaaray hab wada-jir ah oo lagu ilaaliyo marinada ganacsiga caalamiga ah.`,
-                    sources: ["SGN World Intelligence Desk"],
-                    publishedAt: new Date().toISOString(),
-                    imageUrl: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80"
+                    id: "sgn-somalia-oct24",
+                    title: "Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for High-Level Strategic Talks",
+                    titleSo: "Ra'iisul Wasaaraha Soomaaliya Xamza Cabdi Barre oo Gaaray Magaalada Jidda ee Sacuudi Carabiya",
+                    category: "Somalia",
+                    location: "Jeddah / Mogadishu Desk",
+                    summary: "Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport by Jeddah Governor Prince Saud bin Abdullah bin Jalawi for bilateral talks.",
+                    content: `JEDDAH — Prime Minister of the Federal Republic of Somalia, Hamza Abdi Barre, arrived in Jeddah today for strategic bilateral discussions with Saudi leadership.`,
+                    contentSo: `JEDDAH — Ra'iisul Wasaaraha Dowladda Federaalka Soomaaliya, Xamza Cabdi Barre, ayaa maanta si rasmi ah u gaaray magaalada Jidda ee dalka Sacuudi Carabiya.`,
+                    sources: ["SPA News Wire", "SGN Diplomatic Desk"],
+                    publishedAt: currentIso,
+                    imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
                 }
             ];
         }
@@ -490,6 +487,9 @@
             e.target.reset();
             setTimeout(() => {
                 document.getElementById('comment-success').classList.add('hidden');
+            }, 4000);
+        }
+
         window.onload = function() {
             fetchNewsData();
             renderSportsTicker('all');
