@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>somaliglobalnews.com - Operations & Admin Dashboard</title>
+    <title>Somali Global News — Independent News & Analysis</title>
+    <meta name="description" content="Independent breaking news, policy updates, and regional analysis on Somalia, the Horn of Africa, and the global diaspora.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -26,327 +27,402 @@
 </head>
 <body class="h-full flex flex-col font-sans bg-slate-950 text-slate-100 antialiased selection:bg-somali-blue selection:text-white">
 
-    <!-- Header Navigation -->
-    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <!-- Top Announcement Ticker -->
+    <div class="bg-slate-900 border-b border-slate-800 text-xs py-2 px-4 flex justify-between items-center text-slate-400">
+        <div class="max-w-7xl mx-auto w-full flex justify-between items-center">
+            <div class="flex items-center space-x-2 overflow-hidden">
+                <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase animate-pulse">Live Desk</span>
+                <span id="ticker-text" class="truncate text-slate-300">Loading daily AI-aggregated intelligence feed for Somalia & Horn of Africa...</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-4 text-[11px] font-mono text-slate-400">
+                <span id="current-date"></span>
+                <span>Mogadishu | London | Washington</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="bg-somali-blue text-white p-2 rounded-lg font-black text-xl flex items-center justify-center w-10 h-10 shadow-lg shadow-somali-blue/30">
-                    SGN
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-                        somaliglobalnews.com
-                        <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-0.5 rounded-full border border-emerald-500/20 font-mono">Live Admin Portal</span>
-                    </h1>
-                    <p class="text-xs text-slate-400">Content Moderation & Policy Institute Ingestion Desk</p>
-                </div>
+                <a href="/" class="flex items-center gap-3 group">
+                    <div class="bg-somali-blue text-white p-2.5 rounded-xl font-black text-2xl flex items-center justify-center w-12 h-12 shadow-lg shadow-somali-blue/30 group-hover:bg-blue-600 transition">
+                        SGN
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-extrabold tracking-tight text-white group-hover:text-somali-accent transition">
+                            Somali Global News
+                        </h1>
+                        <p class="text-[11px] text-slate-400 font-medium">Horn of Africa Policy, Trade & Diaspora Intelligence</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Search & Navigation links -->
+            <div class="hidden lg:flex items-center space-x-6 text-sm font-semibold text-slate-300">
+                <button onclick="filterCategory('all')" class="hover:text-somali-accent transition">Latest</button>
+                <button onclick="filterCategory('Economy')" class="hover:text-somali-accent transition">Economy & Trade</button>
+                <button onclick="filterCategory('Security')" class="hover:text-somali-accent transition">Security & Peace</button>
+                <button onclick="filterCategory('Diaspora')" class="hover:text-somali-accent transition">Diaspora</button>
+                <button onclick="filterCategory('Policy')" class="hover:text-somali-accent transition">Policy Institutes</button>
             </div>
 
             <div class="flex items-center space-x-3">
-                <button onclick="toggleAdminModal()" class="bg-somali-blue hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition shadow-md shadow-somali-blue/20">
-                    <i class="fa-solid fa-lock text-amber-300"></i> Open Admin Portal
-                </button>
-                <div class="hidden sm:flex items-center space-x-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-xs font-mono text-emerald-400">System Live</span>
+                <div class="relative hidden sm:block">
+                    <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Search news..." class="bg-slate-950 border border-slate-800 text-xs rounded-full pl-8 pr-4 py-2 text-white focus:outline-none focus:border-somali-blue w-48 transition-all focus:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col space-y-8 overflow-y-auto">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
 
-        <!-- Banner Summary -->
-        <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800 border border-slate-800 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-somali-blue/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="relative z-10 space-y-2">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-somali-blue/20 text-somali-accent rounded-full text-xs font-semibold border border-somali-blue/30">
-                    <i class="fa-solid fa-shield-halved"></i> Pre-Moderation & Direct Article Ingestion Hub
+        <!-- Featured Headline Banner -->
+        <section id="hero-feature" class="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl min-h-[360px] flex items-end p-6 sm:p-10">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-10"></div>
+            <img id="hero-img" src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1600&q=80" alt="Featured News" class="absolute inset-0 w-full h-full object-cover opacity-40">
+            <div class="relative z-20 space-y-3 max-w-3xl">
+                <div class="flex items-center gap-2">
+                    <span id="hero-category" class="bg-somali-blue text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Economy</span>
+                    <span id="hero-location" class="text-xs text-slate-300 font-mono"><i class="fa-solid fa-location-dot text-rose-500"></i> Mogadishu, Somalia</span>
                 </div>
-                <h2 class="text-2xl font-extrabold text-white">somaliglobalnews.com Operations Center</h2>
-                <p class="text-xs text-slate-400 max-w-3xl leading-relaxed">
-                    Control reader comments, block offensive input before publication, and manually import peace & policy research articles from <strong>Carnegie Endowment for International Peace</strong> and the <strong>International Peace Institute (IPI)</strong>.
+                <h2 id="hero-title" class="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
+                    Somalia Expands Regional Trade & Infrastructure Initiatives
+                </h2>
+                <p id="hero-summary" class="text-sm text-slate-300 line-clamp-2">
+                    New commercial and infrastructural agreements aim to boost maritime trade, digital financial platforms, and regional connectivity across East Africa.
                 </p>
-            </div>
-        </div>
-
-        <!-- INTERACTIVE LIVE PREVIEW / ADMIN CONTROL DASHBOARD -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-            <!-- PUBLIC READER COMMENT SIMULATOR & PRE-MODERATION QUEUE -->
-            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                    <div>
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-comments text-somali-accent"></i> Reader Comments Pre-Moderation
-                        </h3>
-                        <p class="text-xs text-slate-400">Comments submitted by readers remain hidden from the public site until you approve them.</p>
-                    </div>
-                    <span class="bg-amber-500/10 text-amber-400 text-xs px-2.5 py-1 rounded-full border border-amber-500/20 font-mono" id="pending-count">2 Pending Review</span>
-                </div>
-
-                <!-- Simulation Comment Submission Form -->
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                    <label class="block text-xs font-semibold text-slate-300">Submit a Test Reader Comment (Pre-Moderation Simulation):</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <input type="text" id="reader-name" placeholder="Reader Name (e.g., Liban Mogadishu)" class="bg-slate-900 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-somali-blue">
-                        <input type="email" id="reader-email" placeholder="Email Address" class="bg-slate-900 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-somali-blue">
-                    </div>
-                    <textarea id="reader-text" rows="2" placeholder="Write a comment..." class="w-full bg-slate-900 border border-slate-800 text-xs rounded-lg p-2.5 text-white focus:outline-none focus:border-somali-blue"></textarea>
-                    <button onclick="submitReaderComment()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition">
-                        <i class="fa-solid fa-paper-plane"></i> Submit Comment for Review
+                <div class="pt-2">
+                    <button id="hero-read-btn" class="bg-somali-blue hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-somali-blue/30">
+                        Read Full Coverage <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
+            </div>
+        </section>
 
-                <!-- Moderation Queue -->
-                <div class="space-y-3">
-                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Comments Queue</div>
-                    <div id="comment-queue" class="space-y-3">
-                        <!-- Default Mock Item 1 -->
-                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                            <div class="space-y-1">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs font-bold text-white">Farhan Ali</span>
-                                    <span class="text-[10px] text-slate-500 font-mono">2 mins ago</span>
-                                    <span class="bg-amber-500/20 text-amber-400 text-[10px] px-1.5 py-0.5 rounded">Pending</span>
-                                </div>
-                                <p class="text-xs text-slate-300">Great updates on Horn of Africa port security! Hoping to see more coverage on regional economic development.</p>
-                            </div>
-                            <div class="flex items-center gap-2 self-end sm:self-auto">
-                                <button onclick="approveComment(this)" class="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white border border-emerald-500/30 px-2.5 py-1 rounded text-xs transition">Approve</button>
-                                <button onclick="deleteComment(this)" class="bg-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white border border-rose-500/30 px-2.5 py-1 rounded text-xs transition">Delete</button>
-                            </div>
-                        </div>
+        <!-- Category Filters & Feed Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div>
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-newspaper text-somali-accent"></i> News Feed
+                </h3>
+                <p class="text-xs text-slate-400">Real-time breaking updates & policy institute research</p>
+            </div>
+            <div class="flex items-center space-x-2 overflow-x-auto pb-2 sm:pb-0">
+                <button onclick="filterCategory('all')" class="cat-filter bg-somali-blue text-white px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">All News</button>
+                <button onclick="filterCategory('Economy')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Economy</button>
+                <button onclick="filterCategory('Diaspora')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Diaspora</button>
+                <button onclick="filterCategory('Security')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Security</button>
+            </div>
+        </div>
 
-                        <!-- Default Mock Item 2 -->
-                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                            <div class="space-y-1">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs font-bold text-white">Spam Bot</span>
-                                    <span class="text-[10px] text-slate-500 font-mono">10 mins ago</span>
-                                    <span class="bg-rose-500/20 text-rose-400 text-[10px] px-1.5 py-0.5 rounded">Flagged Offensive</span>
-                                </div>
-                                <p class="text-xs text-slate-400 italic">"Buy cheap crypto fast click here http://spam.link"</p>
-                            </div>
-                            <div class="flex items-center gap-2 self-end sm:self-auto">
-                                <button onclick="deleteComment(this)" class="bg-rose-600 text-white px-2.5 py-1 rounded text-xs transition">Block & Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- News Articles Grid -->
+        <section id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Articles render here dynamically -->
+        </section>
+
+        <!-- READER COMMENT SECTION (Pre-Moderated) -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="border-b border-slate-800 pb-4 space-y-1">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-comments text-somali-accent"></i> Public Discussion & Reader Feedback
+                </h3>
+                <p class="text-xs text-slate-400">All submissions undergo editorial review prior to publication.</p>
             </div>
 
-            <!-- MANUAL ARTICLE IMPORT (CARNEGIE & INTERNATIONAL PEACE INSTITUTE) -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 flex flex-col justify-between">
-                <div class="space-y-4">
-                    <div class="border-b border-slate-800 pb-3">
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-file-pen text-amber-400"></i> Direct Institute Ingestion
-                        </h3>
-                        <p class="text-xs text-slate-400">Insert custom policy briefs & analysis directly from research think tanks.</p>
+            <form onsubmit="submitPublicComment(event)" class="space-y-4 max-w-2xl">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Your Name</label>
+                        <input type="text" id="comment-name" required placeholder="e.g. Liban Mogadishu" class="w-full bg-slate-950 border border-slate-800 text-xs rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue">
                     </div>
-
-                    <!-- Preset Quick Selection -->
-                    <div class="space-y-2">
-                        <label class="block text-xs font-semibold text-slate-300">Quick-Select Institute Source:</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button onclick="loadInstitutePreset('carnegie')" class="bg-slate-950 border border-slate-800 hover:border-somali-blue text-xs p-2 rounded-xl text-left space-y-1 transition">
-                                <div class="font-bold text-somali-accent flex items-center gap-1"><i class="fa-solid fa-building-columns"></i> Carnegie</div>
-                                <div class="text-[10px] text-slate-500">Endowment for Intl Peace</div>
-                            </button>
-                            <button onclick="loadInstitutePreset('ipi')" class="bg-slate-950 border border-slate-800 hover:border-emerald-500 text-xs p-2 rounded-xl text-left space-y-1 transition">
-                                <div class="font-bold text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-dove"></i> IPI</div>
-                                <div class="text-[10px] text-slate-500">Intl Peace Institute</div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Manual Ingestion Form -->
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Article Title</label>
-                            <input type="text" id="manual-title" placeholder="e.g. Peacebuilding & Governance in Horn of Africa" class="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2 text-white focus:outline-none focus:border-somali-blue">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Source Institute & Author</label>
-                            <input type="text" id="manual-source" placeholder="Carnegie Endowment / Senior Fellow Name" class="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2 text-white focus:outline-none focus:border-somali-blue">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Original Policy URL</label>
-                            <input type="url" id="manual-url" placeholder="https://carnegieendowment.org/..." class="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2 text-white focus:outline-none focus:border-somali-blue">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Analysis / Executive Summary</label>
-                            <textarea id="manual-content" rows="3" placeholder="Key takeaways and summary for Somali Global News readers..." class="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg p-2 text-white focus:outline-none focus:border-somali-blue"></textarea>
-                        </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Email Address (Kept Private)</label>
+                        <input type="email" id="comment-email" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 text-xs rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue">
                     </div>
                 </div>
-
-                <button onclick="publishManualArticle()" class="w-full bg-somali-blue hover:bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition shadow-lg shadow-somali-blue/20">
-                    <i class="fa-solid fa-upload"></i> Publish to Live Newsfeed
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Comment or Feedback</label>
+                    <textarea id="comment-body" required rows="3" placeholder="Share your insights on regional policy or current events..." class="w-full bg-slate-950 border border-slate-800 text-xs rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue"></textarea>
+                </div>
+                <button type="submit" class="bg-somali-blue hover:bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition shadow-md shadow-somali-blue/20 flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Comment for Moderation
                 </button>
-            </div>
+            </form>
 
-        </div>
-
-        <!-- Architecture Overview Banner -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-diagram-next text-somali-blue"></i> Automated Data Flow Architecture
-            </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-center">
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1">
-                    <i class="fa-solid fa-robot text-purple-400 text-xl"></i>
-                    <div class="text-xs font-bold text-white">1. Gemini AI SDK</div>
-                    <div class="text-[10px] text-slate-500">Fetches & parses daily breaking news</div>
-                </div>
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1">
-                    <i class="fa-brands fa-github text-slate-300 text-xl"></i>
-                    <div class="text-xs font-bold text-white">2. GitHub Action</div>
-                    <div class="text-[10px] text-slate-500">Commits news.json automatically</div>
-                </div>
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1">
-                    <i class="fa-solid fa-cloud-arrow-up text-teal-400 text-xl"></i>
-                    <div class="text-xs font-bold text-white">3. Vercel Auto-Build</div>
-                    <div class="text-[10px] text-slate-500">Deploys latest JSON to Edge network</div>
-                </div>
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1">
-                    <i class="fa-solid fa-globe text-emerald-400 text-xl"></i>
-                    <div class="text-xs font-bold text-white">4. somaliglobalnews.com</div>
-                    <div class="text-[10px] text-slate-500">Serves instant static website</div>
-                </div>
+            <div id="comment-success" class="hidden p-3 bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs rounded-xl font-mono">
+                ✓ Thank you! Your comment has been submitted to the editors for pre-moderation.
             </div>
-        </div>
+        </section>
 
     </main>
 
-    <!-- ADMIN AUTHENTICATION MODAL -->
-    <div id="admin-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl relative">
-            <button onclick="toggleAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
+    <!-- ARTICLE FULL VIEW MODAL -->
+    <div id="article-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-5 relative shadow-2xl">
+            <button onclick="closeArticleModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-950 rounded-full w-8 h-8 flex items-center justify-center border border-slate-800">
+                <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="space-y-1">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-user-shield text-somali-accent"></i> Editor Passcode Access
-                </h3>
-                <p class="text-xs text-slate-400">Enter your secure passcode to verify moderation privileges.</p>
+            <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                    <span id="modal-category" class="bg-somali-blue text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Category</span>
+                    <span id="modal-location" class="text-xs text-slate-400 font-mono">Location</span>
+                </div>
+                <h2 id="modal-title" class="text-2xl font-extrabold text-white">Article Title</h2>
+                <div class="text-xs text-slate-500 font-mono flex items-center gap-4">
+                    <span id="modal-date">Date</span>
+                    <span id="modal-source" class="text-somali-accent">Source Desk</span>
+                </div>
+
+                <!-- Somali Audio Player Bar -->
+                <div class="mt-4 p-3 bg-slate-950/80 border border-somali-blue/30 rounded-xl flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-somali-blue/20 text-somali-accent p-2 rounded-lg">
+                            <i class="fa-solid fa-volume-high text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-white flex items-center gap-2">
+                                <span>Wararka oo Maqal ah (Somali Audio Reader)</span>
+                                <span class="bg-emerald-500/20 text-emerald-400 text-[9px] font-mono px-1.5 py-0.5 rounded border border-emerald-500/30">AI Voice</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400">Dhagayso warkan oo ku qoran Soomaali / English</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="tts-play-btn" onclick="playSomaliTTS()" class="bg-somali-blue hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-somali-blue/20">
+                            <i class="fa-solid fa-play text-[10px]"></i> <span>Dhagayso</span>
+                        </button>
+                        <button id="tts-stop-btn" onclick="stopSomaliTTS()" class="hidden bg-rose-950/60 hover:bg-rose-900 border border-rose-500/40 text-rose-300 px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-stop text-[10px]"></i> <span>Jooji</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="space-y-3">
-                <input type="password" id="admin-passcode" placeholder="Enter secret passcode..." class="w-full bg-slate-950 border border-slate-800 text-sm rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue font-mono">
-                <button onclick="verifyPasscode()" class="w-full bg-somali-blue hover:bg-blue-600 text-white font-bold py-2.5 rounded-xl text-xs transition">
-                    Authenticate Session
-                </button>
-            </div>
-            <div id="passcode-status" class="text-center text-xs font-mono hidden"></div>
+            <img id="modal-image" src="" alt="Article image" class="w-full h-64 object-cover rounded-xl border border-slate-800">
+            <p id="modal-content" class="text-sm text-slate-300 leading-relaxed whitespace-pre-line"></p>
         </div>
     </div>
 
-    <!-- Interactive Scripts for Dashboard Moderation & Ingestion -->
+    <!-- Page Scripts -->
     <script>
-        function toggleAdminModal() {
-            const modal = document.getElementById('admin-modal');
-            modal.classList.toggle('hidden');
-        }
+        let allArticles = [];
+        let currentUtterance = null;
 
-        function verifyPasscode() {
-            const code = document.getElementById('admin-passcode').value;
-            const status = document.getElementById('passcode-status');
-            status.classList.remove('hidden');
-            
-            if(code.trim() !== "") {
-                status.className = "text-center text-xs font-mono text-emerald-400";
-                status.innerText = "✓ Authenticated! Moderation privileges unlocked.";
-                setTimeout(() => toggleAdminModal(), 1200);
-            } else {
-                status.className = "text-center text-xs font-mono text-rose-400";
-                status.innerText = "✕ Please enter a valid passcode.";
+        // Set date in header
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
+
+        async function fetchNewsData() {
+            try {
+                const res = await fetch('/data/news.json');
+                if (!res.ok) throw new Error("Local news data not available yet");
+                const data = await res.json();
+                allArticles = data.articles || [];
+                renderNews(allArticles);
+            } catch (e) {
+                console.warn("Using default static dataset:", e);
+                allArticles = [
+                    {
+                        id: "sgn-1",
+                        title: "Somalia Expands Regional Trade & Digital Banking Network",
+                        category: "Economy",
+                        location: "Mogadishu, Somalia",
+                        summary: "New commercial and infrastructural agreements aim to boost maritime trade, digital financial platforms, and regional connectivity across East Africa.",
+                        content: "Somalia continues its strategic development roadmap focusing on economic resilience, digital transaction infrastructure, and regional trade integration. Government officials and trade delegations held meetings in Mogadishu to streamline customs procedures and digital banking operations.",
+                        sources: ["SGN Economy Desk"],
+                        publishedAt: new Date().toISOString(),
+                        imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
+                    },
+                    {
+                        id: "sgn-2",
+                        title: "Global Diaspora Tech Summit Highlights Venture Capital Investments",
+                        category: "Diaspora",
+                        location: "London, UK",
+                        summary: "Delegates gathered to discuss cross-border investment, venture funding, renewable energy initiatives, and diaspora-backed educational technology.",
+                        content: "Entrepreneurs and community leaders from North America and Europe highlighted new venture capital initiatives focused on tech and economic development. Panel discussions emphasized seed funding networks for young founders in East Africa.",
+                        sources: ["SGN Diaspora Desk"],
+                        publishedAt: new Date().toISOString(),
+                        imageUrl: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
+                    },
+                    {
+                        id: "sgn-3",
+                        title: "Peacebuilding & Governance Forum Concludes in Horn of Africa",
+                        category: "Security",
+                        location: "Djibouti / Mogadishu",
+                        summary: "Regional security frameworks, maritime safety protocols, and community governance strategies were reviewed by multilateral partners.",
+                        content: "Delegates at the annual Horn of Africa Security Forum reached consensus on updated maritime domain awareness and border management protocols.",
+                        sources: ["International Policy Desk"],
+                        publishedAt: new Date().toISOString(),
+                        imageUrl: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80"
+                    }
+                ];
+                renderNews(allArticles);
             }
         }
 
-        function submitReaderComment() {
-            const name = document.getElementById('reader-name').value || "Anonymous Reader";
-            const text = document.getElementById('reader-text').value;
+        function renderNews(articles) {
+            if(!articles || articles.length === 0) return;
 
-            if(!text) {
-                alert("Please type a comment before submitting.");
-                return;
-            }
+            // Render Hero Banner from first article
+            const hero = articles[0];
+            document.getElementById('ticker-text').innerText = `BREAKING: ${hero.title}`;
+            document.getElementById('hero-title').innerText = hero.title;
+            document.getElementById('hero-summary').innerText = hero.summary;
+            document.getElementById('hero-category').innerText = hero.category || 'General';
+            document.getElementById('hero-location').innerText = hero.location || 'Horn of Africa';
+            if (hero.imageUrl) document.getElementById('hero-img').src = hero.imageUrl;
+            document.getElementById('hero-read-btn').onclick = () => openArticleModal(hero);
 
-            const queue = document.getElementById('comment-queue');
-            const newComment = document.createElement('div');
-            newComment.className = "bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3";
-            newComment.innerHTML = `
-                <div class="space-y-1">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold text-white">${name}</span>
-                        <span class="text-[10px] text-slate-500 font-mono">Just now</span>
-                        <span class="bg-amber-500/20 text-amber-400 text-[10px] px-1.5 py-0.5 rounded">Pending Review</span>
+            // Render Grid
+            const grid = document.getElementById('articles-grid');
+            grid.innerHTML = '';
+
+            articles.forEach(art => {
+                const card = document.createElement('article');
+                card.className = "bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition flex flex-col justify-between shadow-lg group";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="${art.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80'}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur text-somali-accent text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-800 uppercase">${art.category || 'News'}</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <div class="text-[10px] font-mono text-slate-400 flex items-center justify-between">
+                                <span><i class="fa-solid fa-location-dot text-rose-500"></i> ${art.location || 'Somalia'}</span>
+                                <span>${new Date(art.publishedAt || Date.now()).toLocaleDateString()}</span>
+                            </div>
+                            <h3 class="text-base font-bold text-white group-hover:text-somali-accent transition line-clamp-2">${art.title}</h3>
+                            <p class="text-xs text-slate-400 line-clamp-3">${art.summary}</p>
+                        </div>
                     </div>
-                    <p class="text-xs text-slate-300">${text}</p>
-                </div>
-                <div class="flex items-center gap-2 self-end sm:self-auto">
-                    <button onclick="approveComment(this)" class="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white border border-emerald-500/30 px-2.5 py-1 rounded text-xs transition">Approve</button>
-                    <button onclick="deleteComment(this)" class="bg-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white border border-rose-500/30 px-2.5 py-1 rounded text-xs transition">Delete</button>
-                </div>
-            `;
-            queue.prepend(newComment);
-
-            document.getElementById('reader-text').value = '';
-            updatePendingCount(1);
+                    <div class="p-5 pt-0">
+                        <button onclick='openArticleModal(${JSON.stringify(art).replace(/'/g, "&apos;")})' class="w-full bg-slate-950 hover:bg-somali-blue border border-slate-800 text-slate-300 hover:text-white py-2 rounded-xl text-xs font-semibold transition">
+                            Read Article
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
         }
 
-        function approveComment(btn) {
-            const card = btn.closest('.bg-slate-950');
-            card.className = "bg-emerald-950/20 p-4 rounded-xl border border-emerald-500/30 flex justify-between items-center";
-            card.querySelector('.bg-amber-500\\/20, .text-amber-400').innerText = "Live on Site";
-            card.querySelector('.bg-amber-500\\/20, .text-amber-400').className = "bg-emerald-500/20 text-emerald-400 text-[10px] px-1.5 py-0.5 rounded font-semibold";
-            btn.parentElement.innerHTML = `<span class="text-xs text-emerald-400 font-mono"><i class="fa-solid fa-circle-check"></i> Published</span>`;
-            updatePendingCount(-1);
-        }
-
-        function deleteComment(btn) {
-            const card = btn.closest('.bg-slate-950');
-            card.remove();
-            updatePendingCount(-1);
-        }
-
-        function updatePendingCount(delta) {
-            const counter = document.getElementById('pending-count');
-            let current = parseInt(counter.innerText) || 0;
-            current = Math.max(0, current + delta);
-            counter.innerText = `${current} Pending Review`;
-        }
-
-        function loadInstitutePreset(type) {
-            if(type === 'carnegie') {
-                document.getElementById('manual-title').value = "Navigating Geopolitics in the Horn of Africa";
-                document.getElementById('manual-source').value = "Carnegie Endowment for International Peace";
-                document.getElementById('manual-url').value = "https://carnegieendowment.org/research/horn-africa-analysis";
-                document.getElementById('manual-content').value = "An in-depth analysis on multilateral maritime agreements, economic stability, and diplomatic strategies in Somalia and East Africa.";
-            } else if(type === 'ipi') {
-                document.getElementById('manual-title').value = "Sustaining Peace & Statebuilding in Somalia";
-                document.getElementById('manual-source').value = "International Peace Institute (IPI)";
-                document.getElementById('manual-url').value = "https://ipinst.org/publications/somalia-peacebuilding";
-                document.getElementById('manual-content').value = "Comprehensive report reviewing community peace initiatives, security transition frameworks, and sustainable governance.";
+        function filterCategory(cat) {
+            if(cat === 'all') {
+                renderNews(allArticles);
+            } else {
+                const filtered = allArticles.filter(a => a.category && a.category.toLowerCase() === cat.toLowerCase());
+                renderNews(filtered.length > 0 ? filtered : allArticles);
             }
         }
 
-        function publishManualArticle() {
-            const title = document.getElementById('manual-title').value;
-            const source = document.getElementById('manual-source').value;
-            if(!title || !source) {
-                alert("Please fill in the title and source institute before publishing.");
+        function handleSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = allArticles.filter(a => 
+                a.title.toLowerCase().includes(query) || 
+                a.summary.toLowerCase().includes(query)
+            );
+            renderNews(filtered);
+        }
+
+        function openArticleModal(article) {
+            stopSomaliTTS(); // Stop any active speech when opening new article
+            document.getElementById('modal-title').innerText = article.title;
+            document.getElementById('modal-category').innerText = article.category || 'News';
+            document.getElementById('modal-location').innerText = article.location || '';
+            document.getElementById('modal-date').innerText = new Date(article.publishedAt || Date.now()).toLocaleString();
+            document.getElementById('modal-source').innerText = (article.sources && article.sources[0]) || 'SGN News Network';
+            document.getElementById('modal-content').innerText = article.content || article.summary;
+            document.getElementById('modal-image').src = article.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80';
+            document.getElementById('article-modal').classList.remove('hidden');
+        }
+
+        function closeArticleModal() {
+            stopSomaliTTS();
+            document.getElementById('article-modal').classList.add('hidden');
+        }
+
+        // Somali & Global Text-to-Speech Engine
+        function playSomaliTTS() {
+            if (!('speechSynthesis' in window)) {
+                alert("Codka laguma taageero biraowsarkaan (SpeechSynthesis not supported on this browser).");
                 return;
             }
-            alert(`✅ Article "${title}" successfully imported from ${source} and queued for live publishing!`);
+
+            window.speechSynthesis.cancel(); // Reset any active speech
+
+            const title = document.getElementById('modal-title').innerText;
+            const content = document.getElementById('modal-content').innerText;
+            const textToRead = `${title}. ${content}`;
+
+            currentUtterance = new SpeechSynthesisUtterance(textToRead);
+            currentUtterance.rate = 0.95; // Clear natural speed
+            currentUtterance.pitch = 1.0;
+
+            // Try to match Somali ('so') or fallback to default natural voice
+            const voices = window.speechSynthesis.getVoices();
+            const somaliVoice = voices.find(v => v.lang.startsWith('so') || v.lang.startsWith('sw') || v.lang.startsWith('ar'));
+            if (somaliVoice) {
+                currentUtterance.voice = somaliVoice;
+            }
+
+            currentUtterance.onstart = function() {
+                document.getElementById('tts-play-btn').classList.add('hidden');
+                document.getElementById('tts-stop-btn').classList.remove('hidden');
+            };
+
+            currentUtterance.onend = function() {
+                resetTTSButtons();
+            };
+
+            currentUtterance.onerror = function() {
+                resetTTSButtons();
+            };
+
+            window.speechSynthesis.speak(currentUtterance);
         }
+
+        function stopSomaliTTS() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            resetTTSButtons();
+        }
+
+        function resetTTSButtons() {
+            const playBtn = document.getElementById('tts-play-btn');
+            const stopBtn = document.getElementById('tts-stop-btn');
+            if (playBtn) playBtn.classList.remove('hidden');
+            if (stopBtn) stopBtn.classList.add('hidden');
+        }
+
+        function closeArticleModal() {
+            document.getElementById('article-modal').classList.add('hidden');
+        }
+
+        function submitPublicComment(e) {
+            e.preventDefault();
+            document.getElementById('comment-success').classList.remove('hidden');
+            e.target.reset();
+            setTimeout(() => {
+                document.getElementById('comment-success').classList.add('hidden');
+            }, 5000);
+        }
+
+        // Initialize on page load
+        window.onload = fetchNewsData;
     </script>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-4 px-6 text-center text-xs text-slate-500">
-        © 2026 somaliglobalnews.com — Automated AI Newsroom & Cloud Architecture
+    <footer class="bg-slate-900 border-t border-slate-800 py-8 px-6 text-slate-400 text-xs">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="space-y-1 text-center sm:text-left">
+                <div class="font-bold text-white text-sm">somaliglobalnews.com</div>
+                <p class="text-[11px] text-slate-500">Independent media network covering Somalia, East Africa, and global diaspora developments.</p>
+            </div>
+            <div class="text-slate-500 text-[11px]">
+                © 2026 Somali Global News. All rights reserved.
+            </div>
+        </div>
     </footer>
 
 </body>
