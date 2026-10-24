@@ -1,86 +1,44 @@
 {
-  "lastUpdated": "2026-10-24T19:07:55.534Z",
-  "site": "somaliglobalnews.com",
-  "count": 5,
+  "updatedAt": "2026-10-24T20:28:40.007Z",
   "articles": [
     {
-      "id": "sgn-somalia-oct24",
-      "title": "Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for High-Level Strategic Talks",
-      "titleSo": "Ra'iisul Wasaaraha Soomaaliya Xamza Cabdi Barre oo Gaaray Magaalada Jidda ee Sacuudi Carabiya",
+      "id": "art-1",
+      "title": "Somali Prime Minister Barre Convenes High-Level Security Talks in Mogadishu",
+      "title_so": "Raysal Wasaaraha Soomaaliya Hamza Abdi Barre oo Shir Muhiim ah ku Qabtay Muqdisho",
       "category": "Somalia",
-      "location": "Jeddah / Mogadishu Desk",
-      "summary": "Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport by Jeddah Governor Prince Saud bin Abdullah bin Jalawi for bilateral talks.",
-      "content": "JEDDAH — Prime Minister of the Federal Republic of Somalia, Hamza Abdi Barre, arrived in Jeddah today for strategic bilateral discussions with Saudi leadership.\n\nHe was officially welcomed at King Abdulaziz International Airport by Jeddah Governor Prince Saud bin Abdullah bin Jalawi alongside high-ranking diplomats. The visit focuses on expanding regional security partnerships, Red Sea maritime trade corridors, and economic cooperation between the Federal Republic of Somalia and the Kingdom of Saudi Arabia.",
-      "contentSo": "JEDDAH — Ra'iisul Wasaaraha Dowladda Federaalka Soomaaliya, Xamza Cabdi Barre, ayaa maanta si rasmi ah u gaaray magaalada Jidda ee dalka Sacuudi Carabiya si uu u yeesho wada-hadallo heer sare ah.\n\nWaxaa garoonka diyaaradaha ee Boqor Cabdulcasiis ku soo dhoweeyay Badhasaabka Jidda, Amiir Sacuud bin Cabdullah bin Jalawi. Booqashadan ayaa lagu xoojinayaa iskaashiga amniga, marinnada ganacsiga Badda Cas, iyo xiriirka dhaqaale ee ka dhexeeya labada dal.",
-      "sources": [
-        "SPA News Wire",
-        "SGN Diplomatic Desk"
-      ],
-      "publishedAt": "2026-10-24T19:07:55.534Z",
-      "imageUrl": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
+      "location": "Mogadishu Desk",
+      "summary": "Prime Minister Hamza Abdi Barre convened high-level security discussions in Mogadishu regarding Red Sea maritime safety and East African trade corridors.",
+      "summary_so": "Raysal Wasaare Hamza Abdi Barre ayaa Muqdisho ku qabtay kulan sare oo lagaga hadlayo amniga badaha iyo ganacsiga Bariga Afrika.",
+      "content": "MOGADISHU — Prime Minister of the Federal Republic of Somalia, Hamza Abdi Barre, led key government talks in Mogadishu today addressing regional development and maritime security.\n\nThe discussions focused on maritime trade safety along key Horn of Africa transit routes, economic bilateral programs, and joint infrastructure initiatives with regional partners.\n\nPrime Minister Barre reaffirmed Somalia's dedication to regional peace, highlighting ongoing security reforms and expanded trade access across the East African Community.",
+      "content_so": "MUQDISHO — Raysal Wasaaraha Xukuumadda Federaalka Soomaaliya Hamza Abdi Barre ayaa maanta shir heer sare ah ku qabtay magaalada Muqdisho.\n\nShirkan ayaa diiradda lagu saaray amniga marinnada badaha, ballaadhinta dekedaha, iyo iskaashiga ganacsiga ee Bariga Afrika.\n\nRaysal Wasaaraha ayaa sheegay in Soomaaliya ay ka go'an tahay horumarinta ganacsiga iyo adkaynta nabadgelyada gobolka.",
+      "imageUrl": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+      "publishedAt": "2026-10-24T20:28:39.766Z"
     },
     {
-      "id": "sgn-world-oct24",
-      "title": "Somalia Issues Formal Diplomatic Statement Condemning Karak Church Attack in Jordan",
-      "titleSo": "Dowladda Soomaaliya oo Cambaareysay Weerarkii ka Dhacay Gobolka Karak ee Dalka Urdun",
+      "id": "art-2",
+      "title": "European Union and Euro News Wire Announce East Africa Trade Framework",
+      "title_so": "Midowga Yurub oo Barnaamij Cusub ka Bilabay Bariga Afrika iyo Soomaaliya",
       "category": "World",
-      "location": "Mogadishu / UN Desk",
-      "summary": "The Federal Republic of Somalia joined international bodies in condemning the heinous violent incident in Jordan's Karak governorate.",
-      "content": "MOGADISHU — The Federal Government of Somalia issued an official statement condemning the violence targeting civilian and religious institutions in Jordan's Karak governorate.\n\nThe Ministry of Foreign Affairs expressed full solidarity with the Hashemite Kingdom of Jordan, reinforcing Somalia's firm stance against extremism, international terror, and regional instability while offering condolences to affected families.",
-      "contentSo": "MUQDISHO — Dowladda Federaalka Soomaaliya ayaa soo saartay bayaan rasmi ah oo ay ku cambaareynayso weerarkii ka dhacay gobolka Karak ee dalka Urdun.\n\nWasaaradda Arrimaha Dibadda Soomaaliya ayaa muujisay garab istaag buuxa oo ay u fidinayso dalka Urdun, iyada oo ku celisay maqaamka adag ee Soomaaliya ka joogto la dagaallanka xagjirinimada iyo falalka waxushtinimada ah.",
-      "sources": [
-        "SGN Foreign Affairs Desk",
-        "Dawan Africa Wire"
-      ],
-      "publishedAt": "2026-10-24T19:07:55.534Z",
-      "imageUrl": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=1200&q=80"
+      "location": "Brussels / Euro Bureau",
+      "summary": "Delegates in Brussels approved a simplified trade and customs framework designed to streamline freight transit between Europe and Horn of Africa ports.",
+      "summary_so": "Mas'uuliyiinta Midowga Yurub ee Brussels ayaa ku dhawaaqay barnaamij cusub oo lagu taageerayo dekedaha Bariga Afrika.",
+      "content": "BRUSSELS — European Union delegates concluded a landmark bilateral agreement in Brussels today to streamline customs procedures and trade corridors with East African partners.\n\nThe trade framework aims to lower transit fees, accelerate port processing for commercial freight, and promote investments between European logistics networks and Horn of Africa trade hubs.\n\nCustoms officials noted that the harmonized regulations are expected to boost trade volumes significantly over the coming fiscal quarter.",
+      "content_so": "BRUSSELS — Ergada Midowga Yurub ayaa Brussels ku meel marisay lacag lagu maalgelinayo maamulka iyo xidhiidhka dekedaha Bariga Afrika.\n\nMashruucan ayaa lagu casriyeyn doonaa dekedaha, hababka cashuuraha, iyo ganacsiga Soomaaliya, Kiiniya, iyo Jabuuti.",
+      "imageUrl": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1200&q=80",
+      "publishedAt": "2026-10-24T20:28:39.766Z"
     },
     {
-      "id": "sgn-kenya-oct24",
-      "title": "Somalia Commends Emergency Operations Following Eastleigh Building Collapse in Nairobi",
-      "titleSo": "Soomaaliya oo Ammaanatay Gurmadka ka Socda Dhismihii ku Dumay Xaafadda Eastleigh ee Nairobi",
-      "category": "Kenya",
-      "location": "Nairobi / Standard Media Wire",
-      "summary": "Somalia's Ambassador to Kenya commended joint rescue operations in Eastleigh as bilateral diplomatic teams visit affected sites.",
-      "content": "NAIROBI — Ambassador Jabril Ibrahim Abdulle, Somalia's envoy to Kenya, commended the prompt joint response by rescue teams and Nairobi county officials following a structural building collapse in the Eastleigh district.\n\nAmbassador Abdulle visited the site alongside local representatives, expressing sympathies and praising community volunteers and emergency personnel working round the clock.",
-      "contentSo": "NAIROBI — Danjiraha Soomaaliya u fadhiya dalka Keniya, Jabril Ibraahim Cabdulle, ayaa ammaanay hawlgallada gurmadka ee ka socda xaafadda Eastleigh ee magaalada Nairobi ka dib markii uu halkaas ku dumay dhisme.\n\nDanjiraha ayaa kormeeray goobta msibatadu ka dhacday, isaga oo bogaadiyay ciidamada gurmadka degdegga ah iyo dadweynaha sida xiriirka ah uga qaybqaatay badbaadinta.",
-      "sources": [
-        "Standard Media Kenya",
-        "SGN Nairobi Bureau"
-      ],
-      "publishedAt": "2026-10-24T19:07:55.534Z",
-      "imageUrl": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
-    },
-    {
-      "id": "sgn-turkiye-oct24",
-      "title": "Ankara & Horn Partners Advance Port Logistics & Energy Research Frameworks",
-      "titleSo": "Turkiya iyo Bahwadaagta Gobolka oo Horumariyay Iskaashiga Dhaqaalaha Baddaha iyo Tamarta",
-      "category": "Turkiye",
-      "location": "Ankara / Mogadishu Desk",
-      "summary": "Bilateral technical committees finalize agreements on Red Sea maritime navigation security and port modernization.",
-      "content": "ANKARA — Technical committees representing Turkiye and East African regional partners convened in Ankara to finalize joint infrastructure protocols for maritime security and deep-sea energy exploration.\n\nThe initiative establishes updated training programs for coast guard personnel and expands trade volume across major commercial sea routes connecting the Gulf of Aden and international ports.",
-      "contentSo": "ANKARA — Guddiyada farsamada ee Turkiya iyo saaxiibada Bariga Afrika ayaa ku kulmay Ankara si ay u dhameystiraan heshiisyo habboon oo ku saabsan amniga baddaha iyo baaritaanka tamarta.\n\nHeshiiskan ayaa bixin doona tababaro cusub oo lagu horumarinayo ilaalinta baddaha iyo kor u qaadista ganacsiga badda ee Gacanka Cadan.",
-      "sources": [
-        "Anadolu Agency",
-        "SGN Ankara Bureau"
-      ],
-      "publishedAt": "2026-10-24T19:07:55.534Z",
-      "imageUrl": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
-    },
-    {
-      "id": "sgn-diaspora-oct24",
-      "title": "Somali Global Diaspora Network Launches Civic Innovation Initiative Across US & EU Cities",
-      "titleSo": "Shabakadda Jaaliyadaha Soomaaliyeed ee Caalamka oo Daah-furtay Barnaamijka Hal-abuurka Bulshada",
+      "id": "art-3",
+      "title": "Somali Diaspora Communities in London, Europe & US Host Business Summit",
+      "title_so": "Shirka Ganacsiga Qurba-joogta Soomaaliyeed oo ka Furmay London, Yurub iyo Maraykanka",
       "category": "Diaspora",
-      "location": "Minneapolis / London Bureau",
-      "summary": "Community leaders in North America and Europe launch new business development grants and youth mentorship platforms.",
-      "content": "MINNEAPOLIS / LONDON — Diaspora leaders across major hubs in Minnesota, London, Toronto, and Columbus launched a combined initiative focused on economic empowerment and civic participation for young professionals.\n\nThe initiative introduces mentorship networks and seed funding for technological and business start-ups founded by diaspora entrepreneurs.",
-      "contentSo": "MINNEAPOLIS / LONDON — Hiddaha iyo hoggaamiyeyaasha jaaliyadaha ee gobolka Minnesota, London, Toronto iyo Columbus ayaa daah-furay barnaamij wadajir ah oo loogu talagalay horumarinta ganacsiga iyo dhiirrigelinta dhallinyarada.\n\nBarnaamijkan ayaa siin doona taageero maaliyadeed iyo tababaro ganacsi dhallinyarada ku nool qurba-joogta.",
-      "sources": [
-        "SGN Diaspora Intelligence Desk"
-      ],
-      "publishedAt": "2026-10-24T19:07:55.534Z",
-      "imageUrl": "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80"
+      "location": "London & Minneapolis Bureau",
+      "summary": "Somali entrepreneurs, scholars, and youth leaders from London, Europe, and North America gather for an annual economic forum.",
+      "summary_so": "Aqoonyahanka iyo ganacsatada Soomaaliyeed ee UK, Yurub iyo Maraykanka ayaa ku kulsaday shirweynaha maalgashiga iyo teknoolajiyadda.",
+      "content": "LONDON — Preparations are underway for the annual Diaspora Economic Summit in London and Minneapolis, bringing together entrepreneurs, scholars, and youth leaders from across Europe and North America.\n\nThe forum focuses on venture capital investment in emerging startups, cross-border fintech services, and educational mentorship programs for young Somali professionals.\n\nOrganizers anticipate over 1,500 attendees, featuring panel discussions on economic empowerment and international policy.",
+      "content_so": "LONDON — Hogaamiyayaasha bulshada iyo ganacsatada Soomaaliyeed ee UK, Yurub iyo Maraykanka ayaa magaalada London ku yeeshay shirweyne muhiim ah.\n\nKulamadan ayaa lagaga hadlay hababka lacagaha loo diro, teknoolajiyada, iyo maalgashiga dhallinyarada Soomaaliyeed.",
+      "imageUrl": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
+      "publishedAt": "2026-10-24T20:28:39.766Z"
     }
   ]
 }
