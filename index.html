@@ -27,7 +27,7 @@
 </head>
 <body class="h-full flex flex-col font-sans bg-slate-950 text-slate-100 antialiased selection:bg-somali-blue selection:text-white">
 
-    <!-- Top Announcement Ticker & Message of the Day -->
+    <!-- Top Announcement Ticker -->
     <div class="bg-slate-900 border-b border-slate-800 text-xs py-2 px-4 text-slate-400">
         <div class="max-w-7xl mx-auto w-full flex flex-col sm:flex-row justify-between items-center gap-2">
             <div class="flex items-center space-x-2 overflow-hidden w-full sm:w-auto">
@@ -37,14 +37,11 @@
                 <span id="message-of-the-day" class="truncate text-slate-200 font-medium text-xs">
                     Welcome to Somali Global News — Independent global intelligence covering World News, Somalia, Horn of Africa & Middle East.
                 </span>
-                <button onclick="editMessageOfTheDay()" title="Edit Message of the Day" class="text-slate-500 hover:text-somali-accent text-xs px-1 transition">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </button>
             </div>
 
             <div class="hidden md:flex items-center space-x-4 text-[11px] font-mono text-slate-400 shrink-0">
                 <span id="current-date"></span>
-                <span>Mogadishu | Nairobi | Addis Ababa | Djibouti | Riyadh | Global</span>
+                <span>Mogadishu | Nairobi | Addis Ababa | Djibouti | Global</span>
             </div>
         </div>
     </div>
@@ -66,7 +63,6 @@
                 </div>
             </div>
 
-            <!-- Horizontal Scrollable Live Scores Strip -->
             <div id="sports-ticker-container" class="flex items-center gap-3 overflow-x-auto w-full no-scrollbar py-0.5">
                 <!-- Scores render dynamically via JS -->
             </div>
@@ -90,17 +86,14 @@
                 </a>
             </div>
 
-            <!-- Regional & World Navigation -->
             <div class="hidden lg:flex items-center space-x-4 text-xs font-semibold text-slate-300">
                 <button onclick="filterCategory('all')" class="hover:text-somali-accent transition">All News</button>
                 <button onclick="filterCategory('World')" class="text-rose-400 hover:text-rose-300 font-bold transition flex items-center gap-1"><i class="fa-solid fa-globe"></i> World News</button>
                 <button onclick="filterCategory('Somalia')" class="hover:text-somali-accent transition">Somalia</button>
                 <button onclick="filterCategory('Ethiopia')" class="hover:text-somali-accent transition">Ethiopia</button>
                 <button onclick="filterCategory('Kenya')" class="hover:text-somali-accent transition">Kenya</button>
-                <button onclick="filterCategory('Djibouti')" class="hover:text-somali-accent transition">Djibouti</button>
                 <button onclick="filterCategory('Middle East')" class="hover:text-somali-accent transition">Middle East</button>
-                <button onclick="filterCategory('Turkiye')" class="hover:text-somali-accent transition">Turkiye</button>
-                <button onclick="filterCategory('Diaspora')" class="text-somali-accent font-bold hover:text-blue-300 transition flex items-center gap-1"><i class="fa-solid fa-users"></i> Diaspora (USA/EU)</button>
+                <button onclick="filterCategory('Diaspora')" class="text-somali-accent font-bold hover:text-blue-300 transition flex items-center gap-1"><i class="fa-solid fa-users"></i> Diaspora</button>
             </div>
 
             <div class="flex items-center space-x-3">
@@ -122,80 +115,41 @@
             <div class="relative z-20 space-y-3 max-w-3xl">
                 <div class="flex items-center gap-2">
                     <span id="hero-category" class="bg-somali-blue text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Somalia</span>
-                    <span id="hero-location" class="text-xs text-slate-300 font-mono"><i class="fa-solid fa-location-dot text-rose-500"></i> Jeddah / Mogadishu Desk</span>
+                    <span id="hero-location" class="text-xs text-slate-300 font-mono"><i class="fa-solid fa-location-dot text-rose-500"></i> Mogadishu / Jeddah Desk</span>
                 </div>
                 <h2 id="hero-title" class="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
-                    Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for High-Level Strategic Talks
+                    Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for High-Level Talks
                 </h2>
                 <p id="hero-summary" class="text-sm text-slate-300 line-clamp-2">
-                    Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport by Jeddah Governor Prince Saud bin Abdullah bin Jalawi for bilateral talks.
+                    Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport for diplomatic talks focusing on Red Sea security and regional trade.
                 </p>
                 <div class="pt-2">
                     <button id="hero-read-btn" class="bg-somali-blue hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-somali-blue/30">
-                        Read Full Extended Coverage / Akhriso Warbixinta Idan <i class="fa-solid fa-arrow-right"></i>
+                        Read Full Extended Coverage <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- Category & Regional Filters Header -->
+        <!-- Category Filters -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
             <div>
                 <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-earth-americas text-somali-accent"></i> Breaking World & Regional News Feed
+                    <i class="fa-solid fa-earth-americas text-somali-accent"></i> Breaking World & Regional Feed
                 </h3>
-                <p class="text-xs text-slate-400">Live international analysis across World Breaking News, Somalia, Horn of Africa, Middle East, Turkiye & Diaspora Communities</p>
             </div>
             <div class="flex items-center space-x-2 overflow-x-auto pb-2 sm:pb-0">
                 <button onclick="filterCategory('all')" class="cat-filter bg-somali-blue text-white px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">All News</button>
-                <button onclick="filterCategory('World')" class="cat-filter bg-slate-900 border border-rose-500/50 hover:border-rose-500 text-rose-400 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap"><i class="fa-solid fa-bolt text-xs"></i> World News</button>
+                <button onclick="filterCategory('World')" class="cat-filter bg-slate-900 border border-rose-500/50 hover:border-rose-500 text-rose-400 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap">World</button>
                 <button onclick="filterCategory('Somalia')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Somalia</button>
-                <button onclick="filterCategory('Ethiopia')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Ethiopia</button>
                 <button onclick="filterCategory('Kenya')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Kenya</button>
-                <button onclick="filterCategory('Djibouti')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Djibouti</button>
-                <button onclick="filterCategory('Middle East')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Middle East</button>
-                <button onclick="filterCategory('Turkiye')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">Turkiye</button>
-                <button onclick="filterCategory('Diaspora')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-somali-accent px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap">Diaspora (USA/EU)</button>
+                <button onclick="filterCategory('Diaspora')" class="cat-filter bg-slate-900 border border-slate-800 hover:border-slate-700 text-somali-accent px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap">Diaspora</button>
             </div>
         </div>
 
         <!-- News Articles Grid -->
         <section id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Articles render dynamically -->
-        </section>
-
-        <!-- READER COMMENT SECTION -->
-        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6">
-            <div class="border-b border-slate-800 pb-4 space-y-1">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-comments text-somali-accent"></i> Reader Analysis & Global Feedback Desk
-                </h3>
-                <p class="text-xs text-slate-400">Share your perspectives on global breaking news, diplomatic relations, and economic affairs.</p>
-            </div>
-
-            <form onsubmit="submitPublicComment(event)" class="space-y-4 max-w-2xl">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">Your Name</label>
-                        <input type="text" id="comment-name" required placeholder="e.g. Hassan Ahmed" class="w-full bg-slate-950 border border-slate-800 text-xs rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">Email Address (Private)</label>
-                        <input type="email" id="comment-email" required placeholder="name@domain.com" class="w-full bg-slate-950 border border-slate-800 text-xs rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Comment</label>
-                    <textarea id="comment-body" required rows="3" placeholder="Share your insight on global or regional breaking news developments..." class="w-full bg-slate-950 border border-slate-800 text-xs rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue"></textarea>
-                </div>
-                <button type="submit" class="bg-somali-blue hover:bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition shadow-md shadow-somali-blue/20 flex items-center gap-2">
-                    <i class="fa-solid fa-paper-plane"></i> Submit Comment
-                </button>
-            </form>
-
-            <div id="comment-success" class="hidden p-3 bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs rounded-xl font-mono">
-                ✓ Thank you! Your analysis has been submitted to the editorial desk for review.
-            </div>
         </section>
 
     </main>
@@ -213,160 +167,104 @@
                     <span id="modal-location" class="text-xs text-slate-400 font-mono">Location</span>
                 </div>
                 <h2 id="modal-title" class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">Article Title</h2>
-                <div class="text-xs text-slate-500 font-mono flex items-center gap-4 border-b border-slate-800 pb-3">
-                    <span id="modal-date">Date</span>
-                    <span id="modal-source" class="text-somali-accent font-semibold">SGN Global Desk</span>
-                </div>
             </div>
 
             <img id="modal-image" src="" alt="Article image" class="w-full h-72 sm:h-96 object-cover rounded-2xl border border-slate-800 shadow-lg">
 
-            <!-- Language Switcher Tabs -->
-            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
-                <button id="tab-en" onclick="switchLanguageTab('en')" class="bg-somali-blue text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-md shadow-somali-blue/20">
-                    <i class="fa-solid fa-globe"></i> Full English Report
-                </button>
-                <button id="tab-so" onclick="switchLanguageTab('so')" class="bg-slate-950 border border-slate-800 text-slate-400 hover:text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-language text-somali-accent"></i> Warbixinta Soomaaliga oo Dhammaystiran
-                </button>
-            </div>
-
-            <!-- Full English Content -->
-            <div id="content-en" class="space-y-4 text-slate-300 text-sm leading-relaxed">
-                <div id="modal-content-en" class="space-y-4"></div>
-            </div>
-
-            <!-- Full Somali Content Box -->
-            <div id="content-so" class="hidden space-y-4 bg-slate-950/60 p-6 rounded-2xl border border-somali-blue/30 text-slate-200 text-sm leading-relaxed">
-                <div class="flex items-center gap-2 text-xs font-bold text-somali-accent border-b border-slate-800 pb-2">
-                    <i class="fa-solid fa-flag text-somali-blue"></i>
-                    <span>Warbixinta oo Soomaali ah (Full Somali Intelligence Coverage)</span>
-                </div>
-                <h3 id="modal-title-so" class="text-xl font-bold text-white"></h3>
-                <div id="modal-content-so" class="space-y-4"></div>
-            </div>
+            <div id="modal-content" class="space-y-4 text-slate-300 text-sm leading-relaxed"></div>
         </div>
     </div>
 
     <script>
         let allArticles = [];
 
-        // Sample Live Sports Results Data
         const sportsData = [
-            { id: 1, league: 'EPL', home: 'Arsenal', away: 'Chelsea', homeScore: 2, awayScore: 1, status: 'FT', minute: "90'" },
-            { id: 2, league: 'EPL', home: 'Man City', away: 'Liverpool', homeScore: 1, awayScore: 1, status: 'LIVE', minute: "74'" },
-            { id: 3, league: 'La Liga', home: 'Real Madrid', away: 'Barcelona', homeScore: 3, awayScore: 2, status: 'FT', minute: "90'" },
-            { id: 4, league: 'La Liga', home: 'Atletico Madrid', away: 'Sevilla', homeScore: 0, awayScore: 0, status: 'HT', minute: "45'" },
-            { id: 5, league: 'Serie A', home: 'Inter Milan', away: 'AC Milan', homeScore: 2, awayScore: 0, status: 'FT', minute: "90'" },
-            { id: 6, league: 'Serie A', home: 'Juventus', away: 'Napoli', homeScore: 1, awayScore: 2, status: 'LIVE', minute: "62'" },
-            { id: 7, league: 'NBA', home: 'Boston Celtics', away: 'LA Lakers', homeScore: 112, awayScore: 108, status: 'FT', minute: 'Q4' },
-            { id: 8, league: 'NBA', home: 'Golden State', away: 'Milwaukee Bucks', homeScore: 98, awayScore: 95, status: 'LIVE', minute: 'Q3' },
-            { id: 9, league: 'NFL', home: 'KC Chiefs', away: 'LA Chargers', homeScore: 22, awayScore: 6, status: 'FT', minute: 'Final' },
-            { id: 10, league: 'NFL', home: 'Chicago Bears', away: 'NE Patriots', homeScore: 30, awayScore: 24, status: 'FT', minute: 'Final' }
+            { id: 1, league: 'EPL', home: 'Arsenal', away: 'Chelsea', homeScore: 2, awayScore: 1, status: 'FT' },
+            { id: 2, league: 'EPL', home: 'Man City', away: 'Liverpool', homeScore: 1, awayScore: 1, status: 'LIVE 74\'' },
+            { id: 3, league: 'La Liga', home: 'Real Madrid', away: 'Barcelona', homeScore: 3, awayScore: 2, status: 'FT' },
+            { id: 4, league: 'Serie A', home: 'Inter Milan', away: 'AC Milan', homeScore: 2, awayScore: 0, status: 'FT' },
+            { id: 5, league: 'NBA', home: 'Celtics', away: 'Lakers', homeScore: 112, awayScore: 108, status: 'FT' },
+            { id: 6, league: 'NFL', home: 'Chiefs', away: 'Chargers', homeScore: 22, awayScore: 6, status: 'FT' }
         ];
 
-        function renderSportsTicker(leagueFilter = 'all') {
+        function renderSportsTicker(filter = 'all') {
             const container = document.getElementById('sports-ticker-container');
             if (!container) return;
+            const items = filter === 'all' ? sportsData : sportsData.filter(s => s.league.toLowerCase() === filter.toLowerCase());
 
-            const filtered = leagueFilter === 'all' 
-                ? sportsData 
-                : sportsData.filter(s => s.league.toLowerCase() === leagueFilter.toLowerCase());
-
-            container.innerHTML = filtered.map(item => `
-                <div class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 flex items-center gap-2 shrink-0 text-xs shadow-sm min-w-[170px] hover:border-slate-700 transition">
+            container.innerHTML = items.map(item => `
+                <div class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 flex items-center gap-2 shrink-0 text-xs shadow-sm min-w-[150px]">
                     <div class="flex flex-col text-[10px] font-mono text-slate-500 border-r border-slate-800 pr-2">
-                        <span class="font-bold ${item.league === 'NBA' ? 'text-amber-400' : item.league === 'NFL' ? 'text-emerald-400' : 'text-somali-accent'}">${item.league}</span>
-                        <span class="${item.status === 'LIVE' ? 'text-rose-500 font-extrabold animate-pulse' : 'text-slate-400'}">${item.status === 'LIVE' ? item.minute : item.status}</span>
+                        <span class="font-bold text-somali-accent">${item.league}</span>
+                        <span class="text-slate-400">${item.status}</span>
                     </div>
                     <div class="flex flex-col w-full text-[11px] font-semibold">
                         <div class="flex justify-between items-center text-slate-200">
-                            <span class="truncate max-w-[85px]">${item.home}</span>
-                            <span class="font-mono text-white font-bold ml-1">${item.homeScore}</span>
+                            <span>${item.home}</span>
+                            <span class="font-mono text-white font-bold">${item.homeScore}</span>
                         </div>
                         <div class="flex justify-between items-center text-slate-400">
-                            <span class="truncate max-w-[85px]">${item.away}</span>
-                            <span class="font-mono text-slate-300 ml-1">${item.awayScore}</span>
+                            <span>${item.away}</span>
+                            <span class="font-mono text-slate-300">${item.awayScore}</span>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function filterSports(league) {
-            renderSportsTicker(league);
-        }
-
-        document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
-
-        const savedMessage = localStorage.getItem('sgn_message_of_the_day');
-        if (savedMessage) {
-            document.getElementById('message-of-the-day').innerText = savedMessage;
-        }
-
-        function editMessageOfTheDay() {
-            const currentMsg = document.getElementById('message-of-the-day').innerText;
-            const newMsg = prompt("Enter the new Message of the Day for visitors:", currentMsg);
-            if (newMsg !== null && newMsg.trim() !== "") {
-                document.getElementById('message-of-the-day').innerText = newMsg.trim();
-                localStorage.setItem('sgn_message_of_the_day', newMsg.trim());
-            }
-        }
-
-        async function fetchNewsData() {
-            let serverArticles = [];
-            try {
-                const res = await fetch('/data/news.json');
-                if (res.ok) {
-                    const data = await res.json();
-                    serverArticles = data.articles || [];
-                }
-            } catch (e) {
-                console.warn("Server JSON fetch fallback initialized.");
-            }
-
-            // Retrieve admin-created articles from localStorage
-            let adminArticles = [];
-            try {
-                const localData = localStorage.getItem('sgn_custom_articles');
-                if (localData) {
-                    adminArticles = JSON.parse(localData);
-                }
-            } catch(err) {
-                console.error("Localstorage article fetch error:", err);
-            }
-
-            // Merge Admin articles at the top of the feed
-            allArticles = [...adminArticles, ...serverArticles];
-
-            if (allArticles.length === 0) {
-                allArticles = getFallbackArticles();
-            }
-
-            renderNews(allArticles);
-        }
+        function filterSports(league) { renderSportsTicker(league); }
 
         function getFallbackArticles() {
-            const currentIso = new Date().toISOString();
             return [
                 {
-                    id: "sgn-somalia-oct24",
-                    title: "Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for High-Level Strategic Talks",
-                    titleSo: "Ra'iisul Wasaaraha Soomaaliya Xamza Cabdi Barre oo Gaaray Magaalada Jidda ee Sacuudi Carabiya",
+                    id: "1",
+                    title: "Somali Prime Minister Hamza Abdi Barre Arrives in Jeddah for Bilateral Talks",
                     category: "Somalia",
                     location: "Jeddah / Mogadishu Desk",
-                    summary: "Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport by Jeddah Governor Prince Saud bin Abdullah bin Jalawi for bilateral talks.",
-                    content: `JEDDAH — Prime Minister of the Federal Republic of Somalia, Hamza Abdi Barre, arrived in Jeddah today for strategic bilateral discussions with Saudi leadership.`,
-                    contentSo: `JEDDAH — Ra'iisul Wasaaraha Dowladda Federaalka Soomaaliya, Xamza Cabdi Barre, ayaa maanta si rasmi ah u gaaray magaalada Jidda ee dalka Sacuudi Carabiya.`,
-                    sources: ["SPA News Wire", "SGN Diplomatic Desk"],
-                    publishedAt: currentIso,
+                    summary: "Prime Minister Hamza Abdi Barre was received at King Abdulaziz International Airport for strategic discussions on regional economic and security cooperation.",
+                    content: "Prime Minister Hamza Abdi Barre arrived in Jeddah today for bilateral meetings focused on strengthening ties, maritime safety, and trade partnerships in the region.",
                     imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
+                },
+                {
+                    id: "2",
+                    title: "Horn of Africa Trade Summit Reaches New Framework in Nairobi",
+                    category: "Kenya",
+                    location: "Nairobi Bureau",
+                    summary: "Delegates from across East Africa gathered in Nairobi to approve simplified cross-border customs regulations.",
+                    content: "The trade framework agreed upon in Nairobi promises lower tariffs and faster border clearances for commercial vehicles between Kenya, Somalia, and Ethiopia.",
+                    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+                },
+                {
+                    id: "3",
+                    title: "Global Diaspora Conference to Launch in Minneapolis",
+                    category: "Diaspora",
+                    location: "Minneapolis Desk",
+                    summary: "Community leaders and entrepreneurs prepare for the annual North American diaspora economic forum.",
+                    content: "The conference will showcase startup funding options, cross-border remittances, and youth mentorship initiatives for diaspora communities across the US and Europe.",
+                    imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
                 }
             ];
         }
 
+        async function fetchNewsData() {
+            try {
+                const res = await fetch('/data/news.json');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.articles && data.articles.length > 0) {
+                        allArticles = data.articles;
+                        renderNews(allArticles);
+                        return;
+                    }
+                }
+            } catch (e) { console.log('Using default fallback news articles'); }
+
+            allArticles = getFallbackArticles();
+            renderNews(allArticles);
+        }
+
         function renderNews(articles) {
-            if(!articles || articles.length === 0) return;
+            if (!articles || articles.length === 0) return;
 
             const hero = articles[0];
             document.getElementById('hero-title').innerText = hero.title;
@@ -380,27 +278,23 @@
             grid.innerHTML = '';
 
             articles.forEach(art => {
-                const isWorld = art.category && art.category.toLowerCase() === 'world';
                 const card = document.createElement('article');
                 card.className = "bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition flex flex-col justify-between shadow-lg group";
                 card.innerHTML = `
                     <div class="space-y-3">
                         <div class="h-48 overflow-hidden relative">
-                            <img src="${art.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80'}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                            <span class="absolute top-3 left-3 ${isWorld ? 'bg-rose-600 text-white font-extrabold' : 'bg-slate-950/80 backdrop-blur text-somali-accent font-bold'} text-[10px] px-2.5 py-1 rounded-full border border-slate-800 uppercase tracking-wider">${art.category || 'News'}</span>
+                            <img src="${art.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur text-somali-accent font-bold text-[10px] px-2.5 py-1 rounded-full border border-slate-800 uppercase">${art.category || 'News'}</span>
                         </div>
                         <div class="p-5 space-y-2">
-                            <div class="text-[10px] font-mono text-slate-400 flex items-center justify-between">
-                                <span><i class="fa-solid fa-location-dot text-rose-500"></i> ${art.location || 'Global Desk'}</span>
-                                <span>${new Date(art.publishedAt || Date.now()).toLocaleDateString()}</span>
-                            </div>
+                            <div class="text-[10px] font-mono text-slate-400">${art.location || 'Global Desk'}</div>
                             <h3 class="text-base font-bold text-white group-hover:text-somali-accent transition line-clamp-2">${art.title}</h3>
                             <p class="text-xs text-slate-400 line-clamp-3">${art.summary}</p>
                         </div>
                     </div>
                     <div class="p-5 pt-0">
-                        <button onclick='openArticleModal(${JSON.stringify(art).replace(/'/g, "&apos;")})' class="w-full bg-slate-950 hover:bg-somali-blue border border-slate-800 text-slate-300 hover:text-white py-2.5 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2">
-                            <span>Read Full Article / Akhriso</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <button onclick='openArticleModal(${JSON.stringify(art).replace(/'/g, "&apos;")})' class="w-full bg-slate-950 hover:bg-somali-blue border border-slate-800 text-slate-300 hover:text-white py-2.5 rounded-xl text-xs font-semibold transition">
+                            Read Full Article <i class="fa-solid fa-arrow-right text-[10px]"></i>
                         </button>
                     </div>
                 `;
@@ -409,105 +303,31 @@
         }
 
         function filterCategory(cat) {
-            if(cat === 'all') {
-                renderNews(allArticles);
-            } else {
-                const filtered = allArticles.filter(a => a.category && a.category.toLowerCase() === cat.toLowerCase());
-                renderNews(filtered.length > 0 ? filtered : allArticles);
-            }
+            if (cat === 'all') { renderNews(allArticles); }
+            else { renderNews(allArticles.filter(a => a.category && a.category.toLowerCase() === cat.toLowerCase())); }
         }
 
         function handleSearch() {
             const query = document.getElementById('search-input').value.toLowerCase();
-            const filtered = allArticles.filter(a => 
-                a.title.toLowerCase().includes(query) || 
-                a.summary.toLowerCase().includes(query) ||
-                (a.location && a.location.toLowerCase().includes(query))
-            );
-            renderNews(filtered);
+            renderNews(allArticles.filter(a => a.title.toLowerCase().includes(query) || a.summary.toLowerCase().includes(query)));
         }
 
         function openArticleModal(article) {
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-category').innerText = article.category || 'World';
             document.getElementById('modal-location').innerText = article.location || 'Global';
-            document.getElementById('modal-date').innerText = new Date(article.publishedAt || Date.now()).toLocaleString();
-            document.getElementById('modal-source').innerText = (article.sources && article.sources[0]) || 'SGN Global Desk';
-            
-            document.getElementById('modal-content-en').innerHTML = formatTextToParagraphs(article.content || article.summary);
-            document.getElementById('modal-title-so').innerText = article.titleSo || article.title;
-            document.getElementById('modal-content-so').innerHTML = formatTextToParagraphs(article.contentSo || article.content || article.summary);
-
+            document.getElementById('modal-content').innerText = article.content || article.summary;
             document.getElementById('modal-image').src = article.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80';
-            
-            switchLanguageTab('en');
             document.getElementById('article-modal').classList.remove('hidden');
         }
 
-        function formatTextToParagraphs(text) {
-            if (!text) return '';
-            return text.split('\n\n').map(p => {
-                if (p.startsWith('###')) {
-                    return `<h4 class="text-base font-bold text-somali-accent mt-4 mb-2">${p.replace('###', '').trim()}</h4>`;
-                } else if (p.startsWith('*')) {
-                    const items = p.split('\n').map(item => `<li class="ml-4 list-disc text-slate-300">${item.replace('*', '').trim()}</li>`).join('');
-                    return `<ul class="my-2 space-y-1">${items}</ul>`;
-                } else {
-                    return `<p class="leading-relaxed text-slate-300 mb-3">${p.trim()}</p>`;
-                }
-            }).join('');
-        }
-
-        function switchLanguageTab(lang) {
-            const tabEn = document.getElementById('tab-en');
-            const tabSo = document.getElementById('tab-so');
-            const contentEn = document.getElementById('content-en');
-            const contentSo = document.getElementById('content-so');
-
-            if (lang === 'so') {
-                tabSo.className = "bg-somali-blue text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-md shadow-somali-blue/20";
-                tabEn.className = "bg-slate-950 border border-slate-800 text-slate-400 hover:text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2";
-                contentSo.classList.remove('hidden');
-                contentEn.classList.add('hidden');
-            } else {
-                tabEn.className = "bg-somali-blue text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-md shadow-somali-blue/20";
-                tabSo.className = "bg-slate-950 border border-slate-800 text-slate-400 hover:text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2";
-                contentEn.classList.remove('hidden');
-                contentSo.classList.add('hidden');
-            }
-        }
-
-        function closeArticleModal() {
-            document.getElementById('article-modal').classList.add('hidden');
-        }
-
-        function submitPublicComment(e) {
-            e.preventDefault();
-            document.getElementById('comment-success').classList.remove('hidden');
-            e.target.reset();
-            setTimeout(() => {
-                document.getElementById('comment-success').classList.add('hidden');
-            }, 4000);
-        }
+        function closeArticleModal() { document.getElementById('article-modal').classList.add('hidden'); }
 
         window.onload = function() {
-            fetchNewsData();
+            document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
             renderSportsTicker('all');
+            fetchNewsData();
         };
     </script>
-
-    <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-8 px-6 text-slate-400 text-xs">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="space-y-1 text-center sm:text-left">
-                <div class="font-bold text-white text-sm">somaliglobalnews.com</div>
-                <p class="text-[11px] text-slate-500">Independent global intelligence network covering Breaking World News, Somalia, Ethiopia, Kenya, Djibouti, Middle East & Diaspora.</p>
-            </div>
-            <div class="text-slate-500 text-[11px]">
-                © 2026 Somali Global News. All rights reserved.
-            </div>
-        </div>
-    </footer>
-
 </body>
 </html>
