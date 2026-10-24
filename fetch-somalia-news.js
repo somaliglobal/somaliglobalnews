@@ -48,14 +48,14 @@ const FALLBACK_ARTICLES = [
     },
     {
         id: "art-fallback-3",
-        title: "Champions League Quarterfinals Heat Up as European Giants Secure Victories",
-        title_so: "Ciyaaraha Horyaallada Yurub Oo Maraya Meel Xasaasi Ah",
+        title: "European & Global Sports Wire: High-Stakes Fixtures & League Standings Update",
+        title_so: "Natiijooyinka & Ciyaaraha Ugu Dambeeyay ee Horyaallada Yurub iyo Adduunka",
         category: "Sports",
         location: "Sports Desk",
-        summary: "Top clubs in Premier League, La Liga, and Serie A gear up for critical weekend fixtures following exciting mid-week European matches.",
-        summary_so: "Kooxaha ugu waaweyn Premier League, La Liga iyo Serie A ayaa u preparesgaroobaya ciyaaraha todobaadka iyadoo tartanku aad u kululaaday.",
-        content: "LONDON — The European football calendar reaches a critical stage with Premier League leaders locking horns with title rivals, while La Liga and Serie A giants prepare for high-stakes matches. Fans are anticipating thrilling action across all major European leagues.",
-        content_so: "LONDON — Tartanka ciyaaraha kubadda cagta ee Yurub ayaa maraya meel aad u xiiso badan, iyadoo kooxaha ugu waaweyn ay u tartamayaan horyaallada Ingiriiska, Spain iyo Italy.",
+        summary: "Premier League, Champions League, La Liga, Serie A, and NBA teams clash in crucial weekend matchups as championship races heat up.",
+        summary_so: "Ciyaaraha Premier League, Champions League, La Liga, Serie A iyo NBA ayaa maraya meel aad u xasaasi ah iyadoo kooxaha ugu waaweyn ay u tartamayaan horyaallada.",
+        content: "SPORTS DESK — The global sports calendar reaches a critical phase today with major football clubs across Europe battling for title dominance. Premier League contenders lock horns in pivotal derby fixtures, while La Liga and Serie A powerhouses finalize line-ups. Meanwhile in basketball, NBA playoff pushes continue with thrilling performances across both conferences.",
+        content_so: "SPORTS DESK — Ciyaaraha kubadda cagta ee Yurub iyo horyaallada waaweyn sida Premier League, La Liga, Serie A iyo NBA ayaa maraya waqti xasaasi ah. Taageerayaasha kubadda cagta iyo kolayga ayaa si dhow ula socda natiijooyinka iyo kala sarreynta kooxaha ugu waaweyn.",
         imageUrl: CATEGORY_IMAGES.Sports,
         publishedAt: new Date().toISOString()
     }
@@ -73,14 +73,14 @@ async function generateNewsFeed() {
     const ai = new GoogleGenAI({ apiKey });
 
     const systemPrompt = `You are the chief editor for Somali Global News Wire (SGN).
-Search current breaking news reported today by BBC, Al Jazeera, Reuters, France 24, Anadolu Agency, and Al Arabiya English.
+Search current breaking news reported today by BBC, Al Jazeera, Reuters, ESPN, Sky Sports, France 24, Anadolu Agency, and Al Arabiya English.
 
 Cover 6 specific categories strictly:
 1. Somalia (Mogadishu, trade, EAC, infrastructure)
 2. Ethiopia (Addis Ababa, diplomacy, Horn of Africa)
 3. Middle East (Yemen, Red Sea, Gulf GCC diplomacy)
 4. Diaspora (London, Minnesota, European Somali communities)
-5. Sports (European Premier League, La Liga, Serie A, NBA, NFL)
+5. Sports (Premier League, UEFA Champions League, La Liga, Serie A, NBA)
 6. World (Global trade or geopolitics)
 
 For each story:
@@ -89,7 +89,7 @@ For each story:
 - Natural Somali Translation (title_so, summary_so, content_so)
 - Location desk (e.g. "Mogadishu Desk", "Addis Ababa Bureau", "Riyadh Desk", "London Desk", "Sports Desk")`;
 
-    const userPrompt = `Search today's breaking news across BBC, Al Jazeera, Reuters, France 24, Anadolu, and Al Arabiya for Somalia, Ethiopia, Middle East, Diaspora, Sports, and World. Generate 6 distinct article objects inside a JSON array under the "articles" key.`;
+    const userPrompt = `Search today's breaking news across BBC, Al Jazeera, Reuters, ESPN, Sky Sports, France 24, and Anadolu for Somalia, Ethiopia, Middle East, Diaspora, Sports, and World. Generate 6 distinct article objects inside a JSON array under the "articles" key, including an up-to-date sports news item covering football or basketball leagues.`;
 
     try {
         console.log('Fetching multi-source news wire using Gemini API...');
