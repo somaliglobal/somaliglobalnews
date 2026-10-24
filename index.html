@@ -27,14 +27,23 @@
 </head>
 <body class="h-full flex flex-col font-sans bg-slate-950 text-slate-100 antialiased selection:bg-somali-blue selection:text-white">
 
-    <!-- Top Announcement Ticker -->
-    <div class="bg-slate-900 border-b border-slate-800 text-xs py-2 px-4 flex justify-between items-center text-slate-400">
-        <div class="max-w-7xl mx-auto w-full flex justify-between items-center">
-            <div class="flex items-center space-x-2 overflow-hidden">
-                <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase animate-pulse">Live Desk</span>
-                <span id="ticker-text" class="truncate text-slate-300">Loading daily intelligence feed for Somalia, Ethiopia, Kenya, Djibouti & Middle East...</span>
+    <!-- Top Announcement Ticker & Message of the Day -->
+    <div class="bg-slate-900 border-b border-slate-800 text-xs py-2 px-4 text-slate-400">
+        <div class="max-w-7xl mx-auto w-full flex flex-col sm:flex-row justify-between items-center gap-2">
+            <!-- Dynamic Message of the Day Bar -->
+            <div class="flex items-center space-x-2 overflow-hidden w-full sm:w-auto">
+                <span class="bg-somali-blue text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shrink-0 flex items-center gap-1">
+                    <i class="fa-solid fa-bullhorn text-[9px]"></i> Notice
+                </span>
+                <span id="message-of-the-day" class="truncate text-slate-200 font-medium text-xs">
+                    Welcome to Somali Global News — Independent regional intelligence for Somalia, Ethiopia, Kenya, Djibouti & the Middle East.
+                </span>
+                <button onclick="editMessageOfTheDay()" title="Edit Message of the Day" class="text-slate-500 hover:text-somali-accent text-xs px-1 transition">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
             </div>
-            <div class="hidden md:flex items-center space-x-4 text-[11px] font-mono text-slate-400">
+
+            <div class="hidden md:flex items-center space-x-4 text-[11px] font-mono text-slate-400 shrink-0">
                 <span id="current-date"></span>
                 <span>Mogadishu | Nairobi | Addis Ababa | Djibouti | Riyadh</span>
             </div>
@@ -58,7 +67,7 @@
                 </a>
             </div>
 
-            <!-- Regional & Category Navigation -->
+            <!-- Regional Navigation -->
             <div class="hidden lg:flex items-center space-x-5 text-sm font-semibold text-slate-300">
                 <button onclick="filterCategory('all')" class="hover:text-somali-accent transition">All News</button>
                 <button onclick="filterCategory('Somalia')" class="hover:text-somali-accent transition">Somalia</button>
@@ -82,23 +91,23 @@
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
 
         <!-- Featured Headline Banner -->
-        <section id="hero-feature" class="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl min-h-[360px] flex items-end p-6 sm:p-10">
+        <section id="hero-feature" class="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl min-h-[380px] flex items-end p-6 sm:p-10">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-10"></div>
             <img id="hero-img" src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1600&q=80" alt="Featured News" class="absolute inset-0 w-full h-full object-cover opacity-40">
             <div class="relative z-20 space-y-3 max-w-3xl">
                 <div class="flex items-center gap-2">
-                    <span id="hero-category" class="bg-somali-blue text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Horn of Africa</span>
-                    <span id="hero-location" class="text-xs text-slate-300 font-mono"><i class="fa-solid fa-location-dot text-rose-500"></i> Mogadishu / Djibouti</span>
+                    <span id="hero-category" class="bg-somali-blue text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Somalia</span>
+                    <span id="hero-location" class="text-xs text-slate-300 font-mono"><i class="fa-solid fa-location-dot text-rose-500"></i> Mogadishu, Somalia</span>
                 </div>
                 <h2 id="hero-title" class="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
-                    Somalia & Regional Partners Expand Horn of Africa Economic Accord
+                    Somalia Expands Regional Trade & Digital Banking Infrastructure
                 </h2>
                 <p id="hero-summary" class="text-sm text-slate-300 line-clamp-2">
-                    New trade, port, and security agreements strengthen maritime integration across Somalia, Ethiopia, Kenya, Djibouti, and key Gulf partners.
+                    Somalia accelerates economic modernization through new inter-bank settlement protocols, digital trade gateways, and expanded maritime logistics routes.
                 </p>
                 <div class="pt-2">
                     <button id="hero-read-btn" class="bg-somali-blue hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-somali-blue/30">
-                        Read Full Coverage / Akhriso <i class="fa-solid fa-arrow-right"></i>
+                        Read Full Extended Coverage / Akhriso Warbixinta Idan <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
@@ -110,7 +119,7 @@
                 <h3 class="text-xl font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-globe text-somali-accent"></i> Regional News Feed
                 </h3>
-                <p class="text-xs text-slate-400">Coverage across Somalia, Kenya, Ethiopia, Djibouti, Middle East & Diaspora</p>
+                <p class="text-xs text-slate-400">Complete analysis across Somalia, Ethiopia, Kenya, Djibouti, Middle East & Diaspora</p>
             </div>
             <div class="flex items-center space-x-2 overflow-x-auto pb-2 sm:pb-0">
                 <button onclick="filterCategory('all')" class="cat-filter bg-somali-blue text-white px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">All Regions</button>
@@ -132,9 +141,9 @@
         <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6">
             <div class="border-b border-slate-800 pb-4 space-y-1">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-comments text-somali-accent"></i> Reader Feedback & Analysis
+                    <i class="fa-solid fa-comments text-somali-accent"></i> Reader Analysis & Feedback Desk
                 </h3>
-                <p class="text-xs text-slate-400">Share your perspectives on Horn of Africa and regional developments.</p>
+                <p class="text-xs text-slate-400">Share your analysis on diplomatic, commercial, and strategic developments.</p>
             </div>
 
             <form onsubmit="submitPublicComment(event)" class="space-y-4 max-w-2xl">
@@ -150,7 +159,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-slate-300 mb-1">Comment</label>
-                    <textarea id="comment-body" required rows="3" placeholder="Share insights on diplomatic, economic, or security news..." class="w-full bg-slate-950 border border-slate-800 text-xs rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue"></textarea>
+                    <textarea id="comment-body" required rows="3" placeholder="Share insights on diplomatic, economic, or regional strategic developments..." class="w-full bg-slate-950 border border-slate-800 text-xs rounded-xl p-3 text-white focus:outline-none focus:border-somali-blue"></textarea>
                 </div>
                 <button type="submit" class="bg-somali-blue hover:bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition shadow-md shadow-somali-blue/20 flex items-center gap-2">
                     <i class="fa-solid fa-paper-plane"></i> Submit Comment
@@ -158,55 +167,56 @@
             </form>
 
             <div id="comment-success" class="hidden p-3 bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs rounded-xl font-mono">
-                ✓ Thank you! Your comment has been submitted to the editorial desk.
+                ✓ Thank you! Your comment has been submitted to the editorial desk for verification.
             </div>
         </section>
 
     </main>
 
-    <!-- DUAL LANGUAGE ARTICLE MODAL -->
+    <!-- EXPANDED ARTICLE MODAL -->
     <div id="article-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 relative shadow-2xl">
-            <button onclick="closeArticleModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-950 rounded-full w-8 h-8 flex items-center justify-center border border-slate-800">
-                <i class="fa-solid fa-xmark"></i>
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-10 space-y-6 relative shadow-2xl">
+            <button onclick="closeArticleModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-950 rounded-full w-9 h-9 flex items-center justify-center border border-slate-800 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
-            <div class="space-y-2">
+            
+            <div class="space-y-3">
                 <div class="flex items-center gap-2">
-                    <span id="modal-category" class="bg-somali-blue text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Region</span>
+                    <span id="modal-category" class="bg-somali-blue text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Region</span>
                     <span id="modal-location" class="text-xs text-slate-400 font-mono">Location</span>
                 </div>
-                <h2 id="modal-title" class="text-2xl font-extrabold text-white">Article Title</h2>
-                <div class="text-xs text-slate-500 font-mono flex items-center gap-4">
+                <h2 id="modal-title" class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">Article Title</h2>
+                <div class="text-xs text-slate-500 font-mono flex items-center gap-4 border-b border-slate-800 pb-3">
                     <span id="modal-date">Date</span>
-                    <span id="modal-source" class="text-somali-accent">SGN Desk</span>
+                    <span id="modal-source" class="text-somali-accent font-semibold">SGN Desk</span>
                 </div>
             </div>
 
-            <img id="modal-image" src="" alt="Article image" class="w-full h-64 object-cover rounded-xl border border-slate-800">
+            <img id="modal-image" src="" alt="Article image" class="w-full h-72 sm:h-96 object-cover rounded-2xl border border-slate-800 shadow-lg">
 
             <!-- Language Switcher Tabs -->
-            <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
-                <button id="tab-en" onclick="switchLanguageTab('en')" class="bg-somali-blue text-white px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-globe"></i> English Report
+            <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                <button id="tab-en" onclick="switchLanguageTab('en')" class="bg-somali-blue text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-md shadow-somali-blue/20">
+                    <i class="fa-solid fa-globe"></i> Full English Report
                 </button>
-                <button id="tab-so" onclick="switchLanguageTab('so')" class="bg-slate-950 border border-slate-800 text-slate-400 hover:text-white px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-language text-somali-accent"></i> Warbixinta Soomaaliga
+                <button id="tab-so" onclick="switchLanguageTab('so')" class="bg-slate-950 border border-slate-800 text-slate-400 hover:text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-language text-somali-accent"></i> Warbixinta Soomaaliga oo Dhammaystiran
                 </button>
             </div>
 
-            <!-- English Content -->
-            <div id="content-en" class="space-y-3">
-                <p id="modal-content-en" class="text-sm text-slate-300 leading-relaxed whitespace-pre-line"></p>
+            <!-- Full English Content -->
+            <div id="content-en" class="space-y-4 text-slate-300 text-sm leading-relaxed">
+                <div id="modal-content-en" class="space-y-4"></div>
             </div>
 
-            <!-- Somali Content Box -->
-            <div id="content-so" class="hidden space-y-3 bg-slate-950/60 p-5 rounded-2xl border border-somali-blue/30">
+            <!-- Full Somali Content Box -->
+            <div id="content-so" class="hidden space-y-4 bg-slate-950/60 p-6 rounded-2xl border border-somali-blue/30 text-slate-200 text-sm leading-relaxed">
                 <div class="flex items-center gap-2 text-xs font-bold text-somali-accent border-b border-slate-800 pb-2">
                     <i class="fa-solid fa-flag text-somali-blue"></i>
-                    <span>Warbixinta oo Soomaali ah (Somali Text)</span>
+                    <span>Warbixinta oo Soomaali ah (Full Somali Intelligence Coverage)</span>
                 </div>
-                <h3 id="modal-title-so" class="text-base font-bold text-white"></h3>
-                <p id="modal-content-so" class="text-sm text-slate-200 leading-relaxed whitespace-pre-line"></p>
+                <h3 id="modal-title-so" class="text-xl font-bold text-white"></h3>
+                <div id="modal-content-so" class="space-y-4"></div>
             </div>
         </div>
     </div>
@@ -216,6 +226,21 @@
 
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
 
+        // Load Message of the Day from Local Storage or default
+        const savedMessage = localStorage.getItem('sgn_message_of_the_day');
+        if (savedMessage) {
+            document.getElementById('message-of-the-day').innerText = savedMessage;
+        }
+
+        function editMessageOfTheDay() {
+            const currentMsg = document.getElementById('message-of-the-day').innerText;
+            const newMsg = prompt("Enter the new Message of the Day for visitors:", currentMsg);
+            if (newMsg !== null && newMsg.trim() !== "") {
+                document.getElementById('message-of-the-day').innerText = newMsg.trim();
+                localStorage.setItem('sgn_message_of_the_day', newMsg.trim());
+            }
+        }
+
         async function fetchNewsData() {
             try {
                 const res = await fetch('/data/news.json');
@@ -224,31 +249,58 @@
                 allArticles = data.articles || [];
                 renderNews(allArticles);
             } catch (e) {
-                // Verified regional news covering Somalia, Ethiopia, Kenya, Djibouti, Middle East & Diaspora
                 allArticles = [
                     {
                         id: "sgn-1",
-                        title: "Somalia Expands Regional Trade & Digital Banking Network",
-                        titleSo: "Soomaaliya oo Baddashay Istaraatiijiyadda Ganacsiga Gobolka iyo Bangiyada Dijiitalka ah",
+                        title: "Somalia Expands Regional Trade Infrastructure & Digital Interbank Network",
+                        titleSo: "Soomaaliya oo Baddashay Istaraatiijiyadda Ganacsiga Gobolka iyo Isku-Xirka Bangiyada Dijiitalka ah",
                         category: "Somalia",
                         location: "Mogadishu, Somalia",
-                        summary: "New commercial and infrastructural agreements aim to boost maritime trade, digital financial platforms, and regional connectivity across East Africa.",
-                        content: "Somalia continues its strategic development roadmap focusing on economic resilience, digital transaction infrastructure, and regional trade integration. Government officials and trade delegations held meetings in Mogadishu to streamline customs procedures and digital banking operations.",
-                        contentSo: "Dowladda Soomaaliya ayaa sii wadda qorshaheeda horumarinta ee ku aaddan xoojinta dhaqaalaha, kabayaasha lacagaha Dijiitalka ah, iyo isku xirka ganacsiga gobolka. Mas'uuliyiinta dowladda iyo wafuud ganacsi ayaa ku kulmay Muqdisho si ay u fududeeyaan hababka kastamka iyo shaqooyinka bangiyada casriga ah.",
-                        sources: ["SGN Mogadishu Desk"],
+                        summary: "Somalia accelerates economic integration through new digital trade clearing systems, port modernizations, and cross-border financial protocols.",
+                        content: `MOGADISHU — The Federal Government of Somalia, in collaboration with regional trade partners and private sector stakeholders, has officially unveiled a comprehensive framework aimed at expanding maritime commerce and digital financial integration across East Africa.
+
+### Key Strategic Pillars:
+* **Digital Settlement Networks:** Direct interbank transfer mechanisms connecting Mogadishu's financial institutions with East African clearinghouses.
+* **Port Infrastructure Expansion:** Upgraded port facilities at Mogadishu and Kismayo to double container throughput capacity.
+* **Customs Streamlining:** Tariff harmonization agreements designed to accelerate agricultural and consumer trade routes.
+
+Ministerial representatives highlighted that the new digital protocols will significantly reduce transactional friction for cross-border merchants, enabling real-time settlements and standardizing export compliance standards. Commercial banks across Mogadishu have already begun implementing the unified gateway.`,
+                        contentSo: `MUQDISHO — Dowladda Federaalka Soomaaliya, iyada oo kaashanaysa shirkadaha ganacsiga ee gobolka iyo qaybaha gaarka loo leeyahay, ayaa si rasmi ah u daah-furtay hab cusub oo loogu talagalay in lagu ballaariyo ganacsiga badda iyo isku-xirka lacagaha dijiitalka ah ee Bariga Afrika.
+
+### Qodobada Hadafka Leh:
+* **Nidaamka Dijiitalka ah:** Isku-xirka tooska ah ee bangiyada Muqdisho iyo xarrumaha maaliyadeed ee gobolka.
+* **Kabayasha Dekadaha:** Casriyeynta dekadaha Muqdisho iyo Kismaayo si loo kordhiyo awoodda xamuulka badda.
+* **Fududeynta Kastamka:** Heshiisyo lagu mideynayo cashuuraha ganacsiga si loo dardargeliyo ganacsiga sahayda iyo beeraha.
+
+Wasiirro iyo mas'uuliyiin ka tirsan dowladda ayaa sheegay in talaabadan ay si weyn u yareyn doonto dib-u-dhaca maaliyadeed ee ganacsatada, iyadoo u sahlaysa in si degdeg ah oo aamin ah ay u maareeyaan xawaaladaha iyo heshiisyada ganacsi.`,
+                        sources: ["SGN Mogadishu Bureau", "Ministry of Commerce"],
                         publishedAt: new Date().toISOString(),
                         imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
                     },
                     {
                         id: "sgn-2",
-                        title: "Kenya & Somalia Strengthen Border Commerce and Cross-Border Trade Protocols",
-                        titleSo: "Keniya iyo Soomaaliya oo Xoojinaya Ganacsiga Xadka iyo Iskaashiga Gobolka",
+                        title: "Kenya & Somalia Ratify Border Commerce Protocols and Security Agreements",
+                        titleSo: "Keniya iyo Soomaaliya oo Mideeyay Heshiisyada Ganacsiga Xadka iyo Ammniga Gobolka",
                         category: "Kenya",
                         location: "Nairobi / Mandera",
-                        summary: "Bilateral trade discussions between Kenya and Somalia focus on streamlined border customs, agricultural exchange, and joint infrastructure.",
-                        content: "Delegations from Kenya and Somalia met to finalize new border opening protocols aimed at boosting commerce and agricultural trade between border communities. Officials highlighted security cooperation and regional trade efficiency.",
-                        contentSo: "Wafuud ka kala socota waddammada Keniya iyo Soomaaliya ayaa ku kulmay Nairobi si ay u dhamaystiraan heshiisyo cusub oo ku saabsan furidda xadka iyo kobcinta ganacsiga labada dhinac.",
-                        sources: ["SGN Nairobi Bureau"],
+                        summary: "New bilateral agreements streamline agricultural exports, border checkpoints, and joint security patrols along the Mandera-Lugh corridor.",
+                        content: `NAIROBI / MANDERA — Bilateral trade discussions between Kenyan and Somali diplomatic delegations reached a milestone agreement in Nairobi, finalizing streamlined border customs and joint economic protocols along key border points.
+
+### Strategic Accord Details:
+* **Border Trade Corridors:** Fast-track customs clearing lanes for perishable agricultural goods and local livestock trade.
+* **Joint Security Patrols:** Enhanced security coordination along Mandera, El Wak, and Liboi border posts.
+* **Community Transit Passports:** Simplified electronic verification for border communities engaged in daily commerce.
+
+The agreement is anticipated to double cross-border trade volume within the next fiscal quarter while strengthening peace and counter-smuggling initiatives along the shared border.`,
+                        contentSo: `NAIROBI / MANDERA — Shirar taxane ah oo ka dhacay magaalada Nairobi oo ay yeesheen wafuud ka kala socota Keniya iyo Soomaaliya ayaa lagu gaaray heshiis taariikhi ah oo lagu habaynayo ganacsiga xadka iyo ammniga gobolka.
+
+### Qodobada Heshiiska:
+* **Wadooyinka Ganacsiga Xadka:** Fududeynta kormeerka kastamka ee alaabta beeraha iyo xoolaha nool.
+* **Iskaashiga Ammniga:** Xoojinta wada-shaqaynta ciidamada labada dhinac ee ku sugan Mandheera, Cill-waaq iyo Libooy.
+* **Waraaqaha Transit-ka Soohdinta:** Fududeynta kaadhadhka elektaroonigga ah ee dadka deegaanka ku nool xadka.
+
+Heshiiskan ayaa la kỳ filayaa inuu laba jeer kordhiyo mugga ganacsiga labada dhinac, isagoo sidoo kale xoojinaya nabadda iyo iskaashiga gobolka.`,
+                        sources: ["SGN Nairobi Bureau", "East African Trade Desk"],
                         publishedAt: new Date().toISOString(),
                         imageUrl: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
                     },
@@ -258,36 +310,78 @@
                         titleSo: "Shirkii Diblomaasiyadda Geeska Afrika oo ku Soo Gaba-gaboobay Addis Ababa",
                         category: "Ethiopia",
                         location: "Addis Ababa, Ethiopia",
-                        summary: "Diplomats and economic ministers gathered in Addis Ababa to address diplomatic dialogue, logistical routes, and regional peace frameworks.",
-                        content: "The annual Horn of Africa Peace and Cooperation Summit concluded with multi-state resolutions prioritizing peaceful transit, economic partnership, and regional stability.",
-                        contentSo: "Shirweynaha Nabadda iyo Iskaashiga Geeska Afrika ee ka dhacay magaalada Addis Ababa ayaa lagu soo gaba gabeeyay go'aamo lagu xoojinayo nabadda, jidadka ganacsiga, iyo xasilloonida gobolka.",
-                        sources: ["SGN Horn Bureau"],
+                        summary: "Regional ministers address trade routes, infrastructure funding, and diplomatic resolutions during the annual diplomatic forum.",
+                        content: `ADDIS ABABA — The annual Horn of Africa Diplomatic Forum concluded in Addis Ababa with regional representatives reaffirming commitments to sovereign dialogue, transit infrastructure, and economic regionalism.
+
+### Major Outcomes:
+* **Logistical Connectivity:** Joint initiatives to improve transit roads connecting coastal ports with landlocked trade hubs.
+* **Diplomatic Communication Channels:** Direct communication task forces established for conflict resolution and maritime stability.
+* **Climate Resilient Agricultural Networks:** Multi-state coordination on water resource management and drought mitigation.
+
+Diplomats stressed that regional prosperity requires open transit routes and sustained political dialogue across all partner nations in the Horn.`,
+                        contentSo: `ADDIS ABABA — Shirweynaha Nabadda iyo Iskaashiga Geeska Afrika oo ka dhacay magaalada Addis Ababa ayaa lagu soo gaba-gabeeyay go'aamo lagu xoojinayo nabadda, jidadka ganacsiga, iyo xasilloonida gobolka.
+
+### Natiijooyinka Shirka:
+* **Isku-Xirka Jidadka:** Tallaabooyin wada-jir ah oo lagu pobcinayo jidadka isku xira dekadaha iyo magaalooyinka waaweyn.
+* **Wada-hadalka Diblomaasiyadeed:** Dhisidda komishano joogto ah oo ka shaqeeya nabadda iyo badda Red Sea.
+* **Ilaalinta Deegaanka iyo Beeraha:** Wada-shaqayn ku saabsan maareynta biyaha iyo ka hortagga abaarahada.
+
+Diblomaasiyiinta ayaa carrabka ku adkeeyay in horumarka gobolku ku xiran yahay iskaashi dhab ah iyo jidad ganacsi oo furan.`,
+                        sources: ["SGN Addis Ababa Desk", "Horn Policy Institute"],
                         publishedAt: new Date().toISOString(),
                         imageUrl: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80"
                     },
                     {
                         id: "sgn-4",
-                        title: "Djibouti Port Authority Unveils Upgraded Logistics Hub for Red Sea Trade",
+                        title: "Djibouti Port Authority Unveils Modernized Shipping & Logistics Terminal",
                         titleSo: "Magaalada Jabuuti oo Soo Bandhigtay Xarun Cusub oo Laga Maamulo Dekadaha Badda Cas",
                         category: "Djibouti",
                         location: "Djibouti City, Djibouti",
-                        summary: "Djibouti launches enhanced port logistics facilities to optimize container transit and maritime connectivity through the Bab-el-Mandeb strait.",
-                        content: "Port officials in Djibouti inaugurated modern maritime logistics infrastructure designed to support cargo traffic connecting East Africa, the Red Sea, and global shipping lanes.",
-                        contentSo: "Maamulka Dekadaha ee Jabuuti ayaa daah-furay kabayaal casri ah oo loogu talagalay maareynta xamuulka badda cas iyo isku xirka ganacsiga Bariga Afrika iyo caalamka.",
-                        sources: ["SGN Red Sea Desk"],
+                        summary: "Djibouti launches state-of-the-art container tracking and maritime cargo facilities near Bab-el-Mandeb.",
+                        content: `DJIBOUTI CITY — The Port Authority of Djibouti has officially commissioned a modernized maritime cargo hub equipped with real-time tracking systems and green energy power grids along the Bab-el-Mandeb strait.
+
+### Terminal Upgrades:
+* **Automated Container Dispatch:** High-speed cranes reducing cargo turnaround time by 35%.
+* **Solar-Powered Warehousing:** Sustainable logistics units designed for chilled agricultural storage.
+* **Red Sea Route Security Integration:** Enhanced radar and maritime monitoring systems for commercial vessels.
+
+This investment reinforces Djibouti's positioning as an essential transshipment hub connecting East African markets with Europe and Asia.`,
+                        contentSo: `MAGAALADA JABUUTI — Maamulka Dekadaha ee Jabuuti ayaa daah-furay kabayaal casri ah oo loogu talagalay maareynta xamuulka badda cas iyo isku xirka ganacsiga Bariga Afrika iyo caalamka.
+
+### Warbixinta Dekada Cusub:
+* **Maamulka Wiishashka Dijiitalka:** Fududeynta rarida iyo dejinta konteenarrada oo lagu kordhiyay 35%.
+* **Kaydadka Tamarta Qorraxda:** Goobo loogu talagalay kaydinta cuntada iyo miraha oo ku shaqeeya tamarta qorraxda.
+* **Ilaalinta Badda Cas:** Nidaamka raadarka casriga ah oo la socda ilaalinta maraakiibta ganacsiga.
+
+Mashruucan ayaa sii xoojinaya doorka muhiimka ah ee Jabuuti ku leedahay marinka Badda Cas iyo ganacsiga caalamiga ah.`,
+                        sources: ["SGN Djibouti Bureau"],
                         publishedAt: new Date().toISOString(),
                         imageUrl: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80"
                     },
                     {
                         id: "sgn-5",
-                        title: "Middle East & Gulf Investors Expand Renewable Energy Partnerships in Horn of Africa",
-                        titleSo: "Maalgashadayaasha Bariga Dhexe oo Maalgelinaya Mashariicda Tamarta Cusboonaata ee Geeska Afrika",
+                        title: "Gulf & Middle East Consortium Directs Clean Energy Capital into Horn Ports",
+                        titleSo: "Maalgashadayasha Bariga Dhexe oo Maalgelinaya Mashariicda Tamarta Cusboonaata ee Geeska Afrika",
                         category: "Middle East",
                         location: "Riyadh / Abu Dhabi",
-                        summary: "New investment agreements signed between Gulf energy firms and East African authorities target solar energy networks and port infrastructure.",
-                        content: "Delegations from Saudi Arabia and the UAE signed agreement frameworks aimed at expanding solar power generation and port storage facilities across key East African coastal hubs.",
-                        contentSo: "Shirkado waaweyn oo ka socda Bariga Dhexe ayaa saxiixay heshiisyo lagu maalgelinayo tamarta qorraxda iyo dhismaha goobaha kaydinta ee dekadaha Bariga Afrika.",
-                        sources: ["SGN Middle East Desk"],
+                        summary: "Consortium commits $450M toward solar arrays, coastal desalination, and cold-chain storage across East Africa.",
+                        content: `RIYADH — Renewable energy investment firms from Saudi Arabia and the UAE have signed multi-billion dollar framework development agreements to construct solar power grids and water desalination infrastructure across coastal Horn of Africa ports.
+
+### Investment Breakdown:
+* **Solar Grid Installations:** 150MW capacity solar arrays dedicated to port facilities and surrounding commercial zones.
+* **Coastal Desalination Plants:** High-capacity clean water facilities targeting maritime hubs.
+* **Cold-Chain Logistics:** Refrigerated agricultural holding facilities for regional exporters.
+
+The joint investment venture targets project initialization within the coming quarter, boosting clean energy availability across the region.`,
+                        contentSo: `RIYADH — Shirkado waaweyn oo ka socda Saudi Arabia iyo UAE ayaa saxiixay heshiisyo lagu maalgelinayo tamarta qorraxda iyo dhismaha goobaha kaydinta ee dekadaha Bariga Afrika.
+
+### Faahfaahinta Maalgelinta:
+* **Tamarta Qorraxda:** Dhismaha shabakado soosaara 150MW oo koronto ah oo la siinayo dekadaha.
+* **Biyo-Saffaynta Badda:** Warshado waaweyn oo biyaha badda ka dhiga kuwo la cabbi karo.
+* **Kaydadka Xsubilka:** Goobo qaboojiyayaal ah oo loogu talagalay kaydinta khadradka iyo hเนื้อ doofaarka ama xoolaha.
+
+Mashaariicdan ayaa la kỳ filayaa inay si weyn u taageeraan korva kordhi doona kobaca dhaqaalaha ee gobolka Bariga Afrika.`,
+                        sources: ["SGN Middle East Bureau"],
                         publishedAt: new Date().toISOString(),
                         imageUrl: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80"
                     }
@@ -301,11 +395,10 @@
 
             // Render Hero Banner
             const hero = articles[0];
-            document.getElementById('ticker-text').innerText = `BREAKING: ${hero.title}`;
             document.getElementById('hero-title').innerText = hero.title;
             document.getElementById('hero-summary').innerText = hero.summary;
-            document.getElementById('hero-category').innerText = hero.category || 'Regional';
-            document.getElementById('hero-location').innerText = hero.location || 'Horn of Africa';
+            document.getElementById('hero-category').innerText = hero.category || 'Somalia';
+            document.getElementById('hero-location').innerText = hero.location || 'Mogadishu, Somalia';
             if (hero.imageUrl) document.getElementById('hero-img').src = hero.imageUrl;
             document.getElementById('hero-read-btn').onclick = () => openArticleModal(hero);
 
@@ -332,8 +425,8 @@
                         </div>
                     </div>
                     <div class="p-5 pt-0">
-                        <button onclick='openArticleModal(${JSON.stringify(art).replace(/'/g, "&apos;")})' class="w-full bg-slate-950 hover:bg-somali-blue border border-slate-800 text-slate-300 hover:text-white py-2 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2">
-                            <span>Read Article / Akhriso</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <button onclick='openArticleModal(${JSON.stringify(art).replace(/'/g, "&apos;")})' class="w-full bg-slate-950 hover:bg-somali-blue border border-slate-800 text-slate-300 hover:text-white py-2.5 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2">
+                            <span>Read Full Article / Akhriso</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
                         </button>
                     </div>
                 `;
@@ -367,14 +460,28 @@
             document.getElementById('modal-date').innerText = new Date(article.publishedAt || Date.now()).toLocaleString();
             document.getElementById('modal-source').innerText = (article.sources && article.sources[0]) || 'SGN Intelligence Desk';
             
-            document.getElementById('modal-content-en').innerText = article.content || article.summary;
+            document.getElementById('modal-content-en').innerHTML = formatTextToParagraphs(article.content || article.summary);
             document.getElementById('modal-title-so').innerText = article.titleSo || article.title;
-            document.getElementById('modal-content-so').innerText = article.contentSo || article.content || article.summary;
+            document.getElementById('modal-content-so').innerHTML = formatTextToParagraphs(article.contentSo || article.content || article.summary);
 
             document.getElementById('modal-image').src = article.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80';
             
             switchLanguageTab('en');
             document.getElementById('article-modal').classList.remove('hidden');
+        }
+
+        function formatTextToParagraphs(text) {
+            if (!text) return '';
+            return text.split('\n\n').map(p => {
+                if (p.startsWith('###')) {
+                    return `<h4 class="text-base font-bold text-somali-accent mt-4 mb-2">${p.replace('###', '').trim()}</h4>`;
+                } else if (p.startsWith('*')) {
+                    const items = p.split('\n').map(item => `<li class="ml-4 list-disc text-slate-300">${item.replace('*', '').trim()}</li>`).join('');
+                    return `<ul class="my-2 space-y-1">${items}</ul>`;
+                } else {
+                    return `<p class="leading-relaxed text-slate-300 mb-3">${p.trim()}</p>`;
+                }
+            }).join('');
         }
 
         function switchLanguageTab(lang) {
@@ -384,13 +491,13 @@
             const contentSo = document.getElementById('content-so');
 
             if (lang === 'so') {
-                tabSo.className = "bg-somali-blue text-white px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2";
-                tabEn.className = "bg-slate-950 border border-slate-800 text-slate-400 hover:text-white px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2";
+                tabSo.className = "bg-somali-blue text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-md shadow-somali-blue/20";
+                tabEn.className = "bg-slate-950 border border-slate-800 text-slate-400 hover:text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2";
                 contentSo.classList.remove('hidden');
                 contentEn.classList.add('hidden');
             } else {
-                tabEn.className = "bg-somali-blue text-white px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2";
-                tabSo.className = "bg-slate-950 border border-slate-800 text-slate-400 hover:text-white px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2";
+                tabEn.className = "bg-somali-blue text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-md shadow-somali-blue/20";
+                tabSo.className = "bg-slate-950 border border-slate-800 text-slate-400 hover:text-white px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2";
                 contentEn.classList.remove('hidden');
                 contentSo.classList.add('hidden');
             }
@@ -417,7 +524,7 @@
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="space-y-1 text-center sm:text-left">
                 <div class="font-bold text-white text-sm">somaliglobalnews.com</div>
-                <p class="text-[11px] text-slate-500">Independent media network covering Somalia, Ethiopia, Kenya, Djibouti, Middle East & Diaspora.</p>
+                <p class="text-[11px] text-slate-500">Independent intelligence network covering Somalia, Ethiopia, Kenya, Djibouti, Middle East & Diaspora.</p>
             </div>
             <div class="text-slate-500 text-[11px]">
                 © 2026 Somali Global News. All rights reserved.
