@@ -1,30 +1,43 @@
 name: Somali Global News Automated Wire Fetcher
-on: schedule: - cron: "0 */6 * * *" workflow_dispatch:
-permissions: contents: write
-jobs: update-news: runs-on: ubuntu-latest
-steps:
-  - name: Checkout Repository
-    uses: actions/checkout@v4
-    with:
-      fetch-depth: 0
 
-  - name: Setup Node.js Environment
-    uses: actions/setup-node@v4
-    with:
-      node-version: '20'
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
 
-  - name: Install Dependencies
-    run: npm install @google/genai
+permissions:
+  contents: write
 
-  - name: Run News Generator Engine
-    run: node fetch-somalia-news.js
-    env:
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
 
-  - name: Commit and Push Updated News Payload
-    run: |
-      git config --global user.name "github-actions[bot]"
-      git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      git add public/data/news.json || true
-      git commit -m "chore(news): auto-update breaking news wire feed [skip ci]" || echo "No changes to commit"
-      git push origin HEAD:${{ github.ref_name }} || echo "Push skipped or no changes"
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install @google/genai
+
+      - name: Run News Generator Engine
+        run: node fetch-somalia-news.js
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Commit and Push Updated News Payload
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/news.json || true
+          git commit -m "chore(news): auto-update breaking news wire feed [skip ci]" || echo "No changes to commit"
+          git push origin HEAD:${{ github.ref_name }} || echo "Push skipped or no changes"
+```eof
+
+Save this into your file, commit it, and that YAML syntax error will be completely gone!
