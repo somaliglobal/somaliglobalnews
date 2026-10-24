@@ -1,341 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somali Global News Wire</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f7ff',
-                            100: '#e0effe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
+const fs = require('fs');
+const path = require('path');
+const { GoogleGenAI } = require('@google/genai');
+
+/**
+ * Somali Global News Wire Generator
+ * Uses Gemini API with Search Grounding to pull real-time news from:
+ * BBC, Al Jazeera, Reuters, France 24, Anadolu Agency, and Al Arabiya English.
+ */
+
+// Verified topic-matched images (No Barack Obama or generic mismatched photos)
+const CATEGORY_IMAGES = {
+    Somalia: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+    Ethiopia: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80",
+    "Middle East": "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1200&q=80",
+    Diaspora: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
+    Sports: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
+    World: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1200&q=80"
+};
+
+async function generateNewsFeed() {
+    const apiKey = process.env.GEMINI_API_KEY || '';
+    const ai = new GoogleGenAI({ apiKey });
+
+    const systemPrompt = `You are the lead editor for Somali Global News Wire (SGN).
+Search current news reported today by BBC, Al Jazeera, Reuters, France 24, Anadolu Agency, and Al Arabiya English.
+
+Cover 6 specific domains:
+1. Somalia (Mogadishu, trade, EAC, security)
+2. Ethiopia (Addis Ababa, Horn of Africa regional diplomacy)
+3. Middle East (Yemen, Red Sea, Gulf GCC diplomacy)
+4. Diaspora (London, Minnesota, European Somali communities)
+5. Sports (European Premier League, La Liga, Serie A, NBA, NFL)
+6. World (Global geopolitics or trade)
+
+Requirements for each of the 6 stories:
+- Category matching strictly one of: ["Somalia", "Ethiopia", "Middle East", "Diaspora", "Sports", "World"]
+- English Title & Full Multiline Article
+- Natural Somali Translation (title_so, summary_so, content_so)
+- Location desk (e.g. "Mogadishu Desk", "Addis Ababa Bureau", "Riyadh Desk", "London Desk", "Sports Desk")`;
+
+    const userPrompt = `Search today's breaking news across BBC, Al Jazeera, Reuters, France 24, Anadolu, and Al Arabiya for Somalia, Ethiopia, Middle East, Diaspora, Sports (Soccer/NBA/NFL), and World news. Generate 6 distinct article objects inside a JSON array under the "articles" key.`;
+
+    try {
+        console.log('Fetching multi-source news wire using Gemini API...');
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-3-flash-preview',
+            contents: [{ parts: [{ text: userPrompt }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] },
+            tools: [{ google_search: {} }],
+            generationConfig: {
+                responseMimeType: 'application/json',
+                responseSchema: {
+                    type: 'OBJECT',
+                    properties: {
+                        articles: {
+                            type: 'ARRAY',
+                            items: {
+                                type: 'OBJECT',
+                                properties: {
+                                    id: { type: 'STRING' },
+                                    title: { type: 'STRING' },
+                                    title_so: { type: 'STRING' },
+                                    category: { type: 'STRING' },
+                                    location: { type: 'STRING' },
+                                    summary: { type: 'STRING' },
+                                    summary_so: { type: 'STRING' },
+                                    content: { type: 'STRING' },
+                                    content_so: { type: 'STRING' }
+                                },
+                                required: ['id', 'title', 'title_so', 'category', 'location', 'summary', 'summary_so', 'content', 'content_so']
+                            }
                         }
-                    }
+                    },
+                    required: ['articles']
                 }
             }
-        }
-    </script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-    </style>
-</head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+        });
 
-    <!-- Header / Navbar -->
-    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <div class="flex items-center gap-3 cursor-pointer" onclick="filterCategory('All')">
-                    <div class="bg-blue-600 text-white font-black px-3 py-1.5 rounded-lg text-xl tracking-wider shadow-lg shadow-blue-500/20">
-                        SGN
-                    </div>
-                    <div>
-                        <span class="text-lg font-bold tracking-tight text-white block leading-none">SOMALI GLOBAL NEWS</span>
-                        <span class="text-xs text-blue-400 font-medium tracking-wider">AUTOMATED WIRE FEED</span>
-                    </div>
-                </div>
+        const parsedData = JSON.parse(response.text);
 
-                <!-- Language & Status -->
-                <div class="flex items-center gap-4">
-                    <button id="langToggleBtn" onclick="toggleLanguage()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-2">
-                        <i class="fa-solid font-bold text-blue-400">🌐</i>
-                        <span id="langBtnText">Read in Somali (Soomaali)</span>
-                    </button>
-                    <div class="hidden md:flex items-center gap-2 bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-full border border-emerald-500/20">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Live Feed
-                    </div>
-                </div>
-            </div>
+        // Map safe, topic-matched photos to each article
+        const finalArticles = (parsedData.articles || []).map((art, idx) => ({
+            ...art,
+            id: art.id || `art-${idx + 1}-${Date.now()}`,
+            imageUrl: CATEGORY_IMAGES[art.category] || CATEGORY_IMAGES.Somalia,
+            publishedAt: new Date().toISOString()
+        }));
 
-            <!-- Categories Navigation Bar -->
-            <nav class="flex items-center gap-1 overflow-x-auto py-2 border-t border-slate-800/80 scrollbar-none text-sm">
-                <button onclick="filterCategory('All')" class="cat-btn active bg-blue-600 text-white px-3.5 py-1 rounded-full font-medium whitespace-nowrap transition">All News</button>
-                <button onclick="filterCategory('Somalia')" class="cat-btn text-slate-300 hover:bg-slate-800 px-3.5 py-1 rounded-full font-medium whitespace-nowrap transition">Somalia</button>
-                <button onclick="filterCategory('Ethiopia')" class="cat-btn text-slate-300 hover:bg-slate-800 px-3.5 py-1 rounded-full font-medium whitespace-nowrap transition">Ethiopia</button>
-                <button onclick="filterCategory('Middle East')" class="cat-btn text-slate-300 hover:bg-slate-800 px-3.5 py-1 rounded-full font-medium whitespace-nowrap transition">Middle East</button>
-                <button onclick="filterCategory('Diaspora')" class="cat-btn text-slate-300 hover:bg-slate-800 px-3.5 py-1 rounded-full font-medium whitespace-nowrap transition">Diaspora</button>
-                <button onclick="filterCategory('Sports')" class="cat-btn text-slate-300 hover:bg-slate-800 px-3.5 py-1 rounded-full font-medium whitespace-nowrap transition">Sports</button>
-                <button onclick="filterCategory('World')" class="cat-btn text-slate-300 hover:bg-slate-800 px-3.5 py-1 rounded-full font-medium whitespace-nowrap transition">World</button>
-            </nav>
-        </div>
-    </header>
+        const payload = {
+            updatedAt: new Date().toISOString(),
+            count: finalArticles.length,
+            articles: finalArticles
+        };
 
-    <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
-        <!-- Ticker / Status bar -->
-        <div class="mb-4 bg-slate-800/60 border border-slate-800 rounded-xl p-3 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2">
-            <div class="flex items-center gap-2">
-                <span class="bg-red-500/20 text-red-400 font-bold px-2 py-0.5 rounded text-[10px] tracking-wide">WIRE ALERT</span>
-                <span id="wireStatus">Loading news feeds...</span>
-            </div>
-            <div id="lastUpdated" class="text-slate-500">Updated: --</div>
-        </div>
-
-        <!-- Live Sports Ticker: NBA, NFL, La Liga, Serie A, Premier League -->
-        <div class="mb-6 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg flex items-center text-xs">
-            <div class="bg-blue-600 text-white font-extrabold px-3 py-2 flex items-center gap-1.5 whitespace-nowrap shrink-0">
-                <i class="fa-solid fa-trophy"></i>
-                SPORTS TICKER
-            </div>
-            <div class="overflow-x-auto whitespace-nowrap py-2 px-3 text-slate-300 font-medium flex items-center gap-6 scrollbar-none animate-pulse">
-                <span class="flex items-center gap-1.5"><span class="text-blue-400 font-bold">[EPL]</span> Arsenal 2 - 1 Chelsea</span>
-                <span class="text-slate-600">•</span>
-                <span class="flex items-center gap-1.5"><span class="text-yellow-400 font-bold">[LA LIGA]</span> Real Madrid 3 - 1 Barcelona</span>
-                <span class="text-slate-600">•</span>
-                <span class="flex items-center gap-1.5"><span class="text-emerald-400 font-bold">[SERIE A]</span> Inter Milan 2 - 0 Juventus</span>
-                <span class="text-slate-600">•</span>
-                <span class="flex items-center gap-1.5"><span class="text-red-400 font-bold">[NBA]</span> Lakers 112 - 108 Celtics</span>
-                <span class="text-slate-600">•</span>
-                <span class="flex items-center gap-1.5"><span class="text-purple-400 font-bold">[NFL]</span> Chiefs 27 - 24 Eagles</span>
-            </div>
-        </div>
-
-        <!-- Featured / Top Article Header Grid -->
-        <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamic News Cards Inserted via JS -->
-            <div class="col-span-full py-12 text-center text-slate-500">
-                <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-blue-500"></i>
-                <p>Fetching automated wire stories...</p>
-            </div>
-        </div>
-    </main>
-
-    <!-- Article Reader Modal -->
-    <div id="articleModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
-            <button onclick="closeModal()" class="sticky top-4 right-4 ml-auto float-right bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-full w-8 h-8 flex items-center justify-center font-bold transition">
-                ✕
-            </button>
-            <div id="modalContent" class="p-6 sm:p-8">
-                <!-- Article details populated via JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-slate-950 border-t border-slate-800/80 mt-12 py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-2">
-            <p>© 2026 Somali Global News Automated Wire Service. All rights reserved.</p>
-            <p>Aggregating news from BBC, Al Jazeera, Reuters, France 24, Anadolu & ESPN.</p>
-        </div>
-    </footer>
-
-    <!-- Logic Engine -->
-    <script>
-        let currentLang = 'en'; // 'en' or 'so'
-        let currentCategory = 'All';
-        let articlesData = [];
-
-        // Fallback Article Generation Engine if news.json is fetching locally
-        const FALLBACK_ARTICLES = [
-            {
-                id: "art-1",
-                title: "Somali Prime Minister Hamza Abdi Barre Convenes Security & Diplomatic Talks",
-                title_so: "Raysal Wasaaraha Soomaaliya Hamza Abdi Barre oo Kulan Muhiim ah ku Qabtay Muqdisho",
-                category: "Somalia",
-                location: "Mogadishu Desk",
-                summary: "Prime Minister Hamza Abdi Barre met with diplomatic envoys in Mogadishu to discuss maritime safety along key Horn of Africa shipping corridors and regional development.",
-                summary_so: "Raysal Wasaare Hamza Abdi Barre ayaa ergada caalamiga ah ku laabtay Muqdisho si looga hadlo amniga badaha iyo horumarka gobolka.",
-                content: "MOGADISHU — Prime Minister of the Federal Republic of Somalia, Hamza Abdi Barre, led key government talks in Mogadishu addressing regional development and maritime safety.\n\nThe discussions focused on strengthening maritime security along crucial Horn of Africa trade routes, economic bilateral cooperation, and joint regional infrastructure projects.\n\nPrime Minister Barre reaffirmed Somalia's dedication to regional peace, highlighting ongoing security reforms and expanded trade access across the East African Community.",
-                content_so: "MUQDISHO — Raysal Wasaaraha Xukuumadda Federaalka Soomaaliya Hamza Abdi Barre ayaa maanta shir heer sare ah ku qabtay magaalada Muqdisho.\n\nShirkan ayaa diiradda lagu saaray amniga marinnada badaha, ballaadhinta dekedaha, iyo iskaashiga ganacsiga ee Bariga Afrika.\n\nRaysal Wasaaraha ayaa sheegay in Soomaaliya ay ka go'an tahay horumarinta ganacsiga iyo adkaynta nabadgelyada gobolka.",
-                imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
-                publishedAt: new Date().toISOString()
-            },
-            {
-                id: "art-5",
-                title: "Premier League & European Football Weekend: Title Race Intensifies Across Serie A and La Liga",
-                title_so: "Wararkii Ugu Dambeeyay ee Ciyaaraha: Premier League, Serie A, La Liga, NBA iyo NFL",
-                category: "Sports",
-                location: "Sports Desk",
-                summary: "Key European football matches kick off this weekend across the English Premier League, Italian Serie A, and Spanish La Liga alongside NBA and NFL highlights.",
-                summary_so: "Kulamada xiisaha badan ee horyaalada Yurub sida Premier League, La Liga, Serie A iyo ciyaaraha NBA/NFL ayaa todobaadkan si weyn loo wada sugayaa.",
-                content: "LONDON & MADRID — Football fans across Europe and the Horn of Africa are geared up for crucial league matchups this weekend.\n\nIn the English Premier League, top contenders fight for points at the summit, while La Liga and Serie A showcase decisive tactical battles. Meanwhile, North American NBA basketball and NFL regular season clashes draw heavy international viewership.",
-                content_so: "LONDON iyo MADRID — Taageerayaasha ciyaaraha ee dunida iyo Soomaaliya ayaa markale isha ku haya kulamada adag ee horyaalada Premier League, La Liga iyo Serie A.\n\nSidoo kale horyaalada NBA iyo NFL ee Maraykanka ayaa galay marxalado go'aan cusub leh.",
-                imageUrl: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
-                publishedAt: new Date().toISOString()
-            },
-            {
-                id: "art-6",
-                title: "Red Sea & Gulf Strategic Talks: Yemen Coastal Security & GCC Economic Summit Convenes",
-                title_so: "Khaliijka iyo Badda Cas: Wadahadallada Yemen, Sacuudiga, Imaaraadka iyo Qatar",
-                category: "Middle East",
-                location: "Riyadh & Red Sea Desk",
-                summary: "GCC delegates and regional diplomatic envoys gather in Riyadh to address Red Sea maritime navigation, Yemen diplomatic stability, and regional trade corridors.",
-                summary_so: "Hogaamiyayaasha dalalka Khaliijka iyo ergooyinka caalamiga ah ayaa ku kulmay Riyaadh si looga hadlo amniga Badda Cas, Yemen iyo ganacsiga gobolka.",
-                content: "RIYADH — Diplomatic representatives from Gulf Cooperation Council (GCC) member states and Red Sea partner nations held high-level discussions in Riyadh.\n\nThe summit addressed maritime transit safety across the Bab-el-Mandeb strait, diplomatic efforts regarding stability in Yemen, and regional infrastructure cooperation connecting Gulf economies with the Horn of Africa.",
-                content_so: "RIYAADH — Ergada dalalka Khaliijka (GCC) iyo Badda Cas ayaa kulan muhiim ah ku yeeshay magaalada Riyaadh.\n\nKulanka ayaa lagu fakaray amniga Badda Cas, bab-el-mandeb, nabadda dalalka Yemen iyo Soomaaliya, iyo ballaadhinta iskaashiga dhaqaalaha gobolka.",
-                imageUrl: "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1200&q=80",
-                publishedAt: new Date().toISOString()
-            },
-            {
-                id: "art-2",
-                title: "Horn of Africa Security Review: African Union & Regional Partners Urge Calm in Ethiopia",
-                title_so: "Wararkii Ugu Dambeeyay ee Itoobiya: Midowga Afrika oo Baaq Nabadgelyo ah Soo Saaray",
-                category: "Ethiopia",
-                location: "Addis Ababa Bureau",
-                summary: "International envoys and African Union diplomats convene talks calling for immediate de-escalation, border stability, and peaceful dialogue across regional borders.",
-                summary_so: "Danjirayaasha caalamiga ah iyo Midowga Afrika ayaa ku baaqay degenaansho iyo wadahadal lagu dhameynayo xaaladaha ammaan ee gobolka.",
-                content: "ADDIS ABABA — International diplomats and African Union envoys held urgent consultation sessions in Addis Ababa regarding peace and stability across Horn of Africa borders.\n\nThe delegation urged all parties to prioritize political dialogue, secure humanitarian access routes, and protect civilian populations along key regional corridors.",
-                content_so: "ADDIS ABABA — Ergada Midowga Afrika iyo dublamaasiyiinta caalamiga ah ayaa kulamo deg-deg ah ku yeeshay magaalada Addis Ababa si looga hadlo amniga gobolka.",
-                imageUrl: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80",
-                publishedAt: new Date().toISOString()
-            },
-            {
-                id: "art-3",
-                title: "European Union & Horn of Africa Infrastructure Framework Signed in Brussels",
-                title_so: "Midowga Yurub oo Barnaamij Cusub ka Bilabay Bariga Afrika iyo Soomaaliya",
-                category: "World",
-                location: "Brussels / Euro Bureau",
-                summary: "Delegates in Brussels approved a simplified trade and customs framework designed to streamline freight transit between Europe and Horn of Africa ports.",
-                summary_so: "Mas'uuliyiinta Midowga Yurub ee Brussels ayaa ku dhawaaqay barnaamij cusub oo lagu taageerayo dekedaha Bariga Afrika.",
-                content: "BRUSSELS — European Union delegates concluded a landmark bilateral agreement in Brussels today to streamline customs procedures and trade corridors with East African partners.",
-                content_so: "BRUSSELS — Ergada Midowga Yurub ayaa Brussels ku meel marisay lacag lagu maalgelinayo maamulka iyo xidhiidhka dekedaha Bariga Afrika.",
-                imageUrl: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1200&q=80",
-                publishedAt: new Date().toISOString()
-            },
-            {
-                id: "art-4",
-                title: "Somali Diaspora Communities in London, Europe & US Host Business Forum",
-                title_so: "Shirka Ganacsiga Qurba-joogta Soomaaliyeed oo ka Furmay London, Yurub iyo Maraykanka",
-                category: "Diaspora",
-                location: "London & Minneapolis Bureau",
-                summary: "Somali entrepreneurs, scholars, and youth leaders from London, Europe, and North America gather for an annual economic forum.",
-                summary_so: "Aqoonyahanka iyo ganacsatada Soomaaliyeed ee UK, Yurub iyo Maraykanka ayaa ku kulsaday shirweynaha maalgashiga iyo teknoolajiyadda.",
-                content: "LONDON — Preparations are underway for the annual Diaspora Economic Summit in London and Minneapolis, bringing together entrepreneurs, scholars, and youth leaders.",
-                content_so: "LONDON — Hogaamiyayaasha bulshada iyo ganacsatada Soomaaliyeed ee UK, Yurub iyo Maraykanka ayaa magaalada London ku yeeshay shirweyne muhiim ah.",
-                imageUrl: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
-                publishedAt: new Date().toISOString()
-            }
-        ];
-
-        async function initNewsWire() {
-            try {
-                const response = await fetch('/data/news.json');
-                if (response.ok) {
-                    const data = await response.json();
-                    articlesData = data.articles || FALLBACK_ARTICLES;
-                    document.getElementById('lastUpdated').innerText = `Updated: ${new Date(data.updatedAt || Date.now()).toLocaleTimeString()}`;
-                } else {
-                    articlesData = FALLBACK_ARTICLES;
-                }
-            } catch (err) {
-                articlesData = FALLBACK_ARTICLES;
-            }
-
-            document.getElementById('wireStatus').innerText = `Automated wire active. ${articlesData.length} stories loaded.`;
-            renderNews();
+        const outputDir = path.join(__dirname, 'public', 'data');
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true });
         }
 
-        function renderNews() {
-            const grid = document.getElementById('newsGrid');
-            const filtered = currentCategory === 'All' 
-                ? articlesData 
-                : articlesData.filter(a => a.category.toLowerCase() === currentCategory.toLowerCase());
+        const outputPath = path.join(outputDir, 'news.json');
+        fs.writeFileSync(outputPath, JSON.stringify(payload, null, 2), 'utf-8');
+        console.log(`Successfully output ${finalArticles.length} news stories to ${outputPath}`);
 
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-500">No articles available under ${currentCategory}.</div>`;
-                return;
-            }
+    } catch (error) {
+        console.error('Error generating news payload:', error);
+        process.exit(1);
+    }
+}
 
-            grid.innerHTML = filtered.map((art, index) => {
-                const title = currentLang === 'so' ? (art.title_so || art.title) : art.title;
-                const summary = currentLang === 'so' ? (art.summary_so || art.summary) : art.summary;
-                const isFeatured = index === 0 && currentCategory === 'All';
-
-                return `
-                    <article onclick="openArticle('${art.id}')" class="bg-slate-800/40 hover:bg-slate-800/80 border border-slate-800 hover:border-slate-700 rounded-2xl overflow-hidden cursor-pointer transition duration-200 flex flex-col group ${isFeatured ? 'md:col-span-2 lg:col-span-2' : ''}">
-                        <div class="relative overflow-hidden ${isFeatured ? 'h-64 sm:h-80' : 'h-48'}">
-                            <img src="${art.imageUrl}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80'">
-                            <span class="absolute top-3 left-3 bg-blue-600/90 text-white font-semibold text-xs px-2.5 py-1 rounded-full backdrop-blur-md">
-                                ${art.category}
-                            </span>
-                        </div>
-                        <div class="p-5 flex flex-col justify-between flex-grow">
-                            <div>
-                                <div class="text-xs font-medium text-slate-400 mb-1 flex items-center gap-2">
-                                    <span>${art.location || 'Wire Desk'}</span>
-                                    <span>•</span>
-                                    <span>${new Date(art.publishedAt || Date.now()).toLocaleDateString()}</span>
-                                </div>
-                                <h2 class="font-bold text-slate-100 ${isFeatured ? 'text-xl sm:text-2xl' : 'text-lg'} group-hover:text-blue-400 transition leading-snug mb-2">
-                                    ${title}
-                                </h2>
-                                <p class="text-slate-400 text-sm line-clamp-2 leading-relaxed">
-                                    ${summary}
-                                </p>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-blue-400">
-                                <span>${currentLang === 'so' ? 'Akhriso maqaalka gaaban →' : 'Read Full Wire →'}</span>
-                            </div>
-                        </div>
-                    </article>
-                `;
-            }).join('');
-        }
-
-        function filterCategory(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                if (btn.innerText.trim().toLowerCase() === cat.toLowerCase() || (cat === 'All' && btn.innerText.includes('All'))) {
-                    btn.className = "cat-btn active bg-blue-600 text-white px-3.5 py-1 rounded-full font-medium whitespace-nowrap transition";
-                } else {
-                    btn.className = "cat-btn text-slate-300 hover:bg-slate-800 px-3.5 py-1 rounded-full font-medium whitespace-nowrap transition";
-                }
-            });
-            renderNews();
-        }
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'so' : 'en';
-            document.getElementById('langBtnText').innerText = currentLang === 'en' 
-                ? 'Read in Somali (Soomaali)' 
-                : 'Read in English';
-            renderNews();
-        }
-
-        function openArticle(id) {
-            const article = articlesData.find(a => a.id === id);
-            if (!article) return;
-
-            const title = currentLang === 'so' ? (article.title_so || article.title) : article.title;
-            const content = currentLang === 'so' ? (article.content_so || article.content) : article.content;
-
-            const modalContent = document.getElementById('modalContent');
-            modalContent.innerHTML = `
-                <div class="flex items-center gap-2 text-xs font-semibold text-blue-400 mb-2">
-                    <span class="bg-blue-600/20 text-blue-400 px-2.5 py-0.5 rounded-full border border-blue-500/20">${article.category}</span>
-                    <span>•</span>
-                    <span class="text-slate-400">${article.location}</span>
-                </div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-100 mb-4 leading-snug">${title}</h1>
-                <img src="${article.imageUrl}" alt="${title}" class="w-full h-64 sm:h-80 object-cover rounded-xl mb-6 border border-slate-800">
-                <div class="prose prose-invert max-w-none text-slate-300 space-y-4 text-base leading-relaxed">
-                    ${content.split('\n\n').map(p => `<p>${p}</p>`).join('')}
-                </div>
-            `;
-            document.getElementById('articleModal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('articleModal').classList.add('hidden');
-        }
-
-        window.onload = initNewsWire;
-    </script>
-</body>
-</html>
+generateNewsFeed();
