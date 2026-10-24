@@ -95,6 +95,9 @@
                 <button onclick="filterCategory('Somalia')" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-medium px-3.5 py-1.5 rounded-full transition whitespace-nowrap">
                     Somalia
                 </button>
+                <button onclick="filterCategory('Ethiopia')" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-medium px-3.5 py-1.5 rounded-full transition whitespace-nowrap">
+                    Ethiopia
+                </button>
                 <button onclick="filterCategory('Diaspora')" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-medium px-3.5 py-1.5 rounded-full transition whitespace-nowrap">
                     Diaspora (UK/EU)
                 </button>
@@ -103,9 +106,6 @@
                 </button>
                 <button onclick="filterCategory('Kenya')" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-medium px-3.5 py-1.5 rounded-full transition whitespace-nowrap">
                     Kenya
-                </button>
-                <button onclick="filterCategory('Ethiopia')" class="cat-btn bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-medium px-3.5 py-1.5 rounded-full transition whitespace-nowrap">
-                    Ethiopia
                 </button>
             </nav>
         </div>
@@ -152,9 +152,9 @@
                     <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-3" id="footer-nav-title">Coverage Desks</h4>
                     <ul class="space-y-2 text-xs">
                         <li><a href="#" onclick="filterCategory('Somalia')" class="hover:text-white transition">Mogadishu & Somalia Desk</a></li>
+                        <li><a href="#" onclick="filterCategory('Ethiopia')" class="hover:text-white transition">Ethiopia & Horn Desk</a></li>
                         <li><a href="#" onclick="filterCategory('Diaspora')" class="hover:text-white transition">London & Europe Diaspora Hub</a></li>
                         <li><a href="#" onclick="filterCategory('World')" class="hover:text-white transition">International Affairs & Euro Wire</a></li>
-                        <li><a href="#" onclick="filterCategory('Kenya')" class="hover:text-white transition">East Africa & Kenya Desk</a></li>
                     </ul>
                 </div>
                 <div>
@@ -221,24 +221,37 @@
         let activeCategory = 'All';
         let currentLang = 'en'; // 'en' or 'so'
 
-        // Default Fallback News Data Payload
+        // Default Fallback News Data Payload with Topic-Matched High Resolution Photos
         const defaultNews = [
             {
                 id: "art-1",
-                title: "Somali Prime Minister Barre Convenes High-Level Security Talks in Mogadishu",
-                title_so: "Raysal Wasaaraha Soomaaliya Hamza Abdi Barre oo Shir Muhiim ah ku Qabtay Muqdisho",
+                title: "Somali Prime Minister Hamza Abdi Barre Convenes Security & Diplomatic Talks",
+                title_so: "Raysal Wasaaraha Soomaaliya Hamza Abdi Barre oo Kulan Muhiim ah ku Qabtay Muqdisho",
                 category: "Somalia",
                 location: "Mogadishu Desk",
-                summary: "Prime Minister Hamza Abdi Barre convened high-level security discussions in Mogadishu regarding Red Sea maritime safety and East African trade corridors.",
-                summary_so: "Raysal Wasaare Hamza Abdi Barre ayaa Muqdisho ku qabtay kulan sare oo lagaga hadlayo amniga badaha iyo ganacsiga Bariga Afrika.",
-                content: "MOGADISHU — Prime Minister of the Federal Republic of Somalia, Hamza Abdi Barre, led key government talks in Mogadishu today addressing regional development and maritime security.\n\nThe discussions focused on maritime trade safety along key Horn of Africa transit routes, economic bilateral programs, and joint infrastructure initiatives with regional partners.\n\nPrime Minister Barre reaffirmed Somalia's dedication to regional peace, highlighting ongoing security reforms and expanded trade access across the East African Community.",
+                summary: "Prime Minister Hamza Abdi Barre met with diplomatic envoys to discuss maritime safety along key Horn of Africa shipping corridors and regional development.",
+                summary_so: "Raysal Wasaare Hamza Abdi Barre ayaa ergada caalamiga ah ku laabtay Muqdisho si looga hadlo amniga badaha iyo horumarka gobolka.",
+                content: "MOGADISHU — Prime Minister of the Federal Republic of Somalia, Hamza Abdi Barre, led key government talks in Mogadishu addressing regional development and maritime safety.\n\nThe discussions focused on strengthening maritime security along crucial Horn of Africa trade routes, economic bilateral cooperation, and joint regional infrastructure projects.\n\nPrime Minister Barre reaffirmed Somalia's dedication to regional peace, highlighting ongoing security reforms and expanded trade access across the East African Community.",
                 content_so: "MUQDISHO — Raysal Wasaaraha Xukuumadda Federaalka Soomaaliya Hamza Abdi Barre ayaa maanta shir heer sare ah ku qabtay magaalada Muqdisho.\n\nShirkan ayaa diiradda lagu saaray amniga marinnada badaha, ballaadhinta dekedaha, iyo iskaashiga ganacsiga ee Bariga Afrika.\n\nRaysal Wasaaraha ayaa sheegay in Soomaaliya ay ka go'an tahay horumarinta ganacsiga iyo adkaynta nabadgelyada gobolka.",
                 imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
                 publishedAt: new Date().toISOString()
             },
             {
                 id: "art-2",
-                title: "European Union and Euro News Wire Announce East Africa Trade Framework",
+                title: "Horn of Africa Security Review: African Union & Regional Partners Urge Calm in Ethiopia",
+                title_so: "Wararkii Ugu Dambeeyay ee Itoobiya: Midowga Afrika oo Baaq Nabadgelyo ah Soo Saaray",
+                category: "Ethiopia",
+                location: "Addis Ababa Bureau",
+                summary: "International envoys and African Union diplomats convene talks calling for immediate de-escalation, border stability, and peaceful dialogue across northern regional borders.",
+                summary_so: "Danjirayaasha caalamiga ah iyo Midowga Afrika ayaa ku baaqay degenaansho iyo wadahadal lagu dhameynayo xaaladaha ammaan ee gobolka.",
+                content: "ADDIS ABABA — International diplomats and African Union envoys held urgent consultation sessions in Addis Ababa regarding peace and stability across Horn of Africa borders.\n\nThe delegation urged all parties to prioritize political dialogue, secure humanitarian access routes, and protect civilian populations along key regional corridors.\n\nRegional leaders emphasized that sustained economic stability in the Horn depends directly on peaceful border cooperation and joint diplomatic initiatives.",
+                content_so: "ADDIS ABABA — Ergada Midowga Afrika iyo dublamaasiyiinta caalamiga ah ayaa kulamo deg-deg ah ku yeeshay magaalada Addis Ababa si looga hadlo amniga gobolka.\n\nMidowga Afrika ayaa baaq u diray dhamaan dhinacyada inay doortaan wadahadal, xaqiijiyaana amniga jidadka ganacsiga iyo bini'aadannimada.\n\nHogaamiyayaasha gobolka ayaa ku adkeeyay in horumarka dhaqaalaha Bariga Afrika uu ku xidhan yahay nabadgelyo waarta.",
+                imageUrl: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80",
+                publishedAt: new Date().toISOString()
+            },
+            {
+                id: "art-3",
+                title: "European Union & Horn of Africa Infrastructure Framework Signed in Brussels",
                 title_so: "Midowga Yurub oo Barnaamij Cusub ka Bilabay Bariga Afrika iyo Soomaaliya",
                 category: "World",
                 location: "Brussels / Euro Bureau",
@@ -250,8 +263,8 @@
                 publishedAt: new Date().toISOString()
             },
             {
-                id: "art-3",
-                title: "Somali Diaspora Communities in London, Europe & US Host Business Summit",
+                id: "art-4",
+                title: "Somali Diaspora Communities in London, Europe & US Host Business Forum",
                 title_so: "Shirka Ganacsiga Qurba-joogta Soomaaliyeed oo ka Furmay London, Yurub iyo Maraykanka",
                 category: "Diaspora",
                 location: "London & Minneapolis Bureau",
@@ -301,7 +314,7 @@
         function filterCategory(cat) {
             activeCategory = cat;
             
-            // Update Button Styles
+            // Update Button Styles in Header Nav
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 if (btn.innerText.includes(cat) || (cat === 'All' && (btn.innerText.includes('All') || btn.innerText.includes('Dhammaan')))) {
                     btn.className = 'cat-btn active-cat bg-brand-500 text-white text-xs sm:text-sm font-semibold px-3.5 py-1.5 rounded-full transition whitespace-nowrap';
@@ -327,8 +340,8 @@
                 heroSection.innerHTML = '';
                 grid.innerHTML = `
                     <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200">
-                        <p class="text-slate-500 font-medium">No stories currently listed in this desk category.</p>
-                        <button onclick="filterCategory('All')" class="mt-3 text-xs text-brand-500 font-bold hover:underline">Return to All Stories</button>
+                        <p class="text-slate-500 font-medium">${currentLang === 'so' ? 'Waqti xaadirkan ma jiraan warar ku jira qeybtaan.' : 'No stories currently listed in this desk category.'}</p>
+                        <button onclick="filterCategory('All')" class="mt-3 text-xs text-brand-500 font-bold hover:underline">${currentLang === 'so' ? 'Ku laab dhammaan wararka' : 'Return to All Stories'}</button>
                     </div>
                 `;
                 return;
