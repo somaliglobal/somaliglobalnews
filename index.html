@@ -34,7 +34,7 @@
                 </div>
                 <div class="flex items-center space-x-2 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-xs font-medium text-gray-700">Live Wire Active</span>
+                    <span class="text-xs font-medium text-gray-700">Live Wire Active (72h Auto-Refresh)</span>
                 </div>
             </div>
         </div>
@@ -140,13 +140,15 @@
     <script>
         lucide.createIcons();
 
+        // Articles automatically stamped with current timestamps so they stay visible for 72 hours
+        const now = Date.now();
         const DATABASE = {
             somalia: [
                 {
                     id: 'som-1',
                     title: "Mogadishu Port Digital Logistics Initiative Expands Trade Across Horn of Africa",
                     sourceName: "SGN Bureau",
-                    pubDate: new Date().toISOString(),
+                    pubDate: new Date(now - 3600000 * 2).toISOString(), // 2 hours ago
                     thumbnail: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80",
                     description: "Modernization efforts at Mogadishu Port have introduced advanced digital tracking, automated customs clearing, and streamlined maritime logistics.",
                     fullText: "MOGADISHU — In a major milestone for East African trade, authorities at the Port of Mogadishu have officially inaugurated a comprehensive digital logistics and cargo tracking framework. The initiative is designed to drastically reduce vessel turnaround times, eliminate administrative bottlenecks, and secure supply chains connecting Somalia with global markets.<br><br>Speaking at the launch ceremony, port directors emphasized that automated customs clearance and real-time container monitoring will lower operational costs for regional importers and exporters. Economists note that this infrastructure upgrade positions Mogadishu as a premier maritime hub in the Horn of Africa, encouraging foreign direct investment and fostering closer commercial ties with neighboring states."
@@ -155,7 +157,7 @@
                     id: 'som-2',
                     title: "Federal Government Announces New Regional Infrastructure & Renewable Energy Framework",
                     sourceName: "National Press",
-                    pubDate: new Date(Date.now() - 3600000*4).toISOString(),
+                    pubDate: new Date(now - 3600000 * 12).toISOString(), // 12 hours ago
                     thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
                     description: "A sweeping federal initiative targets sustainable energy grids and expanded road networks to link key commercial centers.",
                     fullText: "MOGADISHU — The Somali Federal Government has unveiled a comprehensive regional development strategy centered on renewable energy expansion and interstate highway construction. The multi-phase project aims to connect major urban centers with reliable solar and wind power installations while upgrading transport corridors.<br><br>Industry leaders have praised the initiative, highlighting its potential to stimulate local job creation, support agricultural processing, and ensure stable electricity access for small and medium enterprises. Planning ministries are currently coordinating with international development partners to secure implementation milestones over the coming fiscal cycle."
@@ -164,7 +166,7 @@
                     id: 'som-3',
                     title: "Hiran and Galmudug Agricultural Cooperatives Report Record Harvests",
                     sourceName: "Agricultural Wire",
-                    pubDate: new Date(Date.now() - 3600000*8).toISOString(),
+                    pubDate: new Date(now - 3600000 * 24).toISOString(), // 24 hours ago
                     thumbnail: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80",
                     description: "Enhanced irrigation channels and community farming programs yield exceptional crop outputs this season.",
                     fullText: "BELEDWEYNE — Agricultural cooperatives across the Hiran and Galmudug regions have announced exceptional harvest results following seasonal rainfall and expanded community irrigation programs. Local farming associations successfully introduced drought-resistant crop varieties and modern water management techniques.<br><br>The surplus production has contributed to stabilized local food prices and enhanced food security across central districts. Regional agricultural bureaus have committed to supplying additional tractor rentals and agronomic training to sustain momentum for the upcoming planting season."
@@ -175,7 +177,7 @@
                     id: 'eth-1',
                     title: "Addis Ababa Logistics Hub Reports Surge in Regional Cargo Transit",
                     sourceName: "East Africa Wire",
-                    pubDate: new Date().toISOString(),
+                    pubDate: new Date(now - 3600000 * 5).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
                     description: "Dry port facilities and multimodal transport corridors experience record efficiency gains and increased trade volume.",
                     fullText: "ADDIS ABABA — Ethiopia's central dry port authorities have reported a significant surge in cargo transit volumes, driven by expanded railway connectivity and streamlined customs procedures. The multimodal transport corridor linking industrial parks to regional ports has reduced transit times by nearly 35 percent.<br><br>Logistics experts point out that these efficiencies reinforce the country's status as a pivotal manufacturing and distribution center in East Africa, facilitating smoother export channels for textiles, agricultural goods, and manufactured commodities."
@@ -184,7 +186,7 @@
                     id: 'eth-2',
                     title: "Horn of Africa Diplomatic Forum Addresses Regional Trade & Infrastructure Integration",
                     sourceName: "Addis Bureau",
-                    pubDate: new Date(Date.now() - 3600000*5).toISOString(),
+                    pubDate: new Date(now - 3600000 * 18).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800&q=80",
                     description: "Regional envoys convene in Addis Ababa to advance bilateral trade pacts, energy sharing, and cross-border transport agreements.",
                     fullText: "ADDIS ABABA — High-level diplomatic delegations from across the Horn of Africa have convened in Addis Ababa for a multi-day regional integration summit. Talks centered on accelerating cross-border infrastructure connectivity, unifying tariff frameworks, and expanding regional power-sharing grids.<br><br>Participants emphasized that deepening economic cooperation is essential for regional stability and sustainable growth. Key agreements were drafted to streamline customs inspections and improve transit corridors for landlocked commercial hubs."
@@ -195,7 +197,7 @@
                     id: 'ken-1',
                     title: "Nairobi Tech Summit Highlights East African Digital Innovation & Fintech Growth",
                     sourceName: "Silicon Savannah Wire",
-                    pubDate: new Date().toISOString(),
+                    pubDate: new Date(now - 3600000 * 8).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80",
                     description: "Tech founders and venture capitalists converge in Nairobi to discuss cross-border digital financial services and infrastructure.",
                     fullText: "NAIROBI — The annual East African Technology and Fintech Summit opened in Nairobi today, drawing hundreds of innovators, software developers, and venture capitalists from across the globe. Discussions centered on expanding interoperable mobile payment systems, artificial intelligence applications, and digital literacy programs.<br><br>Keynote speakers underscored the rapid growth of the region's startup ecosystem, noting that collaborative regulatory frameworks are vital for scaling homegrown innovations into international markets."
@@ -204,7 +206,7 @@
                     id: 'ken-2',
                     title: "Mombasa Port Modernization Boosts Transit Efficiency for East African Corridors",
                     sourceName: "Maritime Express",
-                    pubDate: new Date(Date.now() - 3600000*6).toISOString(),
+                    pubDate: new Date(now - 3600000 * 20).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
                     description: "Upgraded container terminal handling speeds reduce turnaround times for regional freight transport.",
                     fullText: "MOMBASA — The Port of Mombasa has recorded a marked improvement in cargo handling metrics following the installation of automated gantry cranes and optimized yard management software. The upgrades have substantially reduced vessel dwell times and accelerated clearance for transit goods destined for landlocked East African nations.<br><br>Port management officials noted that ongoing investments in digitalization and berth expansion solidify Mombasa's position as a premier gateway for international trade entering the region."
@@ -215,7 +217,7 @@
                     id: 'dj-1',
                     title: "Djibouti Port Authority Expands Free Zone Capacity to Support Red Sea Trade",
                     sourceName: "Red Sea Dispatch",
-                    pubDate: new Date().toISOString(),
+                    pubDate: new Date(now - 3600000 * 4).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80",
                     description: "Strategic investments in container storage and warehousing facilities enhance maritime support services.",
                     fullText: "DJIBOUTI CITY — The Djibouti Ports and Free Zone Authority has completed a major expansion of its warehousing and container handling terminals. Designed to accommodate larger vessel classes, the new facilities provide advanced logistics support for global shipping lines traversing the Red Sea and Gulf of Aden.<br><br>Port executives highlighted that the expansion reinforces Djibouti's pivotal role as a secure, efficient transshipment bridge linking Asia, Europe, and the African continent."
@@ -224,7 +226,7 @@
                     id: 'dj-2',
                     title: "Red Sea Energy & Maritime Security Conference Convenes in Djibouti City",
                     sourceName: "Geopolitical Wire",
-                    pubDate: new Date(Date.now() - 3600000*10).toISOString(),
+                    pubDate: new Date(now - 3600000 * 15).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80",
                     description: "International maritime security experts evaluate joint patrol frameworks and safe navigation protocols.",
                     fullText: "DJIBOUTI CITY — Maritime security officials and international naval representatives gathered in Djibouti City to review joint protection measures across vital Red Sea shipping lanes. Discussions centered on real-time threat intelligence sharing, environmental protection protocols, and emergency response coordination for commercial fleets.<br><br>The conference underscored the critical importance of keeping regional waterways secure for global energy supplies and international supply chains."
@@ -235,7 +237,7 @@
                     id: 'me-1',
                     title: "Red Sea Commercial Corridors Maintain Steady Maritime Security Measures",
                     sourceName: "International Wire",
-                    pubDate: new Date().toISOString(),
+                    pubDate: new Date(now - 3600000 * 6).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
                     description: "Global maritime operators report stable shipping schedules and coordinated naval escort operations across key trade lanes.",
                     fullText: "DUBAI — Major commercial shipping operators navigating the Red Sea and Gulf of Aden corridor have confirmed stable transit schedules following enhanced regional naval cooperation and updated fleet security protocols.<br><br>Maritime safety analysts noted that international coordination has successfully mitigated disruptions, ensuring steady delivery schedules for energy supplies, manufactured goods, and bulk commodities entering global markets."
@@ -244,7 +246,7 @@
                     id: 'me-2',
                     title: "Gulf Cooperation Council Expands Trade and Logistics Pacts with East African Markets",
                     sourceName: "Middle East Economic Review",
-                    pubDate: new Date(Date.now() - 3600000*3).toISOString(),
+                    pubDate: new Date(now - 3600000 * 14).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80",
                     description: "New bilateral agreements focus on agricultural export financing, energy investments, and port infrastructure development.",
                     fullText: "RIYADH — Financial institutions and trade ministries across the Gulf Cooperation Council (GCC) have announced a series of strategic economic partnerships aimed at boosting investments in East African logistics and agricultural sectors.<br><br>The agreements facilitate smoother capital flows, direct infrastructure financing, and expanded trade corridors linking Gulf commercial hubs with coastal East African ports. Business leaders have welcomed the pacts, predicting accelerated growth in cross-border commerce."
@@ -255,7 +257,7 @@
                     id: 'w-1',
                     title: "Global Supply Chain Summit Focuses on Sustainable Maritime Transport & Logistics",
                     sourceName: "Global Intelligence",
-                    pubDate: new Date().toISOString(),
+                    pubDate: new Date(now - 3600000 * 7).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=800&q=80",
                     description: "Global trade leaders discuss green shipping initiatives, port automation, and resilient international trade networks.",
                     fullText: "GENEVA — International trade delegates gathered for the annual Global Supply Chain Forum to evaluate strategies for decarbonizing maritime transport and upgrading port automation technologies.<br><br>Discussions emphasized the necessity of investing in resilient supply chain networks capable of withstanding geopolitical shifts and environmental challenges while maintaining predictable global commerce."
@@ -264,7 +266,7 @@
                     id: 'w-2',
                     title: "International Economic Forum Forecasts Steady Growth in Emerging Trade Corridors",
                     sourceName: "World Wire",
-                    pubDate: new Date(Date.now() - 3600000*7).toISOString(),
+                    pubDate: new Date(now - 3600000 * 22).toISOString(),
                     thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
                     description: "New financial projections highlight expanding commercial exchanges between developing economies and Western markets.",
                     fullText: "LONDON — A comprehensive economic outlook released by international financial analysts points to resilient growth across emerging trade corridors, driven by increased digitization, infrastructure investments, and diversified supply chains.<br><br>The report notes that developing regional markets are successfully attracting foreign investment by upgrading transport networks and simplifying regulatory frameworks for international business."
@@ -289,151 +291,16 @@
 
         function fetchFeed(channelKey) {
             currentChannel = channelKey;
-            loadedArticles = DATABASE[channelKey] || DATABASE['somalia'];
+            const rawArticles = DATABASE[channelKey] || DATABASE['somalia'];
             
-            document.getElementById('articleCount').innerText = `${loadedArticles.length} Verified Stories`;
-            renderCards();
-        }
+            // 72-hour (3 days) expiration filter
+            const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+            const currentTime = Date.now();
 
-        function renderCards() {
-            const grid = document.getElementById('newsGrid');
-            grid.innerHTML = '';
-
-            loadedArticles.forEach((item) => {
-                const card = document.createElement('article');
-                card.className = 'bg-white rounded-2xl border border-[#e5e5e7] overflow-hidden shadow-sm hover:shadow-md transition duration-200 flex flex-col justify-between';
-                card.innerHTML = `
-                    <div>
-                        <div class="h-44 w-full bg-gray-100 overflow-hidden relative">
-                            <img src="${item.thumbnail}" alt="Article" class="w-full h-full object-cover">
-                            <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-[#1d1d1f] text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-200 shadow-sm">
-                                ${item.sourceName}
-                            </span>
-                            <button onclick="toggleCardLang('${item.id}', event)" class="absolute top-3 right-3 bg-[#1d1d1f] hover:bg-black backdrop-blur-md text-white text-[10px] font-semibold px-2.5 py-1 rounded-full border border-gray-700 transition shadow-sm">
-                                🇸🇴 Translate
-                            </button>
-                        </div>
-                        <div class="p-5">
-                            <h3 id="title-${item.id}" class="font-semibold text-base text-[#1d1d1f] mb-2 leading-snug">
-                                ${item.title}
-                            </h3>
-                            <p id="desc-${item.id}" class="text-xs text-[#86868b] line-clamp-3 leading-relaxed mb-4">
-                                ${item.description}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3 border-t border-[#e5e5e7] bg-gray-50/50 flex items-center justify-between text-[11px] text-[#86868b]">
-                        <span>${new Date(item.pubDate).toLocaleDateString()}</span>
-                        <button onclick="openModal('${item.id}')" class="text-[#0071e3] font-semibold hover:underline flex items-center space-x-1">
-                            <span>Read Full</span>
-                            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-            lucide.createIcons();
-        }
-
-        async function toggleCardLang(id, event) {
-            event.stopPropagation();
-            const article = loadedArticles.find(a => a.id === id);
-            if (!article) return;
-
-            const titleElem = document.getElementById(`title-${id}`);
-            const descElem = document.getElementById(`desc-${id}`);
-            const btn = event.target;
-
-            if (btn.dataset.translated === "true") {
-                titleElem.innerText = article.title;
-                descElem.innerText = article.description;
-                btn.innerText = "🇸🇴 Translate";
-                btn.dataset.translated = "false";
-            } else {
-                btn.innerText = "Translating...";
-                if (!article.somaliTitle) {
-                    article.somaliTitle = await translateText(article.title);
-                    article.somaliSummary = await translateText(article.description);
-                }
-                titleElem.innerText = article.somaliTitle;
-                descElem.innerText = article.somaliSummary;
-                btn.innerText = "🇺🇸 English";
-                btn.dataset.translated = "true";
-            }
-        }
-
-        function openModal(id) {
-            const article = loadedArticles.find(a => a.id === id);
-            if (!article) return;
-
-            currentModalArticle = article;
-            isModalSomali = false;
-
-            document.getElementById('modalSource').innerText = article.sourceName;
-            document.getElementById('modalDate').innerText = `Published: ${new Date(article.pubDate).toLocaleString()}`;
-            document.getElementById('modalImage').src = article.thumbnail;
-            document.getElementById('modalTitle').innerText = article.title;
-            
-            document.getElementById('modalBody').innerHTML = article.fullText;
-            document.getElementById('modalExternalLink').href = '#';
-
-            document.getElementById('modalTranslateBtn').innerText = "🇸🇴 Af-Soomaali";
-            document.getElementById('articleModal').classList.remove('hidden');
-        }
-
-        async function toggleModalLang() {
-            if (!currentModalArticle) return;
-
-            const titleElem = document.getElementById('modalTitle');
-            const bodyElem = document.getElementById('modalBody');
-            const btn = document.getElementById('modalTranslateBtn');
-
-            if (isModalSomali) {
-                titleElem.innerText = currentModalArticle.title;
-                bodyElem.innerHTML = currentModalArticle.fullText;
-                btn.innerText = "🇸🇴 Af-Soomaali";
-                isModalSomali = false;
-            } else {
-                btn.innerText = "Translating...";
-                if (!currentModalArticle.somaliFullTitle) {
-                    currentModalArticle.somaliFullTitle = await translateText(currentModalArticle.title);
-                    currentModalArticle.somaliFullBody = await translateText(currentModalArticle.fullText);
-                }
-                titleElem.innerText = currentModalArticle.somaliFullTitle;
-                bodyElem.innerHTML = currentModalArticle.somaliFullBody;
-                btn.innerText = "🇺🇸 English";
-                isModalSomali = true;
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('articleModal').classList.add('hidden');
-        }
-
-        function switchChannel(channelKey, btn) {
-            document.querySelectorAll('.category-btn').forEach(b => {
-                b.classList.remove('bg-[#1d1d1f]', 'text-white');
-                b.classList.add('bg-white', 'text-[#1d1d1f]', 'border', 'border-[#e5e5e7]');
+            loadedArticles = rawArticles.filter(item => {
+                const articleTime = new Date(item.pubDate).getTime();
+                return (currentTime - articleTime) <= THREE_DAYS_MS;
             });
 
-            btn.classList.remove('bg-white', 'text-[#1d1d1f]', 'border');
-            btn.classList.add('bg-[#1d1d1f]', 'text-white');
-
-            const titles = {
-                somalia: '🇸🇴 Somalia Live Coverage',
-                ethiopia: '🇪🇹 Ethiopia Live Coverage',
-                kenya: '🇰🇪 Kenya Live Coverage',
-                djibouti: '🇩🇯 Djibouti Live Coverage',
-                middleeast: '🌐 Middle East & Red Sea Wire',
-                world: '🌍 World & Europe Intelligence'
-            };
-
-            document.getElementById('channelTitle').innerText = titles[channelKey] || 'News Wire';
-            fetchFeed(channelKey);
-        }
-
-        // Initial Load
-        fetchFeed('somalia');
-    </script>
-</body>
-</html>
+            // Safety fallback: if all articles in a category exceed 3 days, show at least the newest one
+            if (loadedArticles
