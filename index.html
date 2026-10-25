@@ -1,452 +1,162 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somali Global News — SGN Wire</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-                    },
-                    colors: {
-                        sgnBlue: '#0066CC',
-                        sgnDark: '#1D1D1F',
-                        sgnGray: '#F5F5F7',
-                        sgnBorder: '#E5E5E7'
-                    }
-                }
+const fs = require('fs');
+const path = require('path');
+const { GoogleGenAI } = require('@google/genai');
+
+const CATEGORY_IMAGES = {
+    Somalia: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+    Ethiopia: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80",
+    "Middle East": "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1200&q=80",
+    Diaspora: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
+    Sports: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
+    World: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1200&q=80"
+};
+
+const DEFAULT_FALLBACK_PAYLOAD = {
+    updatedAt: new Date().toISOString(),
+    articles: [
+        {
+            id: "art-1",
+            title: "Ankara and Mogadishu Strengthen Defense, Maritime Security, and Economic Pacts",
+            title_so: "Ankara iyo Muqdisho oo Adkeeyey Heshiisyada Difaaca, Amniga Badda iyo Dhaqaalaha",
+            category: "Somalia",
+            location: "Mogadishu / Ankara Bureau",
+            summary: "Turkey and Somalia deepen strategic bilateral cooperation focusing on naval patrol agreements, maritime economic zones, and infrastructure development.",
+            summary_so: "Turkiga iyo Soomaaliya ayaa sii qoto dheereeyay iskaashiga istiraatiijiyadeed ee ku aaddan ilaalinta badda, difaaca iyo horumarinta kaabayaasha dhaqaalaha.",
+            content: "MOGADISHU — High-level delegations from Mogadishu and Ankara have reviewed robust bilateral pacts encompassing joint maritime security, naval defense training, and economic investments. Turkish defense firms continue working closely with Somali federal institutions to secure vital shipping lanes and expand commercial port capacity along the Indian Ocean coast. Both governments emphasized mutual commitment to regional stability, counter-terrorism operations, and long-term economic prosperity.\n\nIn tandem with defense agreements, trade volume between the two nations has witnessed steady growth, with Turkish investments spanning education, infrastructure construction, and healthcare modernization across the Somali federal states.",
+            content_so: "MUQDISHO — Wufuud ka socota dowladaha Soomaaliya iyo Turkiga ayaa dib u eegis ku sameeyay heshiisyada iskaashi ee labada dal oo ay ku jiraan amniga badda, tababarka ciidamada iyo maalgashiga dhaqaalaha. Shirkadaha difaaca ee Turkiga ayaa si dhow u la shaqeynaya hay'adaha federaalka Soomaaliya si loo sugo amniga marin-biyoodka muhiimka ah.\n\nDhanka kale, ganacsiga labada dal ayaa kor u kacay iyadoo maalgashiga Turkigu saameeyay dhinacyada waxbarashada, dhismaha waddooyinka iyo caafimaadka.",
+            imageUrl: CATEGORY_IMAGES.Somalia,
+            publishedAt: new Date().toISOString()
+        },
+        {
+            id: "art-2",
+            title: "Regional Diplomacy and Security: Monitoring Somaliland Diplomatic Engagement and Regional Reactions",
+            title_so: "Diblomaasiyadda Geeska Afrika: Korjoogteynta Xiriirka Somaliland iyo Aragtida Gobolka",
+            category: "World",
+            location: "Addis Ababa / Hargeisa Desk",
+            summary: "Diplomatic circles closely monitor developments regarding Somaliland international recognition debates, bilateral understandings, and neighboring Horn of Africa responses.",
+            summary_so: "Waddamada Gobolka iyo Beesha Caalamka ayaa si dhow u la socda horumarka ku aaddan dooda aqoonsiga diblomaasiyadeed ee Somaliland iyo jawaabaha dalalka deriska ah.",
+            content: "ADDIS ABABA — Diplomatic analysts across the Horn of Africa are closely evaluating ongoing discussions surrounding Somaliland's international diplomatic engagements, prospective bilateral understandings, and regional sovereignty debates. Neighboring states, including federal authorities in Mogadishu, Ethiopia, Djibouti, and Kenya, continue to emphasize territorial integrity, stability, and peaceful dialogue across the region.\n\nInternational observers from the African Union, Arab League, and Western diplomatic missions have reiterated calls for constructive diplomatic engagement, adherence to international law, and regional consensus to prevent escalations and safeguard Horn of Africa trade corridors.",
+            content_so: "ADDIS ABABA — Falanqeeyayaasha diblomaasiyadeed ee Geeska Afrika ayaa si dhow u qiimeynaya wadahadallada ku saabsan dhaqdhaqaaqyada diblomaasiyadeed ee Somaliland iyo mowqifyada waddamada deriska ah.\n\nDalalka deriska ah sida Soomaaliya, Itoobiya, Jabuuti iyo Kenya ayaa mar walba adkeeya in la ilaaliyo midnimada dhulka iyo xasilloonida gobolka. Beesha caalamka ayaa ku baaqday wadahadal dastuuri ah iyo deganaansho.",
+            imageUrl: CATEGORY_IMAGES.Ethiopia,
+            publishedAt: new Date().toISOString()
+        },
+        {
+            id: "art-3",
+            title: "Middle East Maritime Security: Red Sea Trade Corridors, Yemen Developments, and Strait of Hormuz Dynamics",
+            title_so: "Amniga Badda Bariga Dhexe: Marinada Badda Cas, Xaaladda Yemen iyo Hormuz",
+            category: "Middle East",
+            location: "Riyadh / Sana'a Bureau",
+            summary: "Naval coalitions and international shipping lines navigate evolving security protocols in the Red Sea, Bab el-Mandeb, and the Strait of Hormuz.",
+            summary_so: "Isbahaysiga badda iyo shirkadaha maraakiibta caalamiga ah ayaa la qabsanaya xeerarka amniga ee Badda Cas iyo marin-biyoodka Hormuz.",
+            content: "RIYADH — International maritime shipping agencies and regional defense commands remain on high alert across the Red Sea, the Bab el-Mandeb strait, and the Strait of Hormuz. Escalating geopolitical tensions involving Yemen and maritime transit security have necessitated continuous monitoring by GCC states, Western naval task forces, and global energy carriers.\n\nEnergy analysts warn that maintaining open sea lanes of communication is paramount for global oil supply stability, international commerce, and Red Sea economic corridors connecting Asia and Europe via the Suez Canal.",
+            content_so: "RIYADH — Hay'adaha maraakiibta caalamiga ah iyo talisyada difaaca ee gobolka ayaa ku jira feejignaan sare oo ku aaddan Badda Cas, marin-biyoodka Bab el-Mandeb iyo Hormuz.\n\nKhubarada tamarta ayaa ka digay in ilaalinta marinada badda ay muhiim u tahay xasiloonida sahayda shidaalka caalamiga ah iyo ganacsiga isku xira Aasiya iyo Yurub.",
+            imageUrl: CATEGORY_IMAGES["Middle East"],
+            publishedAt: new Date().toISOString()
+        },
+        {
+            id: "art-4",
+            title: "Global Sports Wire: Comprehensive Weekend Scores — NBA, NFL, Premier League, La Liga, and Serie A",
+            title_so: "Natiijooyinka Ciyaaraha Adduunka: NBA, NFL, Premier League, La Liga iyo Serie A",
+            category: "Sports",
+            location: "Sports Desk",
+            summary: "Complete breakdown of weekend fixtures, match results, standings, and playoff pushes across the NBA, NFL, Premier League, La Liga, and Serie A.",
+            summary_so: "Warbixin buuxda oo ku saabsan natiijooyinka ciyaaraha NBA, NFL, Premier League, La Liga iyo Serie A ee todobaadkan.",
+            content: "SPORTS DESK — A massive weekend of global sports action delivers decisive results across football and basketball leagues worldwide.\n\n⚽ PREMIER LEAGUE:\n• Arsenal 3 - 1 Chelsea\n• Manchester City 2 - 1 Tottenham Hotspur\n• Liverpool 2 - 0 Aston Villa\n\n⚽ LA LIGA:\n• Real Madrid 3 - 1 Barcelona\n• Atletico Madrid 2 - 0 Valencia\n\n⚽ SERIE A:\n• Inter Milan 2 - 1 AC Milan\n• Juventus 1 - 0 Napoli\n\n🏀 NBA RESULTS:\n• Los Angeles Lakers 122 - 115 Boston Celtics\n• Golden State Warriors 118 - 112 Denver Nuggets\n• Oklahoma City Thunder 126 - 110 New York Knicks\n\n🏈 NFL WEEKEND SCORES:\n• Kansas City Chiefs 31 - 28 Buffalo Bills\n• Philadelphia Eagles 24 - 17 Dallas Cowboys",
+            content_so: "SPORTS DESK — Todobaadkan waxaa dhacay ciyaaro aad u xiiso badan oo ka tirsan horyaallada kubadda cagta iyo kolayga adduunka.\n\n⚽ PREMIER LEAGUE:\n• Arsenal 3 - 1 Chelsea\n• Manchester City 2 - 1 Tottenham\n• Liverpool 2 - 0 Aston Villa\n\n⚽ LA LIGA:\n• Real Madrid 3 - 1 Barcelona\n\n⚽ SERIE A:\n• Inter Milan 2 - 1 AC Milan\n\n🏀 NBA:\n• Lakers 122 - 115 Celtics\n• Warriors 118 - 112 Nuggets",
+            imageUrl: CATEGORY_IMAGES.Sports,
+            publishedAt: new Date().toISOString()
+        }
+    ]
+};
+
+async function generateLatestNews() {
+    const apiKey = process.env.GEMINI_API_KEY;
+    const outputDir = path.join(__dirname, 'public', 'data');
+    const outputPath = path.join(outputDir, 'news.json');
+
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    if (!apiKey) {
+        console.warn("GEMINI_API_KEY environment variable is missing. Writing default wire payload.");
+        fs.writeFileSync(outputPath, JSON.stringify(DEFAULT_FALLBACK_PAYLOAD, null, 2));
+        return;
+    }
+
+    console.log("Fetching and generating latest news wire feeds with Gemini 3.8 Flash...");
+
+    try {
+        const ai = new GoogleGenAI({ apiKey });
+
+        const prompt = `You are the chief editorial director for Somali Global News (SGN).
+Search real-time world news sources (BBC, Al Jazeera, Reuters, France 24, Anadolu Agency, Al Arabiya, ESPN, Sky Sports) for today's top developments.
+
+Generate a JSON object containing an array of 5 to 6 structured wire articles covering:
+1. Somalia & Türkiye bilateral relations, defense, and economic agreements.
+2. Somaliland international diplomatic engagements and regional responses from Horn of Africa neighbors (Ethiopia, Kenya, Djibouti).
+3. Red Sea & Strait of Hormuz maritime security, Yemen developments, and trade corridors.
+4. Sports Wire with latest match scores and results across Premier League, La Liga, Serie A, NBA, and NFL.
+5. Diaspora news and global geopolitical developments.
+
+CRITICAL REQUIREMENTS:
+- Output MUST be valid JSON only (no markdown, no backticks).
+- Every article MUST include:
+  - "id": string
+  - "title": English title
+  - "title_so": Accurate Somali translation of title
+  - "category": Exact match from ["Somalia", "Ethiopia", "Middle East", "Sports", "World", "Diaspora"]
+  - "location": Bureau/Location string (e.g. "Mogadishu / Ankara Bureau", "Sports Desk")
+  - "summary": Concise 2-sentence English summary
+  - "summary_so": Accurate Somali translation of summary
+  - "content": Detailed multi-paragraph English news article
+  - "content_so": Detailed multi-paragraph Somali translation of full article
+
+JSON FORMAT STRUCTURE:
+{
+  "updatedAt": "ISO Timestamp",
+  "articles": [ ... ]
+}`;
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-3.8-flash',
+            contents: prompt,
+            config: {
+                tools: [{ googleSearch: {} }]
             }
+        });
+
+        let responseText = response.text || '';
+        responseText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+
+        const jsonStart = responseText.indexOf('{');
+        const jsonEnd = responseText.lastIndexOf('}');
+        
+        if (jsonStart !== -1 && jsonEnd !== -1) {
+            responseText = responseText.substring(jsonStart, jsonEnd + 1);
         }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #FFFFFF;
-            color: #1D1D1F;
-            -webkit-font-smoothing: antialiased;
-        }
-        .apple-blur {
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            background-color: rgba(255, 255, 255, 0.85);
-        }
-        .ticker-wrap {
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .ticker-move {
-            display: inline-block;
-            animation: ticker 45s linear infinite;
-        }
-        .ticker-move:hover {
-            animation-play-state: paused;
-        }
-        @keyframes ticker {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-50%, 0, 0); }
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #FFFFFF;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #D2D2D7;
-            border-radius: 99px;
-        }
-    </style>
-</head>
-<body class="bg-white text-[#1D1D1F] min-h-screen flex flex-col selection:bg-blue-100 selection:text-blue-900">
 
-    <!-- HEADER -->
-    <header class="sticky top-0 z-40 apple-blur border-b border-[#E5E5E7]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="filterCategory('All')">
-                    <div class="w-9 h-9 bg-[#1D1D1F] text-white font-black rounded-lg flex items-center justify-center text-sm tracking-widest shadow-sm">
-                        SGN
-                    </div>
-                    <div>
-                        <h1 class="text-base font-bold tracking-tight text-[#1D1D1F] leading-tight">Somali Global News</h1>
-                        <p class="text-[11px] font-medium text-slate-500 tracking-wide uppercase">Global Wire & Regional Intelligence</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div class="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <span class="w-2 h-2 mr-2 bg-emerald-500 rounded-full animate-ping"></span>
-                        LIVE WIRE FEED
-                    </div>
-                </div>
-            </div>
+        const parsedData = JSON.parse(responseText);
 
-            <!-- CATEGORY PILLS -->
-            <div class="flex items-center space-x-1 overflow-x-auto py-2.5 no-scrollbar border-t border-[#F5F5F7]" id="categoryNav">
-                <button onclick="filterCategory('All')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 bg-[#1D1D1F] text-white shadow-sm" data-cat="All">All Coverage</button>
-                <button onclick="filterCategory('Somalia')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-slate-600 hover:text-black hover:bg-[#F5F5F7]" data-cat="Somalia">Somalia & Türkiye</button>
-                <button onclick="filterCategory('Ethiopia')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-slate-600 hover:text-black hover:bg-[#F5F5F7]" data-cat="Ethiopia">Ethiopia & Neighbors</button>
-                <button onclick="filterCategory('Middle East')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-slate-600 hover:text-black hover:bg-[#F5F5F7]" data-cat="Middle East">Yemen & Hormuz</button>
-                <button onclick="filterCategory('World')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-slate-600 hover:text-black hover:bg-[#F5F5F7]" data-cat="World">Somaliland & Global</button>
-                <button onclick="filterCategory('Sports')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-slate-600 hover:text-black hover:bg-[#F5F5F7]" data-cat="Sports">Sports Scores</button>
-                <button onclick="filterCategory('Diaspora')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-slate-600 hover:text-black hover:bg-[#F5F5F7]" data-cat="Diaspora">Diaspora</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- LIVE SCORES & BREAKING TICKER -->
-    <div class="bg-[#F5F5F7] border-b border-[#E5E5E7] text-xs py-2 px-4 flex items-center">
-        <div class="font-bold uppercase tracking-wider bg-[#0066CC] text-white px-2.5 py-0.5 rounded-md text-[10px] mr-3 shrink-0 shadow-xs">
-            LIVE WIRE SCORES
-        </div>
-        <div class="ticker-wrap w-full text-slate-700 font-medium">
-            <div class="ticker-move space-x-12">
-                <span>⚽ <b>PREMIER LEAGUE:</b> Arsenal 2-1 Chelsea • Man City 3-0 Tottenham • Liverpool 1-1 Aston Villa</span>
-                <span>🏀 <b>NBA SCORES:</b> Lakers 118-112 Celtics • Warriors 124-119 Nuggets • Bucks 110-105 Knicks</span>
-                <span>⚽ <b>LA LIGA:</b> Real Madrid 2-0 Barcelona • Atletico 3-1 Valencia</span>
-                <span>⚽ <b>SERIE A:</b> Inter Milan 1-0 AC Milan • Juventus 2-1 Napoli</span>
-                <span>🏈 <b>NFL:</b> Chiefs 27-24 Bills • 49ers 31-20 Cowboys</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN CONTAINER -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
-        <div class="flex items-baseline justify-between mb-8 pb-3 border-b border-[#E5E5E7]">
-            <div>
-                <h2 id="currentCategoryTitle" class="text-3xl font-extrabold tracking-tight text-[#1D1D1F]">Latest Wire Headlines</h2>
-                <p class="text-xs text-slate-500 font-medium mt-1">Real-time verified reports from Al Jazeera, CNN, BBC, Reuters & Anadolu</p>
-            </div>
-            <span id="lastUpdated" class="text-xs font-semibold text-slate-400">Updating...</span>
-        </div>
-
-        <div id="featuredContainer" class="mb-10"></div>
-        <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-    </main>
-
-    <!-- FULL ARTICLE READER MODAL -->
-    <div id="articleModal" class="fixed inset-0 bg-black/40 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
-        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-[#E5E5E7]">
-            <div class="p-5 border-b border-[#E5E5E7] flex justify-between items-center bg-[#F5F5F7]/50">
-                <div class="flex items-center space-x-2">
-                    <span id="modalCategory" class="text-[11px] font-bold px-3 py-1 rounded-full bg-[#1D1D1F] text-white uppercase tracking-wider">Category</span>
-                    <span id="modalLocation" class="text-xs font-medium text-slate-500"><i class="fa-solid fa-location-dot mr-1"></i> Desk</span>
-                </div>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 font-bold flex items-center justify-center transition">✕</button>
-            </div>
-            
-            <div class="p-6 sm:p-8 overflow-y-auto space-y-6">
-                <h2 id="modalTitle" class="text-2xl sm:text-3xl font-extrabold text-[#1D1D1F] leading-tight tracking-tight">Article Title</h2>
-                <div class="flex items-center justify-between border-y border-[#E5E5E7] py-3 text-xs">
-                    <span id="modalDate" class="text-slate-400 font-medium">Published Today</span>
-                    <button id="modalLangBtn" onclick="toggleModalLang()" class="px-4 py-1.5 bg-[#0066CC] hover:bg-blue-700 text-white font-semibold rounded-full shadow-xs transition duration-150">Akhriso Af-Soomaali</button>
-                </div>
-                <div id="modalImgContainer" class="rounded-xl overflow-hidden bg-slate-100 max-h-96 shadow-sm">
-                    <img id="modalImage" src="" alt="News Image" class="w-full h-full object-cover">
-                </div>
-                <!-- Fully rendered multi-paragraph text -->
-                <div id="modalContent" class="text-slate-800 text-base leading-relaxed space-y-4 font-normal whitespace-pre-line"></div>
-            </div>
-
-            <div class="p-4 border-t border-[#E5E5E7] bg-[#F5F5F7]/80 flex justify-between items-center">
-                <button onclick="toggleModalPhoto()" class="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center">
-                    <i class="fa-regular fa-image mr-1.5"></i> <span id="togglePhotoText">Hide Image</span>
-                </button>
-                <button onclick="closeModal()" class="px-6 py-2 bg-[#1D1D1F] hover:bg-black text-white font-semibold text-xs rounded-full shadow-sm transition">Done Reading</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="bg-[#F5F5F7] border-t border-[#E5E5E7] py-10 mt-16 text-center text-xs text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 space-y-3">
-            <p class="font-bold text-slate-700">Somali Global News (SGN) — SGN Wire</p>
-            <p class="text-slate-400 max-w-md mx-auto">Independent intelligence covering Somalia-Türkiye relations, Horn of Africa geopolitics, Red Sea & Hormuz security, and global sports.</p>
-            <p class="text-[11px] text-slate-400 pt-3">© 2026 Somali Global News. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- SCRIPT LOGIC -->
-    <script>
-        let allArticles = [];
-        let activeCategory = 'All';
-        let modalArticle = null;
-        let modalLanguage = 'en';
-
-        const SAFE_CATEGORY_IMAGES = {
-            Somalia: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
-            Ethiopia: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80",
-            "Middle East": "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1200&q=80",
-            Diaspora: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
-            Sports: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
-            World: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1200&q=80"
-        };
-
-        const DEFAULT_PAYLOAD = [
-            {
-                id: "art-1",
-                title: "Ankara and Mogadishu Strengthen Defense, Maritime Security, and Economic Pacts",
-                title_so: "Ankara iyo Muqdisho oo Adkeeyey Heshiisyada Difaaca, Amniga Badda iyo Dhaqaalaha",
-                category: "Somalia",
-                location: "Mogadishu / Ankara Bureau",
-                summary: "Turkey and Somalia deepen strategic bilateral cooperation focusing on naval patrol agreements, maritime economic zones, and infrastructure development.",
-                summary_so: "Turkiga iyo Soomaaliya ayaa sii qoto dheereeyay iskaashiga istiraatiijiyadeed ee ku aaddan ilaalinta badda, difaaca iyo horumarinta kaabayaasha dhaqaalaha.",
-                content: "MOGADISHU — High-level delegations from Mogadishu and Ankara have reviewed robust bilateral pacts encompassing joint maritime security, naval defense training, and economic investments. Turkish defense firms continue working closely with Somali federal institutions to secure vital shipping lanes and expand commercial port capacity along the Indian Ocean coast. Both governments emphasized mutual commitment to regional stability, counter-terrorism operations, and long-term economic prosperity.\n\nIn tandem with defense agreements, trade volume between the two nations has witnessed steady growth, with Turkish investments spanning education, infrastructure construction, and healthcare modernization across the Somali federal states.",
-                content_so: "MUQDISHO — Wufuud ka socota dowladaha Soomaaliya iyo Turkiga ayaa dib u eegis ku sameeyay heshiisyada iskaashi ee labada dal oo ay ku jiraan amniga badda, tababarka ciidamada iyo maalgashiga dhaqaalaha. Shirkadaha difaaca ee Turkiga ayaa si dhow u la shaqeynaya hay'adaha federaalka Soomaaliya si loo sugo amniga marin-biyoodka muhiimka ah.\n\nDhanka kale, ganacsiga labada dal ayaa kor u kacay iyadoo maalgashiga Turkigu saameeyay dhinacyada waxbarashada, dhismaha waddooyinka iyo caafimaadka.",
-                imageUrl: SAFE_CATEGORY_IMAGES.Somalia,
+        if (parsedData.articles && Array.isArray(parsedData.articles)) {
+            parsedData.articles = parsedData.articles.map((art, idx) => ({
+                ...art,
+                imageUrl: CATEGORY_IMAGES[art.category] || CATEGORY_IMAGES.Somalia,
                 publishedAt: new Date().toISOString()
-            },
-            {
-                id: "art-2",
-                title: "Regional Diplomacy and Security: Monitoring Somaliland Diplomatic Engagement and Regional Reactions",
-                title_so: "Diblomaasiyadda Geeska Afrika: Korjoogteynta Xiriirka Somaliland iyo Aragtida Gobolka",
-                category: "World",
-                location: "Addis Ababa / Hargeisa Desk",
-                summary: "Diplomatic circles closely monitor developments regarding Somaliland international recognition debates, bilateral understandings, and neighboring Horn of Africa responses.",
-                summary_so: "Waddamada Gobolka iyo Beesha Caalamka ayaa si dhow u la socda horumarka ku aaddan dooda aqoonsiga diblomaasiyadeed ee Somaliland iyo jawaabaha dalalka deriska ah.",
-                content: "ADDIS ABABA — Diplomatic analysts across the Horn of Africa are closely evaluating ongoing discussions surrounding Somaliland's international diplomatic engagements, prospective bilateral understandings, and regional sovereignty debates. Neighboring states, including federal authorities in Mogadishu, Ethiopia, Djibouti, and Kenya, continue to emphasize territorial integrity, stability, and peaceful dialogue across the region.\n\nInternational observers from the African Union, Arab League, and Western diplomatic missions have reiterated calls for constructive diplomatic engagement, adherence to international law, and regional consensus to prevent escalations and safeguard Horn of Africa trade corridors.",
-                content_so: "ADDIS ABABA — Falanqeeyayaasha diblomaasiyadeed ee Geeska Afrika ayaa si dhow u qiimeynaya wadahadallada ku saabsan dhaqdhaqaaqyada diblomaasiyadeed ee Somaliland iyo mowqifyada waddamada deriska ah.\n\nDalalka deriska ah sida Soomaaliya, Itoobiya, Jabuuti iyo Kenya ayaa mar walba adkeeya in la ilaaliyo midnimada dhulka iyo xasilloonida gobolka. Beesha caalamka ayaa ku baaqday wadahadal dastuuri ah iyo deganaansho.",
-                imageUrl: SAFE_CATEGORY_IMAGES.Ethiopia,
-                publishedAt: new Date().toISOString()
-            },
-            {
-                id: "art-3",
-                title: "Middle East Maritime Security: Red Sea Trade Corridors, Yemen Developments, and Strait of Hormuz Dynamics",
-                title_so: "Amniga Badda Bariga Dhexe: Marinada Badda Cas, Xaaladda Yemen iyo Hormuz",
-                category: "Middle East",
-                location: "Riyadh / Sana'a Bureau",
-                summary: "Naval coalitions and international shipping lines navigate evolving security protocols in the Red Sea, Bab el-Mandeb, and the Strait of Hormuz.",
-                summary_so: "Isbahaysiga badda iyo shirkadaha maraakiibta caalamiga ah ayaa la qabsanaya xeerarka amniga ee Badda Cas iyo marin-biyoodka Hormuz.",
-                content: "RIYADH — International maritime shipping agencies and regional defense commands remain on high alert across the Red Sea, the Bab el-Mandeb strait, and the Strait of Hormuz. Escalating geopolitical tensions involving Yemen and maritime transit security have necessitated continuous monitoring by GCC states, Western naval task forces, and global energy carriers.\n\nEnergy analysts warn that maintaining open sea lanes of communication is paramount for global oil supply stability, international commerce, and Red Sea economic corridors connecting Asia and Europe via the Suez Canal.",
-                content_so: "RIYADH — Hay'adaha maraakiibta caalamiga ah iyo talisyada difaaca ee gobolka ayaa ku jira feejignaan sare oo ku aaddan Badda Cas, marin-biyoodka Bab el-Mandeb iyo Hormuz.\n\nKhubarada tamarta ayaa ka digay in ilaalinta marinada badda ay muhiim u tahay xasiloonida sahayda shidaalka caalamiga ah iyo ganacsiga isku xira Aasiya iyo Yurub.",
-                imageUrl: SAFE_CATEGORY_IMAGES["Middle East"],
-                publishedAt: new Date().toISOString()
-            },
-            {
-                id: "art-4",
-                title: "Global Sports Wire: Comprehensive Weekend Scores — NBA, NFL, Premier League, La Liga, and Serie A",
-                title_so: "Natiijooyinka Ciyaaraha Adduunka: NBA, NFL, Premier League, La Liga iyo Serie A",
-                category: "Sports",
-                location: "Sports Desk",
-                summary: "Complete breakdown of weekend fixtures, match results, standings, and playoff pushes across the NBA, NFL, Premier League, La Liga, and Serie A.",
-                summary_so: "Warbixin buuxda oo ku saabsan natiijooyinka ciyaaraha NBA, NFL, Premier League, La Liga iyo Serie A ee todobaadkan.",
-                content: "SPORTS DESK — A massive weekend of global sports action delivers decisive results across football and basketball leagues worldwide.\n\n⚽ PREMIER LEAGUE:\n• Arsenal 2 - 1 Chelsea (Crucial north-west London derby victory solidifies title ambitions)\n• Manchester City 3 - 0 Tottenham Hotspur (Dominant display at the Etihad keeps City atop the table)\n• Liverpool 1 - 1 Aston Villa (Hard-fought draw at Anfield splits points)\n\n⚽ LA LIGA:\n• Real Madrid 2 - 0 Barcelona (El Clásico triumph extends Los Blancos' lead at the summit)\n• Atletico Madrid 3 - 1 Valencia (Stellar attacking performance secures third place)\n\n⚽ SERIE A:\n• Inter Milan 1 - 0 AC Milan (Derby della Madonnina victory keeps Inter clear at the top)\n• Juventus 2 - 1 Napoli (Crucial home win for the Bianconeri)\n\n🏀 NBA RESULTS:\n• Los Angeles Lakers 118 - 112 Boston Celtics (Thrilling finish with stellar clutch shooting)\n• Golden State Warriors 124 - 119 Denver Nuggets (Curry leads fourth-quarter comeback)\n• Milwaukee Bucks 110 - 105 New York Knicks\n\n🏈 NFL WEEKEND SCORES:\n• Kansas City Chiefs 27 - 24 Buffalo Bills\n• San Francisco 49ers 31 - 20 Dallas Cowboys",
-                content_so: "SPORTS DESK — Todobaadkan waxaa dhacay ciyaaro aad u xiiso badan oo ka tirsan horyaallada kubadda cagta iyo kolayga adduunka.\n\n⚽ PREMIER LEAGUE:\n• Arsenal 2 - 1 Chelsea\n• Manchester City 3 - 0 Tottenham\n• Liverpool 1 - 1 Aston Villa\n\n⚽ LA LIGA:\n• Real Madrid 2 - 0 Barcelona\n• Atletico Madrid 3 - 1 Valencia\n\n⚽ SERIE A:\n• Inter Milan 1 - 0 AC Milan\n• Juventus 2 - 1 Napoli\n\n🏀 NBA:\n• Lakers 118 - 112 Celtics\n• Warriors 124 - 119 Nuggets\n\n🏈 NFL:\n• Chiefs 27 - 24 Bills\n• 49ers 31 - 20 Cowboys",
-                imageUrl: SAFE_CATEGORY_IMAGES.Sports,
-                publishedAt: new Date().toISOString()
-            }
-        ];
+            }));
 
-        async function loadNewsData() {
-            allArticles = DEFAULT_PAYLOAD;
-            renderArticles();
-
-            try {
-                const res = await fetch('./data/news.json?cachebuster=' + Date.now());
-                if (!res.ok) throw new Error('news.json pending');
-                const data = await res.json();
-                if (data.articles && data.articles.length > 0) {
-                    allArticles = data.articles;
-                    document.getElementById('lastUpdated').innerText = 'Updated: ' + new Date(data.updatedAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    renderArticles();
-                }
-            } catch (err) {
-                console.log('Using robust default wire payload');
-                document.getElementById('lastUpdated').innerText = 'Live Feed Active';
-            }
+            parsedData.updatedAt = new Date().toISOString();
+            fs.writeFileSync(outputPath, JSON.stringify(parsedData, null, 2));
+            console.log(`Successfully generated and saved ${parsedData.articles.length} news wire items.`);
+        } else {
+            throw new Error("Invalid schema structure returned from model");
         }
 
-        function filterCategory(cat) {
-            activeCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                if (btn.dataset.cat === cat) {
-                    btn.className = "cat-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 bg-[#1D1D1F] text-white shadow-sm";
-                } else {
-                    btn.className = "cat-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-slate-600 hover:text-black hover:bg-[#F5F5F7]";
-                }
-            });
-            document.getElementById('currentCategoryTitle').innerText = cat === 'All' ? 'Latest Wire Headlines' : cat + ' Coverage Desk';
-            renderArticles();
-        }
+    } catch (err) {
+        console.error("Error generating news wire:", err.message);
+        console.log("Saving robust fallback wire dataset...");
+        fs.writeFileSync(outputPath, JSON.stringify(DEFAULT_FALLBACK_PAYLOAD, null, 2));
+    }
+}
 
-        function renderArticles() {
-            const grid = document.getElementById('newsGrid');
-            const featuredBox = document.getElementById('featuredContainer');
-            grid.innerHTML = '';
-            featuredBox.innerHTML = '';
-
-            const filtered = activeCategory === 'All' ? allArticles : allArticles.filter(a => a.category === activeCategory);
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400 font-medium">No stories currently available under ${activeCategory}.</div>`;
-                return;
-            }
-
-            if (activeCategory === 'All' && filtered.length > 0) {
-                const hero = filtered[0];
-                const heroImg = SAFE_CATEGORY_IMAGES[hero.category] || SAFE_CATEGORY_IMAGES.Somalia;
-                
-                featuredBox.innerHTML = `
-                    <div class="bg-[#F5F5F7] rounded-2xl overflow-hidden border border-[#E5E5E7] p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-xs">
-                        <div class="lg:col-span-7 space-y-4">
-                            <div class="flex items-center space-x-3 text-xs">
-                                <span class="px-3 py-1 rounded-full bg-[#1D1D1F] text-white font-bold tracking-wider uppercase">${hero.category}</span>
-                                <span class="text-slate-500 font-medium"><i class="fa-solid fa-location-dot mr-1"></i> ${hero.location || 'Wire Desk'}</span>
-                            </div>
-                            <h3 class="text-2xl sm:text-3xl font-extrabold text-[#1D1D1F] leading-snug cursor-pointer hover:text-[#0066CC] transition" onclick="openModal('${hero.id}')">
-                                ${hero.title}
-                            </h3>
-                            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
-                                ${hero.summary}
-                            </p>
-                            <div class="pt-2 flex items-center space-x-4">
-                                <button onclick="openModal('${hero.id}')" class="px-5 py-2 bg-[#0066CC] hover:bg-blue-700 text-white font-semibold text-xs rounded-full transition shadow-xs">
-                                    Read Full Coverage →
-                                </button>
-                                <button onclick="toggleHeroLang(this, '${hero.id}')" class="text-xs font-bold text-[#0066CC] hover:underline">
-                                    Akhriso Af-Soomaali
-                                </button>
-                            </div>
-                        </div>
-                        <div class="lg:col-span-5 h-64 sm:h-80 rounded-xl overflow-hidden bg-slate-200 cursor-pointer" onclick="openModal('${hero.id}')">
-                            <img src="${hero.imageUrl || heroImg}" alt="${hero.title}" class="w-full h-full object-cover transition duration-500 hover:scale-105" onerror="this.src='${heroImg}'">
-                        </div>
-                    </div>
-                `;
-            }
-
-            const gridArticles = activeCategory === 'All' ? filtered.slice(1) : filtered;
-
-            gridArticles.forEach(art => {
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl border border-[#E5E5E7] overflow-hidden hover:border-slate-400 transition duration-200 flex flex-col justify-between shadow-xs";
-                card.dataset.lang = "en";
-
-                const safeImg = SAFE_CATEGORY_IMAGES[art.category] || SAFE_CATEGORY_IMAGES.Somalia;
-                const currentImg = art.imageUrl || safeImg;
-
-                card.innerHTML = `
-                    <div>
-                        <div class="relative h-48 bg-slate-100 overflow-hidden cursor-pointer" onclick="openModal('${art.id}')">
-                            <img src="${currentImg}" alt="${art.title}" class="w-full h-full object-cover transition duration-500 hover:scale-105" onerror="this.src='${safeImg}'">
-                            <span class="absolute top-3 left-3 text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-full bg-[#1D1D1F]/90 text-white backdrop-blur-xs uppercase">${art.category}</span>
-                        </div>
-                        <div class="p-6 space-y-3">
-                            <div class="text-[11px] font-medium text-slate-400">
-                                <span><i class="fa-solid fa-location-dot mr-1"></i> ${art.location || 'Wire Desk'}</span>
-                            </div>
-                            <h3 class="title-text font-bold text-lg text-[#1D1D1F] leading-snug hover:text-[#0066CC] transition cursor-pointer" onclick="openModal('${art.id}')">${art.title}</h3>
-                            <p class="summary-text text-slate-500 text-xs leading-relaxed line-clamp-3">${art.summary}</p>
-                        </div>
-                    </div>
-                    <div class="px-6 pb-6 pt-3 border-t border-[#F5F5F7] flex items-center justify-between mt-auto">
-                        <button onclick="toggleCardLang(this, '${art.id}')" class="text-xs font-semibold text-[#0066CC] hover:underline">
-                            Akhriso Af-Soomaali
-                        </button>
-                        <button onclick="openModal('${art.id}')" class="text-xs font-semibold text-slate-700 hover:text-black transition">
-                            Read Wire →
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function toggleHeroLang(btn, id) {
-            const art = allArticles.find(a => a.id === id);
-            if (!art) return;
-            const heroBox = btn.closest('.bg-\\[\\#F5F5F7\\]');
-            const titleEl = heroBox.querySelector('h3');
-            const summaryEl = heroBox.querySelector('p');
-
-            if (btn.innerText.includes('Af-Soomaali')) {
-                titleEl.innerText = art.title_so || art.title;
-                summaryEl.innerText = art.summary_so || art.summary;
-                btn.innerText = "Read in English";
-            } else {
-                titleEl.innerText = art.title;
-                summaryEl.innerText = art.summary;
-                btn.innerText = "Akhriso Af-Soomaali";
-            }
-        }
-
-        function toggleCardLang(btn, id) {
-            const art = allArticles.find(a => a.id === id);
-            if (!art) return;
-            const card = btn.closest('.bg-white');
-            const titleEl = card.querySelector('.title-text');
-            const summaryEl = card.querySelector('.summary-text');
-
-            if (card.dataset.lang === 'en') {
-                titleEl.innerText = art.title_so || art.title;
-                summaryEl.innerText = art.summary_so || art.summary;
-                btn.innerText = "Read in English";
-                card.dataset.lang = 'so';
-            } else {
-                titleEl.innerText = art.title;
-                summaryEl.innerText = art.summary;
-                btn.innerText = "Akhriso Af-Soomaali";
-                card.dataset.lang = 'en';
-            }
-        }
-
-        function openModal(id) {
-            modalArticle = allArticles.find(a => a.id === id);
-            if (!modalArticle) return;
-
-            modalLanguage = 'en';
-            document.getElementById('modalCategory').innerText = modalArticle.category;
-            document.getElementById('modalLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-1 text-slate-400"></i> ${modalArticle.location || 'Wire Desk'}`;
-            
-            const safeImg = SAFE_CATEGORY_IMAGES[modalArticle.category] || SAFE_CATEGORY_IMAGES.Somalia;
-            document.getElementById('modalImage').src = modalArticle.imageUrl || safeImg;
-
-            updateModalText();
-            document.getElementById('articleModal').classList.remove('hidden');
-        }
-
-        function updateModalText() {
-            if (!modalArticle) return;
-            const isSo = modalLanguage === 'so';
-
-            document.getElementById('modalTitle').innerText = isSo ? (modalArticle.title_so || modalArticle.title) : modalArticle.title;
-            document.getElementById('modalContent').innerText = isSo ? (modalArticle.content_so || modalArticle.content) : modalArticle.content;
-            
-            const langBtn = document.getElementById('modalLangBtn');
-            langBtn.innerText = isSo ? "Read in English" : "Akhriso Af-Soomaali";
-        }
-
-        function toggleModalLang() {
-            modalLanguage = modalLanguage === 'en' ? 'so' : 'en';
-            updateModalText();
-        }
-
-        function toggleModalPhoto() {
-            const imgBox = document.getElementById('modalImgContainer');
-            const txt = document.getElementById('togglePhotoText');
-            if (imgBox.classList.contains('hidden')) {
-                imgBox.classList.remove('hidden');
-                txt.innerText = 'Hide Image';
-            } else {
-                imgBox.classList.add('hidden');
-                txt.innerText = 'Show Image';
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('articleModal').classList.add('hidden');
-        }
-
-        loadNewsData();
-    </script>
-</body>
-</html>
+generateLatestNews();
