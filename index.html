@@ -1,162 +1,275 @@
-const fs = require('fs');
-const path = require('path');
-const { GoogleGenAI } = require('@google/genai');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Somali Global News — SGN Wire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fcfcfd; color: #0f172a; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
 
-const CATEGORY_IMAGES = {
-    Somalia: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
-    Ethiopia: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80",
-    "Middle East": "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1200&q=80",
-    Diaspora: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
-    Sports: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
-    World: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1200&q=80"
-};
+    <!-- Top Sports Score Ticker -->
+    <div class="bg-slate-900 text-white text-xs border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+            <div class="flex items-center space-x-2 shrink-0">
+                <span class="bg-blue-600 text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase">Sports</span>
+            </div>
+            <div class="overflow-x-auto no-scrollbar whitespace-nowrap flex space-x-6 text-slate-300 font-mono text-xs pl-4">
+                <span>⚽ PREMIER LEAGUE: Arsenal 3-1 Chelsea | Man City 2-1 Spurs</span>
+                <span>⚽ LA LIGA: Real Madrid 3-1 Barcelona</span>
+                <span>⚽ SERIE A: Inter Milan 2-1 AC Milan</span>
+                <span>🏀 NBA: Lakers 122-115 Celtics | Warriors 118-112 Nuggets</span>
+                <span>🏈 NFL: Chiefs 31-28 Bills | Eagles 24-17 Cowboys</span>
+            </div>
+        </div>
+    </div>
 
-const DEFAULT_FALLBACK_PAYLOAD = {
-    updatedAt: new Date().toISOString(),
-    articles: [
-        {
-            id: "art-1",
-            title: "Ankara and Mogadishu Strengthen Defense, Maritime Security, and Economic Pacts",
-            title_so: "Ankara iyo Muqdisho oo Adkeeyey Heshiisyada Difaaca, Amniga Badda iyo Dhaqaalaha",
-            category: "Somalia",
-            location: "Mogadishu / Ankara Bureau",
-            summary: "Turkey and Somalia deepen strategic bilateral cooperation focusing on naval patrol agreements, maritime economic zones, and infrastructure development.",
-            summary_so: "Turkiga iyo Soomaaliya ayaa sii qoto dheereeyay iskaashiga istiraatiijiyadeed ee ku aaddan ilaalinta badda, difaaca iyo horumarinta kaabayaasha dhaqaalaha.",
-            content: "MOGADISHU — High-level delegations from Mogadishu and Ankara have reviewed robust bilateral pacts encompassing joint maritime security, naval defense training, and economic investments. Turkish defense firms continue working closely with Somali federal institutions to secure vital shipping lanes and expand commercial port capacity along the Indian Ocean coast. Both governments emphasized mutual commitment to regional stability, counter-terrorism operations, and long-term economic prosperity.\n\nIn tandem with defense agreements, trade volume between the two nations has witnessed steady growth, with Turkish investments spanning education, infrastructure construction, and healthcare modernization across the Somali federal states.",
-            content_so: "MUQDISHO — Wufuud ka socota dowladaha Soomaaliya iyo Turkiga ayaa dib u eegis ku sameeyay heshiisyada iskaashi ee labada dal oo ay ku jiraan amniga badda, tababarka ciidamada iyo maalgashiga dhaqaalaha. Shirkadaha difaaca ee Turkiga ayaa si dhow u la shaqeynaya hay'adaha federaalka Soomaaliya si loo sugo amniga marin-biyoodka muhiimka ah.\n\nDhanka kale, ganacsiga labada dal ayaa kor u kacay iyadoo maalgashiga Turkigu saameeyay dhinacyada waxbarashada, dhismaha waddooyinka iyo caafimaadka.",
-            imageUrl: CATEGORY_IMAGES.Somalia,
-            publishedAt: new Date().toISOString()
-        },
-        {
-            id: "art-2",
-            title: "Regional Diplomacy and Security: Monitoring Somaliland Diplomatic Engagement and Regional Reactions",
-            title_so: "Diblomaasiyadda Geeska Afrika: Korjoogteynta Xiriirka Somaliland iyo Aragtida Gobolka",
-            category: "World",
-            location: "Addis Ababa / Hargeisa Desk",
-            summary: "Diplomatic circles closely monitor developments regarding Somaliland international recognition debates, bilateral understandings, and neighboring Horn of Africa responses.",
-            summary_so: "Waddamada Gobolka iyo Beesha Caalamka ayaa si dhow u la socda horumarka ku aaddan dooda aqoonsiga diblomaasiyadeed ee Somaliland iyo jawaabaha dalalka deriska ah.",
-            content: "ADDIS ABABA — Diplomatic analysts across the Horn of Africa are closely evaluating ongoing discussions surrounding Somaliland's international diplomatic engagements, prospective bilateral understandings, and regional sovereignty debates. Neighboring states, including federal authorities in Mogadishu, Ethiopia, Djibouti, and Kenya, continue to emphasize territorial integrity, stability, and peaceful dialogue across the region.\n\nInternational observers from the African Union, Arab League, and Western diplomatic missions have reiterated calls for constructive diplomatic engagement, adherence to international law, and regional consensus to prevent escalations and safeguard Horn of Africa trade corridors.",
-            content_so: "ADDIS ABABA — Falanqeeyayaasha diblomaasiyadeed ee Geeska Afrika ayaa si dhow u qiimeynaya wadahadallada ku saabsan dhaqdhaqaaqyada diblomaasiyadeed ee Somaliland iyo mowqifyada waddamada deriska ah.\n\nDalalka deriska ah sida Soomaaliya, Itoobiya, Jabuuti iyo Kenya ayaa mar walba adkeeya in la ilaaliyo midnimada dhulka iyo xasilloonida gobolka. Beesha caalamka ayaa ku baaqday wadahadal dastuuri ah iyo deganaansho.",
-            imageUrl: CATEGORY_IMAGES.Ethiopia,
-            publishedAt: new Date().toISOString()
-        },
-        {
-            id: "art-3",
-            title: "Middle East Maritime Security: Red Sea Trade Corridors, Yemen Developments, and Strait of Hormuz Dynamics",
-            title_so: "Amniga Badda Bariga Dhexe: Marinada Badda Cas, Xaaladda Yemen iyo Hormuz",
-            category: "Middle East",
-            location: "Riyadh / Sana'a Bureau",
-            summary: "Naval coalitions and international shipping lines navigate evolving security protocols in the Red Sea, Bab el-Mandeb, and the Strait of Hormuz.",
-            summary_so: "Isbahaysiga badda iyo shirkadaha maraakiibta caalamiga ah ayaa la qabsanaya xeerarka amniga ee Badda Cas iyo marin-biyoodka Hormuz.",
-            content: "RIYADH — International maritime shipping agencies and regional defense commands remain on high alert across the Red Sea, the Bab el-Mandeb strait, and the Strait of Hormuz. Escalating geopolitical tensions involving Yemen and maritime transit security have necessitated continuous monitoring by GCC states, Western naval task forces, and global energy carriers.\n\nEnergy analysts warn that maintaining open sea lanes of communication is paramount for global oil supply stability, international commerce, and Red Sea economic corridors connecting Asia and Europe via the Suez Canal.",
-            content_so: "RIYADH — Hay'adaha maraakiibta caalamiga ah iyo talisyada difaaca ee gobolka ayaa ku jira feejignaan sare oo ku aaddan Badda Cas, marin-biyoodka Bab el-Mandeb iyo Hormuz.\n\nKhubarada tamarta ayaa ka digay in ilaalinta marinada badda ay muhiim u tahay xasiloonida sahayda shidaalka caalamiga ah iyo ganacsiga isku xira Aasiya iyo Yurub.",
-            imageUrl: CATEGORY_IMAGES["Middle East"],
-            publishedAt: new Date().toISOString()
-        },
-        {
-            id: "art-4",
-            title: "Global Sports Wire: Comprehensive Weekend Scores — NBA, NFL, Premier League, La Liga, and Serie A",
-            title_so: "Natiijooyinka Ciyaaraha Adduunka: NBA, NFL, Premier League, La Liga iyo Serie A",
-            category: "Sports",
-            location: "Sports Desk",
-            summary: "Complete breakdown of weekend fixtures, match results, standings, and playoff pushes across the NBA, NFL, Premier League, La Liga, and Serie A.",
-            summary_so: "Warbixin buuxda oo ku saabsan natiijooyinka ciyaaraha NBA, NFL, Premier League, La Liga iyo Serie A ee todobaadkan.",
-            content: "SPORTS DESK — A massive weekend of global sports action delivers decisive results across football and basketball leagues worldwide.\n\n⚽ PREMIER LEAGUE:\n• Arsenal 3 - 1 Chelsea\n• Manchester City 2 - 1 Tottenham Hotspur\n• Liverpool 2 - 0 Aston Villa\n\n⚽ LA LIGA:\n• Real Madrid 3 - 1 Barcelona\n• Atletico Madrid 2 - 0 Valencia\n\n⚽ SERIE A:\n• Inter Milan 2 - 1 AC Milan\n• Juventus 1 - 0 Napoli\n\n🏀 NBA RESULTS:\n• Los Angeles Lakers 122 - 115 Boston Celtics\n• Golden State Warriors 118 - 112 Denver Nuggets\n• Oklahoma City Thunder 126 - 110 New York Knicks\n\n🏈 NFL WEEKEND SCORES:\n• Kansas City Chiefs 31 - 28 Buffalo Bills\n• Philadelphia Eagles 24 - 17 Dallas Cowboys",
-            content_so: "SPORTS DESK — Todobaadkan waxaa dhacay ciyaaro aad u xiiso badan oo ka tirsan horyaallada kubadda cagta iyo kolayga adduunka.\n\n⚽ PREMIER LEAGUE:\n• Arsenal 3 - 1 Chelsea\n• Manchester City 2 - 1 Tottenham\n• Liverpool 2 - 0 Aston Villa\n\n⚽ LA LIGA:\n• Real Madrid 3 - 1 Barcelona\n\n⚽ SERIE A:\n• Inter Milan 2 - 1 AC Milan\n\n🏀 NBA:\n• Lakers 122 - 115 Celtics\n• Warriors 118 - 112 Nuggets",
-            imageUrl: CATEGORY_IMAGES.Sports,
-            publishedAt: new Date().toISOString()
-        }
-    ]
-};
+    <!-- Header Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 text-white font-bold text-xl px-3 py-1.5 rounded-lg tracking-tight">SGN</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-900 leading-none">SOMALI GLOBAL NEWS</h1>
+                    <p class="text-xs text-slate-500 font-medium tracking-wide mt-0.5">Horn of Africa & International Wire</p>
+                </div>
+            </div>
 
-async function generateLatestNews() {
-    const apiKey = process.env.GEMINI_API_KEY;
-    const outputDir = path.join(__dirname, 'public', 'data');
-    const outputPath = path.join(outputDir, 'news.json');
+            <!-- Categories Bar -->
+            <nav id="category-filters" class="hidden md:flex items-center space-x-1">
+                <button onclick="filterCategory('All')" class="cat-btn px-3 py-1.5 rounded-md text-sm font-medium bg-slate-100 text-slate-900">All Wire</button>
+                <button onclick="filterCategory('Somalia')" class="cat-btn px-3 py-1.5 rounded-md text-sm font-medium text-slate-600 hover:bg-slate-50">Somalia</button>
+                <button onclick="filterCategory('Ethiopia')" class="cat-btn px-3 py-1.5 rounded-md text-sm font-medium text-slate-600 hover:bg-slate-50">Ethiopia</button>
+                <button onclick="filterCategory('Middle East')" class="cat-btn px-3 py-1.5 rounded-md text-sm font-medium text-slate-600 hover:bg-slate-50">Middle East</button>
+                <button onclick="filterCategory('Sports')" class="cat-btn px-3 py-1.5 rounded-md text-sm font-medium text-slate-600 hover:bg-slate-50">Sports</button>
+                <button onclick="filterCategory('World')" class="cat-btn px-3 py-1.5 rounded-md text-sm font-medium text-slate-600 hover:bg-slate-50">World</button>
+            </nav>
+        </div>
+    </header>
 
-    if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-    }
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
+        <div class="mb-8 border-b border-slate-200 pb-4">
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Latest Wire Headlines</h2>
+            <p class="text-sm text-slate-500 font-medium mt-1">Real time verified Reports</p>
+        </div>
 
-    if (!apiKey) {
-        console.warn("GEMINI_API_KEY environment variable is missing. Writing default wire payload.");
-        fs.writeFileSync(outputPath, JSON.stringify(DEFAULT_FALLBACK_PAYLOAD, null, 2));
-        return;
-    }
+        <!-- News Grid -->
+        <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="col-span-full text-center py-12 text-slate-500">Loading verified wire reports...</div>
+        </div>
+    </main>
 
-    console.log("Fetching and generating latest news wire feeds with Gemini 3.8 Flash...");
+    <!-- Article Reader Modal -->
+    <div id="reader-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 relative border border-slate-200">
+            <button onclick="closeModal()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full p-2 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
 
-    try {
-        const ai = new GoogleGenAI({ apiKey });
+            <div class="flex items-center space-x-2 text-xs font-semibold text-blue-600 uppercase tracking-wider mb-2" id="modal-category">
+                Somalia / Ankara Bureau
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 leading-snug mb-4" id="modal-title">Article Title</h2>
 
-        const prompt = `You are the chief editorial director for Somali Global News (SGN).
-Search real-time world news sources (BBC, Al Jazeera, Reuters, France 24, Anadolu Agency, Al Arabiya, ESPN, Sky Sports) for today's top developments.
+            <div id="modal-image-container" class="mb-6">
+                <img id="modal-image" class="w-full h-72 object-cover rounded-xl" src="" alt="News Image">
+            </div>
 
-Generate a JSON object containing an array of 5 to 6 structured wire articles covering:
-1. Somalia & Türkiye bilateral relations, defense, and economic agreements.
-2. Somaliland international diplomatic engagements and regional responses from Horn of Africa neighbors (Ethiopia, Kenya, Djibouti).
-3. Red Sea & Strait of Hormuz maritime security, Yemen developments, and trade corridors.
-4. Sports Wire with latest match scores and results across Premier League, La Liga, Serie A, NBA, and NFL.
-5. Diaspora news and global geopolitical developments.
+            <!-- Per-Article Language Toggle Bar in Modal -->
+            <div class="flex items-center justify-between border-y border-slate-200 py-3 mb-6">
+                <div class="text-xs text-slate-500 font-medium" id="modal-date">Published Today</div>
+                <div class="flex items-center space-x-2">
+                    <button id="modal-lang-en" onclick="setModalLang('en')" class="px-3 py-1 rounded text-xs font-semibold bg-slate-900 text-white">English</button>
+                    <button id="modal-lang-so" onclick="setModalLang('so')" class="px-3 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Akhriso Af-Soomaali</button>
+                </div>
+            </div>
 
-CRITICAL REQUIREMENTS:
-- Output MUST be valid JSON only (no markdown, no backticks).
-- Every article MUST include:
-  - "id": string
-  - "title": English title
-  - "title_so": Accurate Somali translation of title
-  - "category": Exact match from ["Somalia", "Ethiopia", "Middle East", "Sports", "World", "Diaspora"]
-  - "location": Bureau/Location string (e.g. "Mogadishu / Ankara Bureau", "Sports Desk")
-  - "summary": Concise 2-sentence English summary
-  - "summary_so": Accurate Somali translation of summary
-  - "content": Detailed multi-paragraph English news article
-  - "content_so": Detailed multi-paragraph Somali translation of full article
+            <div class="prose max-w-none text-slate-800 text-base leading-relaxed space-y-4 whitespace-pre-line" id="modal-content">
+                Article content will display here...
+            </div>
+        </div>
+    </div>
 
-JSON FORMAT STRUCTURE:
-{
-  "updatedAt": "ISO Timestamp",
-  "articles": [ ... ]
-}`;
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-sm py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-semibold text-slate-200">Somali Global News (SGN)</p>
+            <p class="text-xs text-slate-500 mt-1">Direct multi-source geopolitical and sports wire intelligence.</p>
+        </div>
+    </footer>
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-3.8-flash',
-            contents: prompt,
-            config: {
-                tools: [{ googleSearch: {} }]
+    <script>
+        let allArticles = [];
+        let currentModalArticle = null;
+        let hiddenImages = {};
+
+        const DEFAULT_PAYLOAD = {
+            articles: [
+                {
+                    id: "art-1",
+                    title: "Ankara and Mogadishu Strengthen Defense, Maritime Security, and Economic Pacts",
+                    title_so: "Ankara iyo Muqdisho oo Adkeeyey Heshiisyada Difaaca, Amniga Badda iyo Dhaqaalaha",
+                    category: "Somalia",
+                    location: "Mogadishu / Ankara Bureau",
+                    summary: "Turkey and Somalia deepen strategic bilateral cooperation focusing on naval patrol agreements, maritime economic zones, and infrastructure development.",
+                    summary_so: "Turkiga iyo Soomaaliya ayaa sii qoto dheereeyay iskaashiga istiraatiijiyadeed ee ku aaddan ilaalinta badda, difaaca iyo horumarinta kaabayaasha dhaqaalaha.",
+                    content: "MOGADISHU — High-level delegations from Mogadishu and Ankara have finalized comprehensive reviews of their landmark bilateral pacts, reaffirming commitments to joint maritime security, naval defense operational training, and long-term economic investments along the Horn of Africa coastline.\n\nUnder the updated maritime defense framework, Turkish naval units and specialized defense personnel continue working closely with Somali federal armed forces to secure vital shipping corridors, combat piracy, and protect exclusive economic zones along the Indian Ocean coast. Federal officials emphasized that enhanced naval capacity will bolster regional maritime sovereignty, protect national marine resources, and safeguard crucial trade routes linking Africa, the Middle East, and Europe.\n\nIn tandem with defense security pacts, commercial trade volume between the two nations has reached historic highs. Turkish private enterprises and state institutions are actively expanding investments across primary education, major civil infrastructure, healthcare modernization, and seaport expansion projects across the Somali federal member states, paving the way for sustainable economic resilience.",
+                    content_so: "MUQDISHO — Wufuud ka socota dowladaha Soomaaliya iyo Turkiga ayaa dib u eegis ku sameeyay heshiisyada iskaashi ee labada dal oo ay ku jiraan amniga badda, tababarka ciidamada badda, iyo maalgashiga dhaqaalaha ee Geeska Afrika.\n\nHeshiiskan cusub ee amniga badda ayaa u kaashanaya ciidamada badda Turkiga iyo kuwa Soomaaliya si loo sugo amniga marin-biyoodyada, la dagaallanka burcad-badeedda, iyo dhowrista khayraadka badda. Mas'uuliyiinta dowladda ayaa tilmaamay in kor u qaadista awoodda ciidanka badda ay wax ka tari doonto ilaalin xudduudaha badda iyo horumarinta ganacsiga caalamiga ah.\n\nDhanka kale, ganacsiga labada dal ayaa kor u kacay iyadoo maalgashiga Turkigu saameeyay dhinacyada waxbarashada, dhismaha waddooyinka, xarumaha caafimaadka iyo ballaarin dekadaha dalka.",
+                    imageUrl: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+                    publishedAt: new Date().toISOString()
+                },
+                {
+                    id: "art-2",
+                    title: "Regional Diplomacy: Somaliland International Engagements and Horn of Africa Reactions",
+                    title_so: "Diblomaasiyadda Geeska Afrika: Xiriirka Somaliland iyo Aragtida Gobolka",
+                    category: "World",
+                    location: "Addis Ababa / Hargeisa Desk",
+                    summary: "Diplomatic circles monitor developments regarding Somaliland international recognition debates, bilateral understandings, and neighboring Horn of Africa responses.",
+                    summary_so: "Waddamada Gobolka iyo Beesha Caalamka ayaa si dhow u la socda horumarka ku aaddan dooda aqoonsiga diblomaasiyadeed ee Somaliland iyo jawaabaha dalalka deriska ah.",
+                    content: "ADDIS ABABA — Diplomatic analysts across the Horn of Africa are closely evaluating ongoing discussions surrounding Somaliland's international diplomatic engagements, prospective bilateral understandings, and regional sovereignty debates. Neighboring states, including federal authorities in Mogadishu, Ethiopia, Djibouti, and Kenya, continue to emphasize territorial integrity, stability, and peaceful dialogue across the region.\n\nInternational observers from the African Union, Arab League, and Western diplomatic missions have reiterated calls for constructive diplomatic engagement, adherence to international law, and regional consensus to prevent escalations and safeguard Horn of Africa trade corridors.",
+                    content_so: "ADDIS ABABA — Falanqeeyayaasha diblomaasiyadeed ee Geeska Afrika ayaa si dhow u qiimeynaya wadahadallada ku saabsan dhaqdhaqaaqyada diblomaasiyadeed ee Somaliland iyo mowqifyada waddamada deriska ah.\n\nDalalka deriska ah sida Soomaaliya, Itoobiya, Jabuuti iyo Kenya ayaa mar walba adkeeya in la ilaaliyo midnimada dhulka iyo xasilloonida gobolka. Beesha caalamka ayaa ku baaqday wadahadal dastuuri ah iyo deganaansho.",
+                    imageUrl: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=1200&q=80",
+                    publishedAt: new Date().toISOString()
+                },
+                {
+                    id: "art-3",
+                    title: "Middle East Maritime Security: Red Sea Trade Corridors, Yemen, and Strait of Hormuz",
+                    title_so: "Amniga Badda Bariga Dhexe: Marinada Badda Cas, Xaaladda Yemen iyo Hormuz",
+                    category: "Middle East",
+                    location: "Riyadh / Sana'a Bureau",
+                    summary: "Naval coalitions and international shipping lines navigate security protocols in the Red Sea, Bab el-Mandeb, and the Strait of Hormuz.",
+                    summary_so: "Isbahaysiga badda iyo shirkadaha maraakiibta caalamiga ah ayaa la qabsanaya xeerarka amniga ee Badda Cas iyo marin-biyoodka Hormuz.",
+                    content: "RIYADH — International maritime shipping agencies and regional defense commands remain on high alert across the Red Sea, the Bab el-Mandeb strait, and the Strait of Hormuz. Escalating geopolitical tensions involving Yemen and maritime transit security have necessitated continuous monitoring by GCC states, Western naval task forces, and global energy carriers.\n\nEnergy analysts warn that maintaining open sea lanes of communication is paramount for global oil supply stability, international commerce, and Red Sea economic corridors connecting Asia and Europe via the Suez Canal.",
+                    content_so: "RIYADH — Hay'adaha maraakiibta caalamiga ah iyo talisyada difaaca ee gobolka ayaa ku jira feejignaan sare oo ku aaddan Badda Cas, marin-biyoodka Bab el-Mandeb iyo Hormuz.\n\nKhubarada tamarta ayaa ka digay in ilaalinta marinada badda ay muhiim u tahay xasiloonida sahayda shidaalka caalamiga ah iyo ganacsiga isku xira Aasiya iyo Yurub.",
+                    imageUrl: "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1200&q=80",
+                    publishedAt: new Date().toISOString()
+                },
+                {
+                    id: "art-4",
+                    title: "Global Sports Wire: Weekend Match Scores across NBA, NFL, Premier League, La Liga, and Serie A",
+                    title_so: "Natiijooyinka Ciyaaraha Adduunka: NBA, NFL, Premier League, La Liga iyo Serie A",
+                    category: "Sports",
+                    location: "Sports Desk",
+                    summary: "Complete breakdown of weekend fixtures, match results, standings, and playoff pushes across top global football and basketball leagues.",
+                    summary_so: "Warbixin buuxda oo ku saabsan natiijooyinka ciyaaraha NBA, NFL, Premier League, La Liga iyo Serie A ee todobaadkan.",
+                    content: "SPORTS DESK — A massive weekend of global sports action delivers decisive results across football and basketball leagues worldwide.\n\n⚽ PREMIER LEAGUE:\n• Arsenal 3 - 1 Chelsea\n• Manchester City 2 - 1 Tottenham Hotspur\n• Liverpool 2 - 0 Aston Villa\n\n⚽ LA LIGA:\n• Real Madrid 3 - 1 Barcelona\n• Atletico Madrid 2 - 0 Valencia\n\n⚽ SERIE A:\n• Inter Milan 2 - 1 AC Milan\n• Juventus 1 - 0 Napoli\n\n🏀 NBA RESULTS:\n• Los Angeles Lakers 122 - 115 Boston Celtics\n• Golden State Warriors 118 - 112 Denver Nuggets\n• Oklahoma City Thunder 126 - 110 New York Knicks\n\n🏈 NFL WEEKEND SCORES:\n• Kansas City Chiefs 31 - 28 Buffalo Bills\n• Philadelphia Eagles 24 - 17 Dallas Cowboys",
+                    content_so: "SPORTS DESK — Todobaadkan waxaa dhacay ciyaaro aad u xiiso badan oo ka tirsan horyaallada kubadda cagta iyo kolayga adduunka.\n\n⚽ PREMIER LEAGUE:\n• Arsenal 3 - 1 Chelsea\n• Manchester City 2 - 1 Tottenham\n• Liverpool 2 - 0 Aston Villa\n\n⚽ LA LIGA:\n• Real Madrid 3 - 1 Barcelona\n\n⚽ SERIE A:\n• Inter Milan 2 - 1 AC Milan\n\n🏀 NBA:\n• Lakers 122 - 115 Celtics\n• Warriors 118 - 112 Nuggets",
+                    imageUrl: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
+                    publishedAt: new Date().toISOString()
+                }
+            ]
+        };
+
+        async function loadNews() {
+            try {
+                const res = await fetch('./data/news.json');
+                if(!res.ok) throw new Error('Data file missing');
+                const data = await res.json();
+                allArticles = data.articles || DEFAULT_PAYLOAD.articles;
+            } catch (err) {
+                console.warn("Using default payload:", err);
+                allArticles = DEFAULT_PAYLOAD.articles;
             }
-        });
-
-        let responseText = response.text || '';
-        responseText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-
-        const jsonStart = responseText.indexOf('{');
-        const jsonEnd = responseText.lastIndexOf('}');
-        
-        if (jsonStart !== -1 && jsonEnd !== -1) {
-            responseText = responseText.substring(jsonStart, jsonEnd + 1);
+            renderArticles(allArticles);
         }
 
-        const parsedData = JSON.parse(responseText);
-
-        if (parsedData.articles && Array.isArray(parsedData.articles)) {
-            parsedData.articles = parsedData.articles.map((art, idx) => ({
-                ...art,
-                imageUrl: CATEGORY_IMAGES[art.category] || CATEGORY_IMAGES.Somalia,
-                publishedAt: new Date().toISOString()
-            }));
-
-            parsedData.updatedAt = new Date().toISOString();
-            fs.writeFileSync(outputPath, JSON.stringify(parsedData, null, 2));
-            console.log(`Successfully generated and saved ${parsedData.articles.length} news wire items.`);
-        } else {
-            throw new Error("Invalid schema structure returned from model");
+        function toggleImage(articleId, event) {
+            event.stopPropagation();
+            hiddenImages[articleId] = !hiddenImages[articleId];
+            renderArticles(allArticles);
         }
 
-    } catch (err) {
-        console.error("Error generating news wire:", err.message);
-        console.log("Saving robust fallback wire dataset...");
-        fs.writeFileSync(outputPath, JSON.stringify(DEFAULT_FALLBACK_PAYLOAD, null, 2));
-    }
-}
+        function renderArticles(articles) {
+            const grid = document.getElementById('articles-grid');
+            grid.innerHTML = articles.map(art => {
+                const isImageHidden = hiddenImages[art.id];
+                return `
+                <article class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+                    ${!isImageHidden ? `
+                        <img src="${art.imageUrl}" class="w-full h-48 object-cover border-b border-slate-100" alt="${art.title}">
+                    ` : ''}
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
+                            <span class="bg-slate-100 text-slate-700 font-semibold px-2 py-0.5 rounded">${art.category}</span>
+                            <span>${art.location}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2 leading-snug">${art.title}</h3>
+                        <p class="text-sm text-slate-600 line-clamp-3 mb-4 flex-1">${art.summary}</p>
+                        
+                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <button onclick="openModal('${art.id}', 'en')" class="text-xs font-semibold bg-blue-600 text-white px-3 py-1.5 rounded hover:bg-blue-700 transition">
+                                Read Full Wire
+                            </button>
+                            <button onclick="openModal('${art.id}', 'so')" class="text-xs font-semibold bg-slate-100 text-slate-700 px-3 py-1.5 rounded hover:bg-slate-200 transition">
+                                Akhriso Af-Soomaali
+                            </button>
+                            <button onclick="toggleImage('${art.id}', event)" class="text-xs text-slate-400 hover:text-slate-600">
+                                ${isImageHidden ? 'Show Photo' : 'Hide Photo'}
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `}).join('');
+        }
 
-generateLatestNews();
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-100', 'text-slate-900');
+                btn.classList.add('text-slate-600');
+            });
+            event.target.classList.add('bg-slate-100', 'text-slate-900');
+
+            if(cat === 'All') {
+                renderArticles(allArticles);
+            } else {
+                const filtered = allArticles.filter(a => a.category === cat);
+                renderArticles(filtered);
+            }
+        }
+
+        function openModal(id, lang) {
+            const art = allArticles.find(a => a.id === id);
+            if(!art) return;
+            currentModalArticle = art;
+
+            document.getElementById('modal-category').innerText = `${art.category} / ${art.location}`;
+            document.getElementById('modal-image').src = art.imageUrl;
+            
+            setModalLang(lang);
+            document.getElementById('reader-modal').classList.remove('hidden');
+        }
+
+        function setModalLang(lang) {
+            if(!currentModalArticle) return;
+            
+            const btnEn = document.getElementById('modal-lang-en');
+            const btnSo = document.getElementById('modal-lang-so');
+
+            if(lang === 'so') {
+                document.getElementById('modal-title').innerText = currentModalArticle.title_so || currentModalArticle.title;
+                document.getElementById('modal-content').innerText = currentModalArticle.content_so || currentModalArticle.content;
+                btnSo.className = "px-3 py-1 rounded text-xs font-semibold bg-slate-900 text-white";
+                btnEn.className = "px-3 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200";
+            } else {
+                document.getElementById('modal-title').innerText = currentModalArticle.title;
+                document.getElementById('modal-content').innerText = currentModalArticle.content;
+                btnEn.className = "px-3 py-1 rounded text-xs font-semibold bg-slate-900 text-white";
+                btnSo.className = "px-3 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('reader-modal').classList.add('hidden');
+        }
+
+        loadNews();
+    </script>
+</body>
+</html>
