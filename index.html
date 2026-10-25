@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
@@ -34,7 +35,7 @@
                 </div>
                 <div class="flex items-center space-x-2 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-xs font-medium text-gray-700">Live Global Feeds</span>
+                    <span class="text-xs font-medium text-gray-700">Live Global Wire</span>
                 </div>
             </div>
         </div>
@@ -43,7 +44,7 @@
     <!-- Clean Ticker -->
     <div class="bg-white border-b border-[#e5e5e7] py-2 text-xs font-medium text-[#86868b] overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
-            <span class="font-semibold text-[#1d1d1f] shrink-0 mr-4">LIVE UPDATES:</span>
+            <span class="font-semibold text-[#1d1d1f] shrink-0 mr-4">LIVE WIRE:</span>
             <div class="overflow-hidden whitespace-nowrap flex-grow">
                 <div class="inline-block animate-marquee">
                     <span>Real-time intelligence and breaking regional reports</span>
@@ -169,11 +170,11 @@
 
         const FALLBACK_NEWS = {
             somalia: [
-                { id: 'so-1', title: "Mogadishu Port Digital Logistics Initiative Expands Trade", sourceName: "Regional Wire", pubDate: new Date().toISOString(), description: "Modernization effort at Mogadishu Port brings digital tracking and streamlined maritime logistics across the Horn of Africa.", content: "Modernization efforts at Mogadishu Port have introduced digital tracking and streamlined maritime logistics.", link: "#" },
-                { id: 'so-2', title: "Horn of Africa Agricultural & Trade Summit Concludes", sourceName: "Global Report", pubDate: new Date().toISOString(), description: "Delegates meet to establish regional trade cooperation and cross-border commerce protocols.", content: "Delegates from across the region met to establish joint trade frameworks and improve agricultural supply chain resilience.", link: "#" }
+                { id: 'so-1', title: "Mogadishu Port Digital Logistics Initiative Expands Trade", sourceName: "News Wire", pubDate: new Date().toISOString(), description: "Modernization effort at Mogadishu Port brings digital tracking and streamlined maritime logistics across the Horn of Africa.", content: "Modernization efforts at Mogadishu Port have introduced digital tracking and streamlined maritime logistics.", link: "#" },
+                { id: 'so-2', title: "Horn of Africa Agricultural & Trade Summit Concludes", sourceName: "News Wire", pubDate: new Date().toISOString(), description: "Delegates meet to establish regional trade cooperation and cross-border commerce protocols.", content: "Delegates from across the region met to establish joint trade frameworks and improve agricultural supply chain resilience.", link: "#" }
             ],
             sports: [
-                { id: 'sp-1', title: "Weekend League Highlights & Match Summaries", sourceName: "Sports Network", pubDate: new Date().toISOString(), description: "Top club performances and player stats across major domestic and international leagues.", content: "Comprehensive coverage of major fixtures, individual performances, and league table shifts following this weekend's matches.", link: "#" }
+                { id: 'sp-1', title: "Weekend League Highlights & Match Summaries", sourceName: "Sports Wire", pubDate: new Date().toISOString(), description: "Top club performances and player stats across major domestic and international leagues.", content: "Comprehensive coverage of major fixtures, individual performances, and league table shifts following this weekend's matches.", link: "#" }
             ]
         };
 
@@ -211,31 +212,7 @@
             const rssUrl = RSS_MAP[channelKey] || RSS_MAP['somalia'];
             
             try {
-                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
-                const res = await fetch(apiUrl);
-                const data = await res.json();
-
-                if (data.status === 'ok' && data.items && data.items.length > 0) {
-                    loadedArticles = data.items.map((item, idx) => ({
-                        id: `${channelKey}-${idx}`,
-                        title: item.title,
-                        description: item.description ? item.description.replace(/<[^>]*>?/gm, '').trim() : '',
-                        content: item.content || item.description,
-                        sourceName: "Live Feed",
-                        pubDate: item.pubDate,
-                        link: item.link,
-                        thumbnail: item.thumbnail || (item.enclosure && item.enclosure.link)
-                    })).slice(0, 18);
-                }
-            } catch (e) {
-                console.log("Using fallback data for:", channelKey);
-            }
-
-            if (loadedArticles.length === 0) {
-                loadedArticles = FALLBACK_NEWS[channelKey] || FALLBACK_NEWS['somalia'] || FALLBACK_NEWS['sports'];
-            }
-
-            countLabel.innerText = `${loadedArticles.length} Live Items`;
+                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`; const res = await fetch(apiUrl); const data = await res.json();  if (data.status === 'ok' && data.items && data.items.length > 0) { loadedArticles = data.items.map((item, idx) => ({ id: `${channelKey}-${idx}`, title: item.title, description: item.description ? item.description.replace(/<[^>]*>?/gm, '').trim() : '', content: item.content \vert{}\vert{} item.description, sourceName: "Live Wire", pubDate: item.pubDate, link: item.link, thumbnail: item.thumbnail \vert{}\vert{} (item.enclosure && item.enclosure.link) })).slice(0, 18); } } catch (e) { console.log("Using fallback data for:", channelKey); }  if (loadedArticles.length === 0) { loadedArticles = FALLBACK_NEWS[channelKey] \vert{}\vert{} FALLBACK_NEWS['somalia'] \vert{}\vert{} FALLBACK_NEWS['sports']; }  countLabel.innerText = `${loadedArticles.length} Live Items`;
             renderCards();
         }
 
@@ -268,123 +245,4 @@
                             </p>
                         </div>
                     </div>
-                    <div class="px-5 py-3 border-t border-[#e5e5e7] bg-gray-50/50 flex items-center justify-between text-[11px] text-[#86868b]">
-                        <span>${new Date(item.pubDate).toLocaleDateString()}</span>
-                        <button onclick="openModal('${item.id}')" class="text-[#0071e3] font-semibold hover:underline flex items-center space-x-1">
-                            <span>Read Full</span>
-                            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-            lucide.createIcons();
-        }
-
-        async function toggleCardLang(id, btn) {
-            const article = loadedArticles.find(a => a.id === id);
-            if (!article) return;
-
-            const titleElem = document.getElementById(`title-${id}`);
-            const descElem = document.getElementById(`desc-${id}`);
-
-            if (btn.dataset.translated === "true") {
-                titleElem.innerText = article.title;
-                descElem.innerText = article.description;
-                btn.innerText = "🇸🇴 Translate";
-                btn.dataset.translated = "false";
-            } else {
-                btn.innerText = "Translating...";
-                if (!article.somaliTitle) {
-                    article.somaliTitle = await translateText(article.title);
-                    article.somaliSummary = await translateText(article.description);
-                }
-                titleElem.innerText = article.somaliTitle;
-                descElem.innerText = article.somaliSummary;
-                btn.innerText = "🇺🇸 English";
-                btn.dataset.translated = "true";
-            }
-        }
-
-        function openModal(id) {
-            const article = loadedArticles.find(a => a.id === id);
-            if (!article) return;
-
-            currentModalArticle = article;
-            isModalSomali = false;
-
-            document.getElementById('modalSource').innerText = article.sourceName || 'News Wire';
-            document.getElementById('modalDate').innerText = `Published: ${new Date(article.pubDate).toLocaleString()}`;
-            document.getElementById('modalImage').src = extractImage(article);
-            document.getElementById('modalTitle').innerText = article.title;
-            
-            document.getElementById('modalBody').innerHTML = article.content || article.description;
-            document.getElementById('modalExternalLink').href = article.link || '#';
-
-            document.getElementById('modalTranslateBtn').innerText = "🇸🇴 Af-Soomaali";
-            document.getElementById('articleModal').classList.remove('hidden');
-        }
-
-        async function toggleModalLang() {
-            if (!currentModalArticle) return;
-
-            const titleElem = document.getElementById('modalTitle');
-            const bodyElem = document.getElementById('modalBody');
-            const btn = document.getElementById('modalTranslateBtn');
-
-            if (isModalSomali) {
-                titleElem.innerText = currentModalArticle.title;
-                bodyElem.innerHTML = currentModalArticle.content || currentModalArticle.description;
-                btn.innerText = "🇸🇴 Af-Soomaali";
-                isModalSomali = false;
-            } else {
-                btn.innerText = "Translating...";
-                if (!currentModalArticle.somaliTitle) {
-                    currentModalArticle.somaliTitle = await translateText(currentModalArticle.title);
-                    currentModalArticle.somaliSummary = await translateText(currentModalArticle.description);
-                }
-                titleElem.innerText = currentModalArticle.somaliTitle;
-                bodyElem.innerText = currentModalArticle.somaliSummary;
-                btn.innerText = "🇺🇸 English";
-                isModalSomali = true;
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('articleModal').classList.add('hidden');
-        }
-
-        function switchChannel(channelKey, btn) {
-            document.querySelectorAll('.category-btn').forEach(b => {
-                if (b.classList.contains('bg-blue-50')) return;
-                b.classList.remove('bg-[#1d1d1f]', 'text-white');
-                b.classList.add('bg-white', 'text-[#1d1d1f]', 'border', 'border-[#e5e5e7]');
-            });
-
-            if (!btn.classList.contains('bg-blue-50')) {
-                btn.classList.remove('bg-white', 'text-[#1d1d1f]', 'border');
-                btn.classList.add('bg-[#1d1d1f]', 'text-white');
-            }
-
-            const titles = {
-                somalia: '🇸🇴 Somalia Coverage',
-                ethiopia: '🇪🇹 Ethiopia Coverage',
-                kenya: '🇰🇪 Kenya Coverage',
-                djibouti: '🇩🇯 Djibouti Coverage',
-                middleeast: '🌐 Middle East & Red Sea',
-                europe_na: '🌍 Europe & North America Headlines',
-                epl: '⚽ English Premier League Live',
-                laliga: '⚽ Spanish La Liga Coverage',
-                seriea: '⚽ Italian Serie A Coverage',
-                nba: '🏀 NBA Scores & Headlines',
-                nfl: '🏈 NFL Scores & Headlines'
-            };
-
-            document.getElementById('channelTitle').innerText = titles[channelKey] || 'News Feed';
-            fetchFeed(channelKey);
-        }
-
-        fetchFeed('somalia');
-    </script>
-</body>
-</html>
+                    <div class="px-5 py-3 border-t border-[#e5e5e7] bg-gray
