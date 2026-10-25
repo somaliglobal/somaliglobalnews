@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somali Global News — Clean Regional & Sports Intelligence</title>
+    <title>Somali Global News — Clean Regional Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
@@ -35,7 +34,7 @@
                 </div>
                 <div class="flex items-center space-x-2 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-xs font-medium text-gray-700">Live Global Wire</span>
+                    <span class="text-xs font-medium text-gray-700">Live Wire Active</span>
                 </div>
             </div>
         </div>
@@ -49,7 +48,7 @@
                 <div class="inline-block animate-marquee">
                     <span>Real-time intelligence and breaking regional reports</span>
                     <span class="mx-6 text-gray-300">•</span>
-                    <span>Coverage spanning Horn of Africa, Middle East, Europe & Major Sports Leagues</span>
+                    <span>Direct coverage spanning Somalia, Horn of Africa, Middle East, Europe & North America</span>
                 </div>
             </div>
         </div>
@@ -58,41 +57,29 @@
     <!-- Main Container -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <!-- Regional Navigation -->
-        <div class="mb-3">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-[#86868b] block mb-2">News Regions</span>
-            <nav class="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none">
-                <button onclick="switchChannel('somalia', this)" class="category-btn active px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#1d1d1f] text-white transition-all whitespace-nowrap shadow-sm">🇸🇴 Somalia</button>
-                <button onclick="switchChannel('ethiopia', this)" class="category-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇪🇹 Ethiopia</button>
-                <button onclick="switchChannel('kenya', this)" class="category-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇰🇪 Kenya</button>
-                <button onclick="switchChannel('djibouti', this)" class="category-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇩🇯 Djibouti</button>
-                <button onclick="switchChannel('middleeast', this)" class="category-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🌐 Middle East</button>
-                <button onclick="switchChannel('europe_na', this)" class="category-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🌍 Europe & N. America</button>
-            </nav>
-        </div>
-
-        <!-- Sports Channels -->
+        <!-- Regional Navigation Tabs -->
         <div class="mb-8">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-[#86868b] block mb-2">Sports Central</span>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-[#86868b] block mb-2">News Categories</span>
             <nav class="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none">
-                <button onclick="switchChannel('epl', this)" class="category-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 border border-blue-200 text-[#0071e3] hover:bg-blue-100 transition-all whitespace-nowrap">⚽ Premier League</button>
-                <button onclick="switchChannel('laliga', this)" class="category-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 border border-blue-200 text-[#0071e3] hover:bg-blue-100 transition-all whitespace-nowrap">⚽ La Liga</button>
-                <button onclick="switchChannel('seriea', this)" class="category-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 border border-blue-200 text-[#0071e3] hover:bg-blue-100 transition-all whitespace-nowrap">⚽ Serie A</button>
-                <button onclick="switchChannel('nba', this)" class="category-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 border border-blue-200 text-[#0071e3] hover:bg-blue-100 transition-all whitespace-nowrap">🏀 NBA</button>
-                <button onclick="switchChannel('nfl', this)" class="category-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 border border-blue-200 text-[#0071e3] hover:bg-blue-100 transition-all whitespace-nowrap">🏈 NFL</button>
+                <button onclick="switchChannel('somalia', this)" class="category-btn active px-4 py-2 rounded-full text-xs font-semibold bg-[#1d1d1f] text-white transition-all whitespace-nowrap shadow-sm">🇸🇴 Somalia</button>
+                <button onclick="switchChannel('ethiopia', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇪🇹 Ethiopia</button>
+                <button onclick="switchChannel('kenya', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇰🇪 Kenya</button>
+                <button onclick="switchChannel('djibouti', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇩🇯 Djibouti</button>
+                <button onclick="switchChannel('middleeast', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🌐 Middle East & Red Sea</button>
+                <button onclick="switchChannel('world', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🌍 World & Europe</button>
             </nav>
         </div>
 
         <!-- Section Title -->
         <div class="mb-6 flex items-center justify-between">
-            <h2 id="channelTitle" class="text-2xl font-bold tracking-tight text-[#1d1d1f]">🇸🇴 Somalia Coverage</h2>
-            <span id="articleCount" class="text-xs font-medium text-[#86868b]">Updating...</span>
+            <h2 id="channelTitle" class="text-2xl font-bold tracking-tight text-[#1d1d1f]">🇸🇴 Somalia Live Coverage</h2>
+            <span id="articleCount" class="text-xs font-medium text-[#86868b]">Loading...</span>
         </div>
 
         <!-- News Grid -->
         <section>
             <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamic Bright White Cards Injected Here -->
+                <!-- Cards Injected Here -->
             </div>
         </section>
     </main>
@@ -135,7 +122,7 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-[#e5e5e7] py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 text-center text-xs text-[#86868b]">
-            <p>© 2026 <strong>SomaliGlobalNews.com</strong> • Direct Live News Integration</p>
+            <p>© 2026 <strong>SomaliGlobalNews.com</strong> • Direct Live News Wire</p>
         </div>
     </footer>
 
@@ -154,27 +141,23 @@
     <script>
         lucide.createIcons();
 
+        // High-reliability RSS feed endpoints
         const RSS_MAP = {
             somalia: "https://feeds.bbci.co.uk/news/world/africa/rss.xml",
             ethiopia: "https://feeds.bbci.co.uk/news/world/africa/rss.xml",
             kenya: "https://feeds.bbci.co.uk/news/world/africa/rss.xml",
             djibouti: "https://feeds.bbci.co.uk/news/world/africa/rss.xml",
             middleeast: "https://feeds.bbci.co.uk/news/world/middle_east/rss.xml",
-            europe_na: "https://feeds.bbci.co.uk/news/world/rss.xml",
-            epl: "https://feeds.bbci.co.uk/sport/football/rss.xml",
-            laliga: "https://feeds.bbci.co.uk/sport/football/rss.xml",
-            seriea: "https://feeds.bbci.co.uk/sport/football/rss.xml",
-            nba: "https://feeds.bbci.co.uk/sport/rss.xml",
-            nfl: "https://feeds.bbci.co.uk/sport/rss.xml"
+            world: "https://feeds.bbci.co.uk/news/world/rss.xml"
         };
 
         const FALLBACK_NEWS = {
             somalia: [
-                { id: 'so-1', title: "Mogadishu Port Digital Logistics Initiative Expands Trade", sourceName: "News Wire", pubDate: new Date().toISOString(), description: "Modernization effort at Mogadishu Port brings digital tracking and streamlined maritime logistics across the Horn of Africa.", content: "Modernization efforts at Mogadishu Port have introduced digital tracking and streamlined maritime logistics.", link: "#" },
-                { id: 'so-2', title: "Horn of Africa Agricultural & Trade Summit Concludes", sourceName: "News Wire", pubDate: new Date().toISOString(), description: "Delegates meet to establish regional trade cooperation and cross-border commerce protocols.", content: "Delegates from across the region met to establish joint trade frameworks and improve agricultural supply chain resilience.", link: "#" }
+                { id: 'so-1', title: "Mogadishu Port Digital Logistics Initiative Expands Trade", sourceName: "Wire Service", pubDate: new Date().toISOString(), description: "Modernization effort at Mogadishu Port brings digital tracking and streamlined maritime logistics across the Horn of Africa.", content: "Modernization efforts at Mogadishu Port have introduced digital tracking and streamlined maritime logistics, enhancing cargo flow.", link: "#" },
+                { id: 'so-2', title: "Horn of Africa Agricultural & Trade Summit Concludes", sourceName: "Regional Wire", pubDate: new Date().toISOString(), description: "Delegates meet to establish regional trade cooperation and cross-border commerce protocols.", content: "Delegates from across the region met to establish joint trade frameworks and improve agricultural supply chain resilience.", link: "#" }
             ],
-            sports: [
-                { id: 'sp-1', title: "Weekend League Highlights & Match Summaries", sourceName: "Sports Wire", pubDate: new Date().toISOString(), description: "Top club performances and player stats across major domestic and international leagues.", content: "Comprehensive coverage of major fixtures, individual performances, and league table shifts following this weekend's matches.", link: "#" }
+            world: [
+                { id: 'w-1', title: "Global Maritime Corridors Maintain Enhanced Security Protocols", sourceName: "International Wire", pubDate: new Date().toISOString(), description: "International shipping agencies report steady cargo volumes and coordinated security measures across key trade lanes.", content: "Global shipping operators highlight stability across main supply corridors following updated security protocols.", link: "#" }
             ]
         };
 
@@ -206,13 +189,37 @@
             const grid = document.getElementById('newsGrid');
             const countLabel = document.getElementById('articleCount');
 
-            grid.innerHTML = '';
+            grid.innerHTML = '<div class="col-span-full text-center py-12 text-sm text-[#86868b]">Loading live wire items...</div>';
             loadedArticles = [];
 
             const rssUrl = RSS_MAP[channelKey] || RSS_MAP['somalia'];
             
             try {
-                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`; const res = await fetch(apiUrl); const data = await res.json();  if (data.status === 'ok' && data.items && data.items.length > 0) { loadedArticles = data.items.map((item, idx) => ({ id: `${channelKey}-${idx}`, title: item.title, description: item.description ? item.description.replace(/<[^>]*>?/gm, '').trim() : '', content: item.content \vert{}\vert{} item.description, sourceName: "Live Wire", pubDate: item.pubDate, link: item.link, thumbnail: item.thumbnail \vert{}\vert{} (item.enclosure && item.enclosure.link) })).slice(0, 18); } } catch (e) { console.log("Using fallback data for:", channelKey); }  if (loadedArticles.length === 0) { loadedArticles = FALLBACK_NEWS[channelKey] \vert{}\vert{} FALLBACK_NEWS['somalia'] \vert{}\vert{} FALLBACK_NEWS['sports']; }  countLabel.innerText = `${loadedArticles.length} Live Items`;
+                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+                const res = await fetch(apiUrl);
+                const data = await res.json();
+
+                if (data.status === 'ok' && data.items && data.items.length > 0) {
+                    loadedArticles = data.items.map((item, idx) => ({
+                        id: `${channelKey}-${idx}`,
+                        title: item.title,
+                        description: item.description ? item.description.replace(/<[^>]*>?/gm, '').trim() : '',
+                        content: item.content || item.description,
+                        sourceName: "Live Wire",
+                        pubDate: item.pubDate,
+                        link: item.link,
+                        thumbnail: item.thumbnail || (item.enclosure && item.enclosure.link)
+                    })).slice(0, 18);
+                }
+            } catch (e) {
+                console.log("Using fallback data for:", channelKey);
+            }
+
+            if (loadedArticles.length === 0) {
+                loadedArticles = FALLBACK_NEWS[channelKey] || FALLBACK_NEWS['somalia'] || FALLBACK_NEWS['world'];
+            }
+
+            countLabel.innerText = `${loadedArticles.length} Live Items`;
             renderCards();
         }
 
@@ -230,7 +237,7 @@
                         <div class="h-44 w-full bg-gray-100 overflow-hidden relative">
                             <img src="${imgUrl}" alt="Article" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=600&q=80'">
                             <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-[#1d1d1f] text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-200 shadow-sm">
-                                ${item.sourceName || 'News Wire'}
+                                ${item.sourceName}
                             </span>
                             <button onclick="toggleCardLang('${item.id}', this)" class="absolute top-3 right-3 bg-[#1d1d1f] hover:bg-black backdrop-blur-md text-white text-[10px] font-semibold px-2.5 py-1 rounded-full border border-gray-700 transition shadow-sm">
                                 🇸🇴 Translate
@@ -245,4 +252,116 @@
                             </p>
                         </div>
                     </div>
-                    <div class="px-5 py-3 border-t border-[#e5e5e7] bg-gray
+                    <div class="px-5 py-3 border-t border-[#e5e5e7] bg-gray-50/50 flex items-center justify-between text-[11px] text-[#86868b]">
+                        <span>${new Date(item.pubDate).toLocaleDateString()}</span>
+                        <button onclick="openModal('${item.id}')" class="text-[#0071e3] font-semibold hover:underline flex items-center space-x-1">
+                            <span>Read Full</span>
+                            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        async function toggleCardLang(id, btn) {
+            const article = loadedArticles.find(a => a.id === id);
+            if (!article) return;
+
+            const titleElem = document.getElementById(`title-${id}`);
+            const descElem = document.getElementById(`desc-${id}`);
+
+            if (btn.dataset.translated === "true") {
+                titleElem.innerText = article.title;
+                descElem.innerText = article.description;
+                btn.innerText = "🇸🇴 Translate";
+                btn.dataset.translated = "false";
+            } else {
+                btn.innerText = "Translating...";
+                if (!article.somaliTitle) {
+                    article.somaliTitle = await translateText(article.title);
+                    article.somaliSummary = await translateText(article.description);
+                }
+                titleElem.innerText = article.somaliTitle;
+                descElem.innerText = article.somaliSummary;
+                btn.innerText = "🇺🇸 English";
+                btn.dataset.translated = "true";
+            }
+        }
+
+        function openModal(id) {
+            const article = loadedArticles.find(a => a.id === id);
+            if (!article) return;
+
+            currentModalArticle = article;
+            isModalSomali = false;
+
+            document.getElementById('modalSource').innerText = article.sourceName;
+            document.getElementById('modalDate').innerText = `Published: ${new Date(article.pubDate).toLocaleString()}`;
+            document.getElementById('modalImage').src = extractImage(article);
+            document.getElementById('modalTitle').innerText = article.title;
+            
+            document.getElementById('modalBody').innerHTML = article.content || article.description;
+            document.getElementById('modalExternalLink').href = article.link || '#';
+
+            document.getElementById('modalTranslateBtn').innerText = "🇸🇴 Af-Soomaali";
+            document.getElementById('articleModal').classList.remove('hidden');
+        }
+
+        async function toggleModalLang() {
+            if (!currentModalArticle) return;
+
+            const titleElem = document.getElementById('modalTitle');
+            const bodyElem = document.getElementById('modalBody');
+            const btn = document.getElementById('modalTranslateBtn');
+
+            if (isModalSomali) {
+                titleElem.innerText = currentModalArticle.title;
+                bodyElem.innerHTML = currentModalArticle.content || currentModalArticle.description;
+                btn.innerText = "🇸🇴 Af-Soomaali";
+                isModalSomali = false;
+            } else {
+                btn.innerText = "Translating...";
+                if (!currentModalArticle.somaliTitle) {
+                    currentModalArticle.somaliTitle = await translateText(currentModalArticle.title);
+                    currentModalArticle.somaliSummary = await translateText(currentModalArticle.description);
+                }
+                titleElem.innerText = currentModalArticle.somaliTitle;
+                bodyElem.innerText = currentModalArticle.somaliSummary;
+                btn.innerText = "🇺🇸 English";
+                isModalSomali = true;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('articleModal').classList.add('hidden');
+        }
+
+        function switchChannel(channelKey, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => {
+                b.classList.remove('bg-[#1d1d1f]', 'text-white');
+                b.classList.add('bg-white', 'text-[#1d1d1f]', 'border', 'border-[#e5e5e7]');
+            });
+
+            btn.classList.remove('bg-white', 'text-[#1d1d1f]', 'border');
+            btn.classList.add('bg-[#1d1d1f]', 'text-white');
+
+            const titles = {
+                somalia: '🇸🇴 Somalia Live Coverage',
+                ethiopia: '🇪🇹 Ethiopia Live Coverage',
+                kenya: '🇰🇪 Kenya Live Coverage',
+                djibouti: '🇩🇯 Djibouti Live Coverage',
+                middleeast: '🌐 Middle East & Red Sea Wire',
+                world: '🌍 World & Europe Intelligence'
+            };
+
+            document.getElementById('channelTitle').innerText = titles[channelKey] || 'News Wire';
+            fetchFeed(channelKey);
+        }
+
+        // Initial Load
+        fetchFeed('somalia');
+    </script>
+</body>
+</html>
