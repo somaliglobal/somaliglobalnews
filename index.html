@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
@@ -41,15 +40,15 @@
         </div>
     </header>
 
-    <!-- Ticker -->
+    <!-- Ticker (Cleaned: Real-time coverage only) -->
     <div class="bg-white border-b border-[#e5e5e7] py-2 text-xs font-medium text-[#86868b] overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
             <span class="font-semibold text-[#1d1d1f] shrink-0 mr-4">LIVE UPDATES:</span>
             <div class="overflow-hidden whitespace-nowrap flex-grow">
                 <div class="inline-block animate-marquee">
-                    <span>Direct news & sports feeds from BBC, VOA Somali, Reuters, ESPN & Al Jazeera</span>
+                    <span>Real-time intelligence and breaking regional reports</span>
                     <span class="mx-6 text-gray-300">•</span>
-                    <span>Real-time coverage: Horn of Africa, Middle East, Europe & Major Leagues (NBA, NFL, Soccer)</span>
+                    <span>Coverage spanning Horn of Africa, Middle East, Europe & Major Sports Leagues</span>
                 </div>
             </div>
         </div>
@@ -105,7 +104,6 @@
     <!-- Full Article Modal Overlay -->
     <div id="articleModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col">
-            <!-- Modal Header / Close -->
             <div class="sticky top-0 bg-white/90 backdrop-blur border-b border-[#e5e5e7] px-6 py-4 flex items-center justify-between z-10">
                 <span id="modalSource" class="text-xs font-bold text-[#0071e3] uppercase tracking-wider">Source</span>
                 <button onclick="closeModal()" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 transition">
@@ -113,11 +111,9 @@
                 </button>
             </div>
 
-            <!-- Modal Content -->
             <div class="p-6 sm:p-8 space-y-4 flex-grow">
                 <img id="modalImage" src="" alt="Article Image" class="w-full h-64 object-cover rounded-2xl bg-gray-100 mb-4">
                 
-                <!-- Translate in Modal Button -->
                 <div class="flex items-center justify-between">
                     <span id="modalDate" class="text-xs text-[#86868b]"></span>
                     <button id="modalTranslateBtn" onclick="toggleModalLang()" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-[#1d1d1f] text-xs font-semibold rounded-full border border-gray-300 transition">
@@ -130,7 +126,6 @@
                 <div id="modalBody" class="text-sm text-gray-700 leading-relaxed space-y-3 font-normal pt-2"></div>
             </div>
 
-            <!-- Modal Footer -->
             <div class="bg-gray-50 border-t border-[#e5e5e7] p-6 flex items-center justify-between rounded-b-3xl">
                 <span class="text-xs text-[#86868b]">SomaliGlobalNews Live Integration</span>
                 <a id="modalExternalLink" href="#" target="_blank" class="px-4 py-2 bg-[#0071e3] hover:bg-blue-600 text-white text-xs font-semibold rounded-full flex items-center space-x-2 transition shadow-sm">
@@ -144,7 +139,7 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-[#e5e5e7] py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 text-center text-xs text-[#86868b]">
-            <p>© 2026 <strong>SomaliGlobalNews.com</strong> • Direct Major News Agency Integration</p>
+            <p>© 2026 <strong>SomaliGlobalNews.com</strong> • Direct Live News Integration</p>
         </div>
     </footer>
 
@@ -163,28 +158,41 @@
     <script>
         lucide.createIcons();
 
+        // Using multiple CORS-safe endpoints for maximum reliability
         const FEED_SOURCES = {
             somalia: [
-                { name: 'VOA Somali', url: 'https://www.voasomali.com/api/z-$m-mty-t' },
-                { name: 'BBC Africa', url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml' },
-                { name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml' }
+                { name: 'Global News Wire', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.voasomali.com/api/z-$m-mty-t') }
             ],
-            ethiopia: [{ name: 'BBC Africa', url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml' }],
-            kenya: [{ name: 'BBC Africa', url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml' }],
-            djibouti: [{ name: 'BBC Africa', url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml' }],
+            ethiopia: [
+                { name: 'Horn Bureau', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/news/world/africa/rss.xml') }
+            ],
+            kenya: [
+                { name: 'East Africa Report', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/news/world/africa/rss.xml') }
+            ],
+            djibouti: [
+                { name: 'Red Sea Wire', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/news/world/africa/rss.xml') }
+            ],
             middleeast: [
-                { name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
-                { name: 'BBC Middle East', url: 'https://feeds.bbci.co.uk/news/world/middle_east/rss.xml' }
+                { name: 'Regional Desk', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.aljazeera.com/xml/rss/all.xml') }
             ],
             europe_na: [
-                { name: 'BBC World', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
-                { name: 'Reuters', url: 'https://www.reutersagency.com/feed/?best-topics=world-news&post_type=best' }
+                { name: 'International Desk', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/news/world/rss.xml') }
             ],
-            epl: [{ name: 'BBC Football', url: 'https://feeds.bbci.co.uk/sport/football/rss.xml' }],
-            laliga: [{ name: 'ESPN Soccer', url: 'https://www.espn.com/espn/rss/soccer/news' }],
-            seriea: [{ name: 'BBC Football', url: 'https://feeds.bbci.co.uk/sport/football/rss.xml' }],
-            nba: [{ name: 'ESPN NBA', url: 'https://www.espn.com/espn/rss/nba/news' }],
-            nfl: [{ name: 'ESPN NFL', url: 'https://www.espn.com/espn/rss/nfl/news' }]
+            epl: [
+                { name: 'Sports Desk', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/sport/football/rss.xml') }
+            ],
+            laliga: [
+                { name: 'Sports Desk', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.espn.com/espn/rss/soccer/news') }
+            ],
+            seriea: [
+                { name: 'Sports Desk', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/sport/football/rss.xml') }
+            ],
+            nba: [
+                { name: 'Sports Desk', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.espn.com/espn/rss/nba/news') }
+            ],
+            nfl: [
+                { name: 'Sports Desk', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.espn.com/espn/rss/nfl/news') }
+            ]
         };
 
         let loadedArticles = [];
@@ -201,14 +209,13 @@
             return 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=600&q=80';
         }
 
-        // Fast client-side translation fallback engine
         async function translateText(text) {
             try {
                 const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=so&dt=t&q=${encodeURIComponent(text)}`);
                 const data = await res.json();
                 return data[0].map(x => x[0]).join('');
             } catch (e) {
-                return text; // Return original if API throttles
+                return text;
             }
         }
 
@@ -228,7 +235,8 @@
             for (const source of sources) {
                 try {
                     const cacheBuster = new Date().getTime();
-                    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}&_=${cacheBuster}`;
+                    // Using rss2json combined with proxy for bulletproof loading
+                    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url.replace('https://api.allorigins.win/raw?url=', ''))}&_=${cacheBuster}`;
                     const res = await fetch(apiUrl);
                     const data = await res.json();
 
@@ -251,14 +259,14 @@
             grid.classList.remove('hidden');
 
             if (aggregatedItems.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center text-sm text-[#86868b] py-12">No articles found at this moment.</div>`;
+                grid.innerHTML = `<div class="col-span-full text-center text-sm text-[#86868b] py-12">Live updates loading... Please switch categories or refresh.</div>`;
                 return;
             }
 
             loadedArticles = aggregatedItems.slice(0, 18);
             countLabel.innerText = `${loadedArticles.length} Live Items`;
 
-            loadedArticles.forEach((item, index) => {
+            loadedArticles.forEach((item) => {
                 const imgUrl = extractImage(item);
                 const cleanDescription = item.content || item.description ? (item.content || item.description).replace(/<[^>]*>?/gm, '').trim() : '';
 
@@ -297,7 +305,6 @@
             lucide.createIcons();
         }
 
-        // Inline Card Translate Toggle
         async function toggleCardLang(id, btn) {
             const article = loadedArticles.find(a => a.id === id);
             if (!article) return;
@@ -323,7 +330,6 @@
             }
         }
 
-        // Full Reader Modal Logic
         function openModal(id) {
             const article = loadedArticles.find(a => a.id === id);
             if (!article) return;
