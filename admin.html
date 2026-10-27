@@ -3,257 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somaliglobalnews.com — SGN</title>
+    <title>SGN Publisher — Content Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .serif-title { font-family: 'Merriweather', serif; }
-    </style>
 </head>
-<body class="bg-[#f5f5f7] text-[#1d1d1f] min-h-screen">
+<body class="bg-[#f5f5f7] text-[#1d1d1f] font-sans antialiased min-h-screen">
 
-    <!-- Top Header -->
-    <header class="bg-white/80 backdrop-blur-md border-b border-[#e5e5e7] sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <span class="w-8 h-8 bg-[#1d1d1f] text-white rounded-full flex items-center justify-center font-bold text-xs">SGN</span>
-                <a href="index.html" class="font-bold text-lg tracking-tight text-[#1d1d1f]">Somali Global News</a>
+    <!-- Login View -->
+    <div id="loginView" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full border border-[#e5e5e7]">
+            <div class="w-12 h-12 bg-[#1d1d1f] text-white rounded-full flex items-center justify-center font-bold text-sm mb-4 mx-auto">
+                SGN
             </div>
-            
-            <div class="flex items-center space-x-6">
-                <span id="articleCount" class="text-xs text-[#86868b] font-medium hidden sm:inline">0 Stories</span>
-                
-                <!-- Contact Us Button triggering Side Drawer -->
-                <button onclick="openContactDrawer()" class="flex items-center space-x-1.5 text-xs font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition cursor-pointer bg-transparent border-none">
-                    <span>Contact Us</span>
+            <h1 class="text-2xl font-bold text-center mb-1">Editor Login</h1>
+            <p class="text-xs text-[#86868b] text-center mb-6">SomaliGlobalNews Publishing Portal</p>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-500 mb-1">Admin Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter password (default: sgn2026)" required 
+                           class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0071e3] text-sm">
+                </div>
+                <button type="submit" class="w-full bg-[#0071e3] hover:bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-sm transition shadow-sm">
+                    Authenticate
                 </button>
-
-                <a href="admin.html" class="text-xs font-semibold text-[#0071e3] hover:underline">Admin Portal</a>
-            </div>
-        </div>
-
-        <!-- Streamlined Navigation -->
-        <nav class="bg-[#f0f4f8] border-t border-[#e5e5e7]">
-            <div class="max-w-7xl mx-auto px-6 flex gap-8 overflow-x-auto py-3 text-xs font-semibold text-[#515156]">
-                <button onclick="fetchFeed('somalia')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap active-nav" data-cat="somalia">Somalia</button>
-                <button onclick="fetchFeed('horn_africa')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="horn_africa">Horn of Africa</button>
-                <button onclick="fetchFeed('middleeast')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="middleeast">Middle East</button>
-                <button onclick="fetchFeed('europe')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="europe">Europe</button>
-                <button onclick="fetchFeed('americas')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="americas">Americas</button>
-                <button onclick="fetchFeed('editorial')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="editorial">Editorial</button>
-            </div>
-        </nav>
-    </header>
-
-    <!-- News Feed Grid -->
-    <main class="max-w-7xl mx-auto px-6 py-10">
-        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-    </main>
-
-    <!-- Reader Modal -->
-    <div id="readerModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-8 relative shadow-2xl border border-[#e5e5e7]">
-            <button onclick="closeReader()" class="absolute top-6 right-6 text-gray-400 hover:text-black font-bold text-xl">&times;</button>
-            <span id="modalSource" class="text-xs font-bold text-[#0071e3] uppercase tracking-wide">Source</span>
-            <h2 id="modalTitle" class="text-2xl font-bold mt-1 mb-2 serif-title text-[#1d1d1f]">Title</h2>
-            <p id="modalDate" class="text-xs text-[#86868b] mb-4">Date</p>
-            
-            <div id="modalMediaContainer" class="mb-6 rounded-2xl overflow-hidden bg-black"></div>
-            <div id="modalBody" class="text-sm text-[#3a3a3c] leading-relaxed space-y-4"></div>
+            </form>
+            <p id="loginError" class="text-red-500 text-xs text-center mt-3 hidden">Incorrect password. Please try again.</p>
         </div>
     </div>
 
-    <!-- Side Contact Drawer -->
-    <div id="contactDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity" onclick="closeContactDrawer()"></div>
-
-        <!-- Sliding Panel from Right -->
-        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
-            <div class="w-screen max-w-md bg-white shadow-2xl p-8 flex flex-col justify-between border-l border-[#e5e5e7]">
-                <div>
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xl font-bold text-[#1d1d1f] serif-title">Get in Touch</h3>
-                        <button onclick="closeContactDrawer()" class="text-gray-400 hover:text-black text-2xl font-bold">&times;</button>
-                    </div>
-                    <p class="text-xs text-[#86868b] mb-6">Have a news tip, correction, or inquiry? Send a message directly to the SGN editorial desk.</p>
-
-                    <!-- Contact Form -->
-                    <form action="https://formspree.io/f/your-form-id" method="POST" class="space-y-4" onsubmit="handleContactSubmit(event)">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Your Name</label>
-                            <input type="text" name="name" required placeholder="Enter your name" 
-                                   class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Your Email</label>
-                            <input type="email" name="email" required placeholder="name@example.com" 
-                                   class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Message</label>
-                            <textarea name="message" rows="5" required placeholder="Write your message here..." 
-                                      class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none"></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-bold py-3 rounded-xl transition shadow-sm">
-                            Send Message
-                        </button>
-                    </form>
-                    <div id="formSuccessMsg" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-xs text-green-800 text-center font-medium">
-                        Thank you! Your message has been sent successfully.
-                    </div>
+    <!-- Admin Dashboard View -->
+    <div id="dashboardView" class="hidden">
+        <header class="bg-white border-b border-[#e5e5e7] sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <span class="font-bold text-lg tracking-tight">SGN Admin Dashboard</span>
+                    <span class="text-xs bg-blue-100 text-[#0071e3] font-semibold px-2.5 py-0.5 rounded-full">Live Editor</span>
                 </div>
-                <div class="text-center text-[10px] text-[#86868b] pt-4 border-t border-gray-100">
-                    Somali Global News • Secure Editorial Desk
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" target="_blank" class="text-xs font-semibold text-[#0071e3] hover:underline">View Live Portal ↗</a>
+                    <button onclick="handleLogout()" class="text-xs font-semibold text-red-600 hover:underline">
+                        Sign Out
+                    </button>
                 </div>
             </div>
-        </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Article Editor Form -->
+            <div class="lg:col-span-1 bg-white p-6 rounded-3xl border border-[#e5e5e7] shadow-sm space-y-4 h-fit">
+                <h2 class="text-lg font-bold text-[#1d1d1f]">Publish New Article</h2>
+                <form onsubmit="publishArticle(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Target Category</label>
+                        <select id="artCategory" required class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs font-medium focus:ring-2 focus:ring-[#0071e3]">
+                            <option value="somalia">Somalia</option>
+                            <option value="ethiopia">Ethiopia (Horn of Africa)</option>
+                            <option value="kenya">Kenya (Horn of Africa)</option>
+                            <option value="djibouti">Djibouti (Horn of Africa)</option>
+                            <option value="middleeast">Middle East</option>
+                            <option value="europe">Europe</option>
+                            <option value="us_na">Americas</option>
+                            <option value="opinion">Editorial / Op-Ed</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Article Headline / Title</label>
+                        <input type="text" id="artTitle" placeholder="Paste full article title..." required 
+                               class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">News Source Name</label>
+                        <input type="text" id="artSource" placeholder="e.g. SGN Editorial, Reuters, BBC" required 
+                               class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3]">
+                    </div>
+
+                    <!-- Media Type Selector -->
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Media Type</label>
+                        <select id="mediaType" onchange="toggleMediaType()" class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs font-medium focus:ring-2 focus:ring-[#0071e3]">
+                            <option value="image">📷 Picture (Image URL)</option>
+                            <option value="video">🎥 Video Snippet (&lt; 1 min .mp4)</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic Media Input -->
+                    <div id="imageInputGroup">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Image URL</label>
+                        <input type="url" id="artImage" placeholder="https://images.unsplash.com/photo-..." 
+                               class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3]">
+                    </div>
+
+                    <div id="videoInputGroup" class="hidden">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Video File URL (.mp4)</label>
+                        <input type="url" id="artVideo" placeholder="https://.../short-clip.mp4" 
+                               class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Short Preview Summary</label>
+                        <textarea id="artDesc" rows="2" placeholder="Brief 1-2 sentence overview for news card..." required 
+                                  class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3]"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Full Article Body (Text or HTML)</label>
+                        <textarea id="artFull" rows="6" placeholder="Paste full article paragraphs here..." required 
+                                  class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3]"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-bold py-3 rounded-xl transition shadow-sm">
+                        Publish Article to Portal
+                    </button>
+                </form>
+            </div>
+
+            <!-- Published Articles Manager -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white p-6 rounded-3xl border border-[#e5e5e7] shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-base font-bold text-[#1d1d1f]">Live Articles Management</h2>
+                        <button onclick="clearAllArticles()" class="text-xs font-semibold text-red-600 hover:underline">
+                            Clear Local Overrides
+                        </button>
+                    </div>
+
+                    <div id="articlesList" class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                        <!-- Dynamically Injected Articles -->
+                    </div>
+                </div>
+            </div>
+
+        </main>
     </div>
 
     <script>
-        let loadedArticles = [];
+        const DEFAULT_PASS = "sgn2026"; 
 
-        async function fetchFeed(channelKey) {
-            // Highlight active navigation link
-            document.querySelectorAll('nav button').forEach(btn => {
-                if(btn.getAttribute('data-cat') === channelKey) {
-                    btn.classList.add('text-[#0071e3]', 'font-bold');
-                } else {
-                    btn.classList.remove('text-[#0071e3]', 'font-bold');
-                }
-            });
-
-            try {
-                let database = { somalia: [], ethiopia: [], kenya: [], djibouti: [], middleeast: [], europe: [], us_na: [], opinion: [] };
-                
-                try {
-                    const res = await fetch('public/data/news.json');
-                    if (res.ok) {
-                        const jsonData = await res.json();
-                        database = { ...database, ...jsonData };
-                    }
-                } catch (e) {
-                    // Fallback if news.json isn't fetched directly
-                }
-
-                // Override/Merge with instant Admin localStorage edits
-                const storedRaw = localStorage.getItem('sgn_custom_database');
-                if (storedRaw) {
-                    const customData = JSON.parse(storedRaw);
-                    for (let cat in customData) {
-                        if (!database[cat]) database[cat] = [];
-                        database[cat] = [...customData[cat], ...database[cat]];
-                    }
-                }
-
-                let rawArticles = [];
-
-                if (channelKey === 'horn_africa') {
-                    rawArticles = [
-                        ...(database.ethiopia || []),
-                        ...(database.kenya || []),
-                        ...(database.djibouti || [])
-                    ];
-                } else if (channelKey === 'americas') {
-                    rawArticles = database.us_na || [];
-                } else if (channelKey === 'editorial') {
-                    rawArticles = database.opinion || database.editorial || [];
-                } else {
-                    rawArticles = database[channelKey] || [];
-                }
-
-                loadedArticles = rawArticles;
-                document.getElementById('articleCount').innerText = `${loadedArticles.length} Stories`;
-                renderCards();
-            } catch (err) {
-                console.error("Error loading feed:", err);
+        function handleLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPassword').value;
+            if (pass === DEFAULT_PASS) {
+                sessionStorage.setItem('sgn_authenticated', 'true');
+                showDashboard();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
             }
         }
 
-        function renderCards() {
-            const grid = document.getElementById('cardsGrid');
-            grid.innerHTML = '';
+        function handleLogout() {
+            sessionStorage.removeItem('sgn_authenticated');
+            location.reload();
+        }
 
-            if (loadedArticles.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-16 text-[#86868b] text-sm">No stories available in this category yet. Use your Admin Portal to publish.</div>`;
+        function showDashboard() {
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('dashboardView').classList.remove('hidden');
+            loadManagedArticles();
+        }
+
+        function toggleMediaType() {
+            const type = document.getElementById('mediaType').value;
+            const imgGroup = document.getElementById('imageInputGroup');
+            const vidGroup = document.getElementById('videoInputGroup');
+
+            if (type === 'video') {
+                imgGroup.classList.add('hidden');
+                vidGroup.classList.remove('hidden');
+            } else {
+                vidGroup.classList.add('hidden');
+                imgGroup.classList.remove('hidden');
+            }
+        }
+
+        function getStoredData() {
+            const raw = localStorage.getItem('sgn_custom_database');
+            return raw ? JSON.parse(raw) : null;
+        }
+
+        function saveStoredData(data) {
+            localStorage.setItem('sgn_custom_database', JSON.stringify(data));
+        }
+
+        function publishArticle(e) {
+            e.preventDefault();
+            
+            const category = document.getElementById('artCategory').value;
+            const mediaType = document.getElementById('mediaType').value;
+            const fallbackImg = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80";
+            
+            const newArticle = {
+                id: 'custom-' + Date.now(),
+                title: document.getElementById('artTitle').value,
+                sourceName: document.getElementById('artSource').value,
+                pubDate: new Date().toISOString(),
+                thumbnail: mediaType === 'image' ? (document.getElementById('artImage').value.trim() || fallbackImg) : fallbackImg,
+                videoUrl: mediaType === 'video' ? document.getElementById('artVideo').value.trim() : '',
+                description: document.getElementById('artDesc').value,
+                fullText: document.getElementById('artFull').value.replace(/\n/g, '<br><br>'),
+                isCustom: true
+            };
+
+            let data = getStoredData();
+            if (!data) {
+                data = { somalia: [], ethiopia: [], kenya: [], djibouti: [], middleeast: [], europe: [], us_na: [], opinion: [] };
+            }
+
+            if (!data[category]) data[category] = [];
+            data[category].unshift(newArticle);
+
+            saveStoredData(data);
+            alert("Article published successfully!");
+            
+            e.target.reset();
+            toggleMediaType();
+            loadManagedArticles();
+        }
+
+        function loadManagedArticles() {
+            const list = document.getElementById('articlesList');
+            const data = getStoredData();
+            
+            if (!data) {
+                list.innerHTML = `<p class="text-xs text-gray-500 italic">No custom articles published yet.</p>`;
                 return;
             }
 
-            loadedArticles.forEach((art, idx) => {
-                const card = document.createElement('article');
-                card.className = "bg-white rounded-3xl border border-[#e5e5e7] overflow-hidden flex flex-col justify-between hover:shadow-xl transition cursor-pointer";
-                card.onclick = () => openReader(idx);
+            list.innerHTML = '';
+            let count = 0;
+            Object.keys(data).forEach(cat => {
+                data[cat].forEach((art, index) => {
+                    count++;
+                    const item = document.createElement('div');
+                    item.className = 'p-4 rounded-2xl border border-gray-200 bg-gray-50 flex items-center justify-between gap-4';
+                    
+                    const mediaBadge = art.videoUrl ? '<span class="text-[9px] bg-purple-100 text-purple-700 font-bold px-1.5 py-0.5 rounded">VIDEO</span>' : '<span class="text-[9px] bg-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded">IMAGE</span>';
 
-                let mediaHtml = `<img src="${art.thumbnail || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'}" class="w-full h-52 object-cover">`;
-                if (art.videoUrl) {
-                    mediaHtml = `
-                        <div class="relative w-full h-52 bg-black">
-                            <video src="${art.videoUrl}" class="w-full h-52 object-cover" autoplay muted loop playsinline></video>
-                            <span class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full font-semibold backdrop-blur-sm">Video Clip</span>
-                        </div>`;
-                }
-
-                card.innerHTML = `
-                    <div>
-                        ${mediaHtml}
-                        <div class="p-6">
-                            <span class="text-[10px] font-bold uppercase text-[#0071e3] tracking-wider">${art.sourceName || art.source || 'SGN'}</span>
-                            <h3 class="font-bold text-lg text-[#1d1d1f] mt-1 mb-2 serif-title leading-snug">${art.title}</h3>
-                            <p class="text-xs text-[#515156] line-clamp-3">${art.description || art.excerpt || ''}</p>
+                    item.innerHTML = `
+                        <div class="flex items-center space-x-3 overflow-hidden">
+                            <div class="w-12 h-12 rounded-xl bg-gray-200 shrink-0 flex items-center justify-center font-bold text-xs text-gray-500">
+                                ${art.videoUrl ? '▶' : '🖼'}
+                            </div>
+                            <div class="truncate">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-[10px] font-bold uppercase text-[#0071e3]">${cat} • ${art.sourceName}</span>
+                                    ${mediaBadge}
+                                </div>
+                                <h4 class="text-xs font-bold text-[#1d1d1f] truncate">${art.title}</h4>
+                                <p class="text-[10px] text-gray-500">${new Date(art.pubDate).toLocaleDateString()}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="px-6 py-4 border-t border-[#f0f0f2] text-[11px] text-[#86868b] flex justify-between items-center">
-                        <span>${new Date(art.pubDate || Date.now()).toLocaleDateString()}</span>
-                        <span class="text-[#0071e3] font-semibold hover:underline">Read Story →</span>
-                    </div>
-                `;
-                grid.appendChild(card);
+                        <button onclick="deleteArticle('${cat}', ${index})" class="text-xs font-semibold text-red-600 hover:underline shrink-0">
+                            Delete
+                        </button>
+                    `;
+                    list.appendChild(item);
+                });
             });
-        }
 
-        function openReader(idx) {
-            const art = loadedArticles[idx];
-            if (!art) return;
-            document.getElementById('modalSource').innerText = art.sourceName || art.source || 'SGN Wire';
-            document.getElementById('modalTitle').innerText = art.title;
-            document.getElementById('modalDate').innerText = new Date(art.pubDate || Date.now()).toLocaleString();
-            document.getElementById('modalBody').innerHTML = art.fullText || art.body || art.description;
-
-            const mediaContainer = document.getElementById('modalMediaContainer');
-            mediaContainer.innerHTML = '';
-            
-            if (art.videoUrl) {
-                mediaContainer.innerHTML = `<video src="${art.videoUrl}" class="w-full max-h-80 object-cover" controls autoplay></video>`;
-            } else {
-                const imgSrc = art.thumbnail || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
-                mediaContainer.innerHTML = `<img src="${imgSrc}" class="w-full max-h-80 object-cover">`;
+            if (count === 0) {
+                list.innerHTML = `<p class="text-xs text-gray-500 italic">No custom articles stored.</p>`;
             }
-
-            document.getElementById('readerModal').classList.remove('hidden');
         }
 
-        function closeReader() {
-            document.getElementById('readerModal').classList.add('hidden');
+        function deleteArticle(category, index) {
+            let data = getStoredData();
+            if (!data || !data[category]) return;
+
+            data[category].splice(index, 1);
+            saveStoredData(data);
+            loadManagedArticles();
         }
 
-        // Contact Drawer Functions
-        function openContactDrawer() {
-            document.getElementById('contactDrawer').classList.remove('hidden');
+        function clearAllArticles() {
+            if (confirm("Reset local storage overrides?")) {
+                localStorage.removeItem('sgn_custom_database');
+                loadManagedArticles();
+            }
         }
 
-        function closeContactDrawer() {
-            document.getElementById('contactDrawer').classList.add('hidden');
-            document.getElementById('formSuccessMsg').classList.add('hidden');
+        if (sessionStorage.getItem('sgn_authenticated') === 'true') {
+            showDashboard();
         }
-
-        function handleContactSubmit(e) {
-            // Uncomment the next line if testing without a form backend:
-            // e.preventDefault();
-            document.getElementById('formSuccessMsg').classList.remove('hidden');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => fetchFeed('somalia'));
     </script>
 </body>
 </html>
