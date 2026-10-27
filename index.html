@@ -1,305 +1,170 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somali Global News — Clean Regional Intelligence</title>
+    <title>Somaliglobalnews.com — SGN</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'Helvetica Neue', 'Arial', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .serif-title { font-family: 'Merriweather', serif; }
+    </style>
 </head>
-<body class="bg-[#f5f5f7] text-[#1d1d1f] min-h-screen flex flex-col font-sans antialiased selection:bg-blue-100">
+<body class="bg-[#f5f5f7] text-[#1d1d1f] min-h-screen">
 
-    <!-- Header -->
-    <header class="bg-white/90 backdrop-blur-md border-b border-[#e5e5e7] sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-14">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-[#1d1d1f] text-white rounded-full flex items-center justify-center font-bold text-xs tracking-tighter shadow-sm">
-                        SGN
-                    </div>
-                    <span class="text-lg font-semibold tracking-tight text-[#1d1d1f]">
-                        SomaliGlobalNews<span class="text-[#0071e3]">.com</span>
-                    </span>
-                </div>
-                <div class="flex items-center space-x-2 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-xs font-medium text-gray-700">Live Global Security & Intelligence Wire</span>
-                </div>
+    <!-- Top Header -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-[#e5e5e7] sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="w-8 h-8 bg-[#1d1d1f] text-white rounded-full flex items-center justify-center font-bold text-xs">SGN</span>
+                <a href="index.html" class="font-bold text-lg tracking-tight text-[#1d1d1f]">Somali Global News</a>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <span id="articleCount" class="text-xs text-[#86868b] font-medium hidden sm:inline">0 Stories</span>
+                
+                <!-- Contact Us Button triggering Side Drawer -->
+                <button onclick="openContactDrawer()" class="flex items-center space-x-1.5 text-xs font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition cursor-pointer bg-transparent border-none">
+                    <span>Contact Us</span>
+                </button>
+
+                <a href="admin.html" class="text-xs font-semibold text-[#0071e3] hover:underline">Admin Portal</a>
             </div>
         </div>
+
+        <!-- Streamlined Navigation -->
+        <nav class="bg-[#f0f4f8] border-t border-[#e5e5e7]">
+            <div class="max-w-7xl mx-auto px-6 flex gap-8 overflow-x-auto py-3 text-xs font-semibold text-[#515156]">
+                <button onclick="fetchFeed('somalia')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap active-nav" data-cat="somalia">Somalia</button>
+                <button onclick="fetchFeed('horn_africa')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="horn_africa">Horn of Africa</button>
+                <button onclick="fetchFeed('middleeast')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="middleeast">Middle East</button>
+                <button onclick="fetchFeed('europe')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="europe">Europe</button>
+                <button onclick="fetchFeed('americas')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="americas">Americas</button>
+                <button onclick="fetchFeed('editorial')" class="hover:text-[#0071e3] transition cursor-pointer whitespace-nowrap" data-cat="editorial">Editorial</button>
+            </div>
+        </nav>
     </header>
 
-    <!-- Ticker -->
-    <div class="bg-white border-b border-[#e5e5e7] py-2 text-xs font-medium text-[#86868b] overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
-            <span class="font-semibold text-[#1d1d1f] shrink-0 mr-4">BREAKING:</span>
-            <div class="overflow-hidden whitespace-nowrap flex-grow">
-                <div class="inline-block animate-marquee">
-                    <span>EUROPE: Cost-of-Living Riots and Protests Escalate Across France, Italy, Spain & Albania</span>
-                    <span class="mx-6 text-gray-300">•</span>
-                    <span>SOMALIA: SNA & AFRICOM Strike Al-Shabaab Staging Areas in Lower Shabelle Operations</span>
-                    <span class="mx-6 text-gray-300">•</span>
-                    <span>ETHIOPIA: TPLF Advances in Northern Tigray as Clashes Spread Near Border Towns</span>
-                    <span class="mx-6 text-gray-300">•</span>
-                    <span>MIDDLE EAST: Saudi Defenses Intercept Houthi Missiles Fired Toward Yanbu & Riyadh</span>
-                    <span class="mx-6 text-gray-300">•</span>
-                    <span>USA: Inflation & Foreign Policy Strategy Command Center Stage Ahead of Election Period</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        <!-- Clean Category Buttons -->
-        <div class="mb-8">
-            <div class="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none">
-                <button onclick="switchChannel('somalia', this)" class="category-btn active px-4 py-2 rounded-full text-xs font-semibold bg-[#1d1d1f] text-white transition-all whitespace-nowrap shadow-sm">🇸🇴 Somalia</button>
-                <button onclick="switchChannel('ethiopia', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇪🇹 Ethiopia</button>
-                <button onclick="switchChannel('kenya', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇰🇪 Kenya</button>
-                <button onclick="switchChannel('djibouti', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇩🇯 Djibouti</button>
-                <button onclick="switchChannel('middleeast', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🌐 Middle East</button>
-                <button onclick="switchChannel('europe', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🌍 Europe</button>
-                <button onclick="switchChannel('us_na', this)" class="category-btn px-4 py-2 rounded-full text-xs font-semibold bg-white border border-[#e5e5e7] text-[#1d1d1f] hover:bg-gray-100 transition-all whitespace-nowrap">🇺🇸 USA</button>
-            </div>
-        </div>
-
-        <!-- Section Title -->
-        <div class="mb-6 flex items-center justify-between">
-            <h2 id="channelTitle" class="text-2xl font-bold tracking-tight text-[#1d1d1f]">🇸🇴 Somalia Live Security Coverage</h2>
-            <span id="articleCount" class="text-xs font-medium text-[#86868b]">Loading...</span>
-        </div>
-
-        <!-- News Grid -->
-        <section>
-            <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Injected Story Cards -->
-            </div>
-        </section>
+    <!-- News Feed Grid -->
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </main>
 
-    <!-- Modal Reader View -->
-    <div id="articleModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col border border-[#e5e5e7]">
-            <div class="sticky top-0 bg-white/95 backdrop-blur border-b border-[#e5e5e7] px-6 py-4 flex items-center justify-between z-10">
-                <span id="modalSource" class="text-xs font-bold text-[#0071e3] uppercase tracking-wider">Source</span>
-                <button onclick="closeModal()" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 transition font-bold text-sm">
-                    ✕
-                </button>
-            </div>
+    <!-- Reader Modal -->
+    <div id="readerModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-8 relative shadow-2xl border border-[#e5e5e7]">
+            <button onclick="closeReader()" class="absolute top-6 right-6 text-gray-400 hover:text-black font-bold text-xl">&times;</button>
+            <span id="modalSource" class="text-xs font-bold text-[#0071e3] uppercase tracking-wide">Source</span>
+            <h2 id="modalTitle" class="text-2xl font-bold mt-1 mb-2 serif-title text-[#1d1d1f]">Title</h2>
+            <p id="modalDate" class="text-xs text-[#86868b] mb-4">Date</p>
+            
+            <div id="modalMediaContainer" class="mb-6 rounded-2xl overflow-hidden bg-black"></div>
+            <div id="modalBody" class="text-sm text-[#3a3a3c] leading-relaxed space-y-4"></div>
+        </div>
+    </div>
 
-            <div class="p-6 sm:p-8 space-y-4 flex-grow">
-                <img id="modalImage" src="" alt="Article Image" class="w-full h-64 object-cover rounded-2xl bg-gray-100 mb-4 border border-[#e5e5e7]">
-                
-                <div class="flex items-center justify-between">
-                    <span id="modalDate" class="text-xs text-[#86868b]"></span>
-                    <button id="modalTranslateBtn" onclick="toggleModalLang()" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-[#1d1d1f] text-xs font-semibold rounded-full border border-gray-300 transition">
-                        🇸🇴 Af-Soomaali
-                    </button>
+    <!-- Side Contact Drawer -->
+    <div id="contactDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity" onclick="closeContactDrawer()"></div>
+
+        <!-- Sliding Panel from Right -->
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl p-8 flex flex-col justify-between border-l border-[#e5e5e7]">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-[#1d1d1f] serif-title">Get in Touch</h3>
+                        <button onclick="closeContactDrawer()" class="text-gray-400 hover:text-black text-2xl font-bold">&times;</button>
+                    </div>
+                    <p class="text-xs text-[#86868b] mb-6">Have a news tip, correction, or inquiry? Send a message directly to the SGN editorial desk.</p>
+
+                    <!-- Contact Form -->
+                    <form action="https://formspree.io/f/your-form-id" method="POST" class="space-y-4" onsubmit="handleContactSubmit(event)">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Your Name</label>
+                            <input type="text" name="name" required placeholder="Enter your name" 
+                                   class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Your Email</label>
+                            <input type="email" name="email" required placeholder="name@example.com" 
+                                   class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Message</label>
+                            <textarea name="message" rows="5" required placeholder="Write your message here..." 
+                                      class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-bold py-3 rounded-xl transition shadow-sm">
+                            Send Message
+                        </button>
+                    </form>
+                    <div id="formSuccessMsg" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-xs text-green-800 text-center font-medium">
+                        Thank you! Your message has been sent successfully.
+                    </div>
                 </div>
-
-                <h2 id="modalTitle" class="text-2xl font-bold text-[#1d1d1f] leading-snug"></h2>
-                
-                <div id="modalBody" class="text-sm text-gray-700 leading-relaxed space-y-4 font-normal pt-2"></div>
-            </div>
-
-            <div class="bg-gray-50 border-t border-[#e5e5e7] p-6 flex items-center justify-between rounded-b-3xl">
-                <span class="text-xs text-[#86868b]">SomaliGlobalNews Security Intelligence</span>
-                <a id="modalExternalLink" href="#" target="_blank" class="px-4 py-2 bg-[#0071e3] hover:bg-blue-600 text-white text-xs font-semibold rounded-full flex items-center space-x-2 transition shadow-sm">
-                    <span>Visit Publisher</span>
-                    <span>→</span>
-                </a>
+                <div class="text-center text-[10px] text-[#86868b] pt-4 border-t border-gray-100">
+                    Somali Global News • Secure Editorial Desk
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-[#e5e5e7] py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-[#86868b]">
-            <p>© 2026 <strong>SomaliGlobalNews.com</strong> • Direct Live News Wire</p>
-        </div>
-    </footer>
-
-    <style>
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .animate-marquee {
-            display: inline-block;
-            white-space: nowrap;
-            animation: marquee 38s linear infinite;
-        }
-    </style>
-
     <script>
-        const now = Date.now();
-        const DATABASE = {
-            somalia: [
-                {
-                    id: 'som-1',
-                    title: "SNA & US Africa Command Conduct Precision Strikes Against Al-Shabaab in Lower Shabelle",
-                    sourceName: "Somalia Security Desk",
-                    pubDate: new Date(now - 3600000 * 2).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800&q=80",
-                    description: "Somali National Army ground forces alongside Turkish-trained Gorgor commandos cleared key insurgent strongholds following targeted air support.",
-                    fullText: "MOGADISHU — The Somali National Army (SNA) alongside elite Gorgor commandos launched high-tempo offensive operations against Al-Shabaab strongholds across central and southern sectors. U.S. Africa Command confirmed coordinated precision strikes targeting insurgent staging areas in Lower Shabelle.<br><br>The operations occur amidst crucial negotiations between federal leadership and regional member states regarding national security architecture, electoral models, and the transition of forward bases. Military commanders reported that key supply routes were secured."
-                },
-                {
-                    id: 'som-2',
-                    title: "Federal Leaders and Regional State Envoys Convene in Mogadishu for Constitutional Negotiations",
-                    sourceName: "National Political Wire",
-                    pubDate: new Date(now - 3600000 * 10).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
-                    description: "High-level political talks focus on national electoral models, federalism agreements, and security coordination across regional member states.",
-                    fullText: "MOGADISHU — Federal executive leaders and regional state presidents convened in Mogadishu for high-stakes political talks regarding constitutional amendments and universal suffrage election frameworks. The conference aims to harmonize governance structures while streamlining counter-terrorism operations."
-                }
-            ],
-            ethiopia: [
-                {
-                    id: 'eth-1',
-                    title: "TPLF Vows Continued Offensive as Heavy Clashes Erupt Across Northern Tigray",
-                    sourceName: "Horn Security Monitor",
-                    pubDate: new Date(now - 3600000 * 3).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&q=80",
-                    description: "Renewed military engagements erupted near Zalambessa and border sectors, raising fears of a wider regional confrontation involving Eritrean forces.",
-                    fullText: "ADDIS ABABA / MEKELE — Heavy artillery exchanges and infantry battles erupted across northern towns in the Tigray region. TPLF leadership vowed to continue fighting federal forces, while clashes were also reported between federal defense forces and Amhara Fano militias near border sectors.<br><br>International observers warn that the renewed fighting threatens the fragile regional balance, as troop concentrations along the Eritrean border spark fears of wider Horn of Africa escalation."
-                },
-                {
-                    id: 'eth-2',
-                    title: "Federal Defense Forces Maintain Security Operations Across Amhara Region",
-                    sourceName: "East Africa Intel",
-                    pubDate: new Date(now - 3600000 * 14).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-                    description: "Security protocols remain active across major urban hubs in Amhara following sporadic skirmishes along central transit corridors.",
-                    fullText: "BAHIR DAR — Federal security forces maintained emergency protocols across parts of the Amhara region following sporadic engagements with local Fano militias. State authorities confirmed ongoing efforts to protect vital infrastructure and secure commercial highways."
-                }
-            ],
-            kenya: [
-                {
-                    id: 'ken-1',
-                    title: "Kenya Heightens Border Patrols Across North-Eastern Counties Amid Threat Monitoring",
-                    sourceName: "Kenya Security Bureau",
-                    pubDate: new Date(now - 3600000 * 6).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80",
-                    description: "Specialized police units and military detachments expand surveillance across Mandera, Wajir, and Garissa counties.",
-                    fullText: "NAIROBI — Kenyan security agencies increased patrol frequency and border surveillance along the north-eastern corridor to secure commercial transport routes and prevent cross-border insurgent infiltration."
-                }
-            ],
-            djibouti: [
-                {
-                    id: 'dj-1',
-                    title: "Diplomatic Focus Shifts to Red Sea Sovereignty and Border Troop Movements Near Assab",
-                    sourceName: "Red Sea Dispatch",
-                    pubDate: new Date(now - 3600000 * 4).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80",
-                    description: "Regional diplomats monitor maritime posture, port sovereign rights, and troop concentrations along northern border sectors.",
-                    fullText: "DJIBOUTI CITY — Diplomatic envoys hosted in Djibouti are closely monitoring renewed rhetoric and military deployments near Assab and disputed Red Sea corridors, urging strictly peaceful resolution and respect for sovereign borders."
-                }
-            ],
-            middleeast: [
-                {
-                    id: 'me-1',
-                    title: "Saudi Air Defenses Intercept Houthi Ballistic Barrages Targeting Yanbu Oil Hub and Riyadh",
-                    sourceName: "Gulf Security Wire",
-                    pubDate: new Date(now - 3600000 * 2).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80",
-                    description: "Coalition air defense units intercepted multiple missiles over western regions near Rabigh and Yanbu, prompting emergency alerts.",
-                    fullText: "RIYADH — The Saudi-led coalition destroyed ballistic missiles and explosive drones launched by Houthi forces targeting Yanbu, Rabigh, and airport infrastructure in Riyadh. Authorities confirmed emergency alerts were triggered across western provinces following falling debris near major oil refining facilities.<br><br>The escalations follow retaliatory airstrikes on Houthi military positions in Sanaa as regional maritime security forces maintain high readiness across Red Sea shipping lanes."
-                },
-                {
-                    id: 'me-2',
-                    title: "Yemen Coast Guard Headquarters Hit in Aden as Southern Coastal Conflict Intensifies",
-                    sourceName: "Red Sea Intel Desk",
-                    pubDate: new Date(now - 3600000 * 6).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-                    description: "Missile strikes caused structural damage to naval bases in Aden's Tawahi district amid elevated coastal troop mobilization.",
-                    fullText: "ADEN — Missile strikes struck Yemeni coast guard headquarters in Aden's Tawahi district, causing infrastructure damage and prompting reinforced security protocols along Bab el-Mandeb transit lanes."
-                }
-            ],
-            europe: [
-                {
-                    id: 'eur-1',
-                    title: "70,000 Security Officers Mobilized in France as Violent Cost-of-Living Riots Spread Nationwide",
-                    sourceName: "European Intelligence Desk",
-                    pubDate: new Date(now - 3600000 * 3).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
-                    description: "Over 2,500 detentions reported across Paris, Lyon, and Marseille as police use tear gas, water cannons, and curfews to quell civil unrest.",
-                    fullText: "PARIS — Mass unrest triggered by soaring living costs, education cutbacks, and inflation spread across Paris, Marseille, Lyon, and Barcelona. French authorities deployed 70,000 security officers, tear gas, and night curfews after storefronts were damaged and clashes erupted near major public monuments.<br><br>Related protests over fuel prices, housing shortages, and public service funding also broke out across Italy, Spain, Portugal, and Albania."
-                },
-                {
-                    id: 'eur-2',
-                    title: "Clashes and Storefront Vandalism Reported in Milan, Rome, and Barcelona Amid European Unrest",
-                    sourceName: "Southern Europe Desk",
-                    pubDate: new Date(now - 3600000 * 8).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1513581166391-887a96ddeafd?w=800&q=80",
-                    description: "Riot police engage demonstrators near transit hubs in Milan and Barcelona as economic protests grip Western Europe.",
-                    fullText: "MILAN / BARCELONA — Street violence and barricades disrupted commercial districts in Milan, Rome, and Barcelona as youth and student movements joined broader cost-of-living demonstrations, prompting emergency municipal security measures."
-                },
-                {
-                    id: 'eur-3',
-                    title: "Demonstrations in Tirana Turn Violent as Student Protests Challenge Higher Education Costs",
-                    sourceName: "Balkans Intel",
-                    pubDate: new Date(now - 3600000 * 18).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&q=80",
-                    description: "Police deploy tear gas in Tirana following clashes with student groups protesting educational costs and economic hardship.",
-                    fullText: "TIRANA — Demonstrations in Albania's capital escalated as student groups clashed with riot police over university fees, economic opportunities, and public governance, echoing widespread European socio-economic grievances."
-                }
-            ],
-            us_na: [
-                {
-                    id: 'us-1',
-                    title: "Economic Inflation & Foreign Defense Strategy Command Center Stage Ahead of US Elections",
-                    sourceName: "Washington Bureau",
-                    pubDate: new Date(now - 3600000 * 1).toISOString(),
-                    thumbnail: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800&q=80",
-                    description: "Voters across key battleground districts weigh energy prices, interest rates, and US security posture in the Red Sea and Horn of Africa.",
-                    fullText: "WASHINGTON — High-stakes national campaigning has intensified across battleground districts as voters prioritize fuel costs, inflation, and interest rates.<br><br>Congressional committees simultaneously held defense briefings evaluating Red Sea maritime security operations, counter-terrorism assistance in East Africa, and global supply chain protection."
-                }
-            ]
-        };
-
         let loadedArticles = [];
-        let currentModalArticle = null;
-        let isModalSomali = false;
 
-        async function translateText(text) {
+        async function fetchFeed(channelKey) {
+            // Highlight active navigation link
+            document.querySelectorAll('nav button').forEach(btn => {
+                if(btn.getAttribute('data-cat') === channelKey) {
+                    btn.classList.add('text-[#0071e3]', 'font-bold');
+                } else {
+                    btn.classList.remove('text-[#0071e3]', 'font-bold');
+                }
+            });
+
             try {
-                const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=so&dt=t&q=${encodeURIComponent(text)}`);
-                const data = await res.json();
-                return data[0].map(x => x[0]).join('');
-            } catch (e) {
-                return text;
-            }
-        }
-
-        function fetchFeed(channelKey) {
-            try {
-                const rawArticles = DATABASE[channelKey] || DATABASE['somalia'];
-                const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
-                const currentTime = Date.now();
-
-                loadedArticles = rawArticles.filter(item => {
-                    const articleTime = new Date(item.pubDate).getTime();
-                    return (currentTime - articleTime) <= THREE_DAYS_MS;
-                });
-
-                if (loadedArticles.length === 0 && rawArticles.length > 0) {
-                    loadedArticles = [rawArticles[0]];
+                let database = { somalia: [], ethiopia: [], kenya: [], djibouti: [], middleeast: [], europe: [], us_na: [], opinion: [] };
+                
+                try {
+                    const res = await fetch('public/data/news.json');
+                    if (res.ok) {
+                        const jsonData = await res.json();
+                        database = { ...database, ...jsonData };
+                    }
+                } catch (e) {
+                    // Fallback if news.json isn't fetched directly
                 }
 
-                document.getElementById('articleCount').innerText = `${loadedArticles.length} Active Stories`;
+                // Override/Merge with instant Admin localStorage edits
+                const storedRaw = localStorage.getItem('sgn_custom_database');
+                if (storedRaw) {
+                    const customData = JSON.parse(storedRaw);
+                    for (let cat in customData) {
+                        if (!database[cat]) database[cat] = [];
+                        database[cat] = [...customData[cat], ...database[cat]];
+                    }
+                }
+
+                let rawArticles = [];
+
+                if (channelKey === 'horn_africa') {
+                    rawArticles = [
+                        ...(database.ethiopia || []),
+                        ...(database.kenya || []),
+                        ...(database.djibouti || [])
+                    ];
+                } else if (channelKey === 'americas') {
+                    rawArticles = database.us_na || [];
+                } else if (channelKey === 'editorial') {
+                    rawArticles = database.opinion || database.editorial || [];
+                } else {
+                    rawArticles = database[channelKey] || [];
+                }
+
+                loadedArticles = rawArticles;
+                document.getElementById('articleCount').innerText = `${loadedArticles.length} Stories`;
                 renderCards();
             } catch (err) {
                 console.error("Error loading feed:", err);
@@ -307,152 +172,88 @@
         }
 
         function renderCards() {
-            const grid = document.getElementById('newsGrid');
-            if (!grid) return;
-            
+            const grid = document.getElementById('cardsGrid');
             grid.innerHTML = '';
 
-            loadedArticles.forEach((item) => {
+            if (loadedArticles.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-16 text-[#86868b] text-sm">No stories available in this category yet. Use your Admin Portal to publish.</div>`;
+                return;
+            }
+
+            loadedArticles.forEach((art, idx) => {
                 const card = document.createElement('article');
-                card.className = 'bg-white rounded-2xl border border-[#e5e5e7] overflow-hidden shadow-sm hover:shadow-md transition duration-200 flex flex-col justify-between';
+                card.className = "bg-white rounded-3xl border border-[#e5e5e7] overflow-hidden flex flex-col justify-between hover:shadow-xl transition cursor-pointer";
+                card.onclick = () => openReader(idx);
+
+                let mediaHtml = `<img src="${art.thumbnail || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'}" class="w-full h-52 object-cover">`;
+                if (art.videoUrl) {
+                    mediaHtml = `
+                        <div class="relative w-full h-52 bg-black">
+                            <video src="${art.videoUrl}" class="w-full h-52 object-cover" autoplay muted loop playsinline></video>
+                            <span class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full font-semibold backdrop-blur-sm">Video Clip</span>
+                        </div>`;
+                }
+
                 card.innerHTML = `
                     <div>
-                        <div class="h-44 w-full bg-gray-100 overflow-hidden relative">
-                            <img src="${item.thumbnail}" alt="Article" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=600&q=80'">
-                            <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-[#1d1d1f] text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-200 shadow-sm">
-                                ${item.sourceName}
-                            </span>
-                            <button onclick="toggleCardLang('${item.id}', event)" class="absolute top-3 right-3 bg-[#1d1d1f] hover:bg-black backdrop-blur-md text-white text-[10px] font-semibold px-2.5 py-1 rounded-full border border-gray-700 transition shadow-sm">
-                                🇸🇴 Translate
-                            </button>
-                        </div>
-                        <div class="p-5">
-                            <h3 id="title-${item.id}" class="font-semibold text-base text-[#1d1d1f] mb-2 leading-snug">
-                                ${item.title}
-                            </h3>
-                            <p id="desc-${item.id}" class="text-xs text-[#86868b] line-clamp-3 leading-relaxed mb-4">
-                                ${item.description}
-                            </p>
+                        ${mediaHtml}
+                        <div class="p-6">
+                            <span class="text-[10px] font-bold uppercase text-[#0071e3] tracking-wider">${art.sourceName || art.source || 'SGN'}</span>
+                            <h3 class="font-bold text-lg text-[#1d1d1f] mt-1 mb-2 serif-title leading-snug">${art.title}</h3>
+                            <p class="text-xs text-[#515156] line-clamp-3">${art.description || art.excerpt || ''}</p>
                         </div>
                     </div>
-                    <div class="px-5 py-3 border-t border-[#e5e5e7] bg-gray-50/50 flex items-center justify-between text-[11px] text-[#86868b]">
-                        <span>${new Date(item.pubDate).toLocaleDateString()}</span>
-                        <button onclick="openModal('${item.id}')" class="text-[#0071e3] font-semibold hover:underline flex items-center space-x-1">
-                            <span>Read Full</span>
-                            <span>→</span>
-                        </button>
+                    <div class="px-6 py-4 border-t border-[#f0f0f2] text-[11px] text-[#86868b] flex justify-between items-center">
+                        <span>${new Date(art.pubDate || Date.now()).toLocaleDateString()}</span>
+                        <span class="text-[#0071e3] font-semibold hover:underline">Read Story →</span>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        async function toggleCardLang(id, event) {
-            event.stopPropagation();
-            const article = loadedArticles.find(a => a.id === id);
-            if (!article) return;
+        function openReader(idx) {
+            const art = loadedArticles[idx];
+            if (!art) return;
+            document.getElementById('modalSource').innerText = art.sourceName || art.source || 'SGN Wire';
+            document.getElementById('modalTitle').innerText = art.title;
+            document.getElementById('modalDate').innerText = new Date(art.pubDate || Date.now()).toLocaleString();
+            document.getElementById('modalBody').innerHTML = art.fullText || art.body || art.description;
 
-            const titleElem = document.getElementById(`title-${id}`);
-            const descElem = document.getElementById(`desc-${id}`);
-            const btn = event.target;
-
-            if (btn.dataset.translated === "true") {
-                titleElem.innerText = article.title;
-                descElem.innerText = article.description;
-                btn.innerText = "🇸🇴 Translate";
-                btn.dataset.translated = "false";
+            const mediaContainer = document.getElementById('modalMediaContainer');
+            mediaContainer.innerHTML = '';
+            
+            if (art.videoUrl) {
+                mediaContainer.innerHTML = `<video src="${art.videoUrl}" class="w-full max-h-80 object-cover" controls autoplay></video>`;
             } else {
-                btn.innerText = "Translating...";
-                if (!article.somaliTitle) {
-                    article.somaliTitle = await translateText(article.title);
-                    article.somaliSummary = await translateText(article.description);
-                }
-                titleElem.innerText = article.somaliTitle;
-                descElem.innerText = article.somaliSummary;
-                btn.innerText = "🇺🇸 English";
-                btn.dataset.translated = "true";
-            }
-        }
-
-        function openModal(id) {
-            const article = loadedArticles.find(a => a.id === id);
-            if (!article) return;
-
-            currentModalArticle = article;
-            isModalSomali = false;
-
-            document.getElementById('modalSource').innerText = article.sourceName;
-            document.getElementById('modalDate').innerText = `Published: ${new Date(article.pubDate).toLocaleString()}`;
-            document.getElementById('modalImage').src = article.thumbnail;
-            document.getElementById('modalTitle').innerText = article.title;
-            document.getElementById('modalBody').innerHTML = article.fullText;
-            document.getElementById('modalExternalLink').href = '#';
-
-            document.getElementById('modalTranslateBtn').innerText = "🇸🇴 Af-Soomaali";
-            document.getElementById('articleModal').classList.remove('hidden');
-        }
-
-        async function toggleModalLang() {
-            if (!currentModalArticle) return;
-
-            const titleElem = document.getElementById('modalTitle');
-            const bodyElem = document.getElementById('modalBody');
-            const btn = document.getElementById('modalTranslateBtn');
-
-            if (isModalSomali) {
-                titleElem.innerText = currentModalArticle.title;
-                bodyElem.innerHTML = currentModalArticle.fullText;
-                btn.innerText = "🇸🇴 Af-Soomaali";
-                isModalSomali = false;
-            } else {
-                btn.innerText = "Translating...";
-                if (!currentModalArticle.somaliFullTitle) {
-                    currentModalArticle.somaliFullTitle = await translateText(currentModalArticle.title);
-                    currentModalArticle.somaliFullBody = await translateText(currentModalArticle.fullText);
-                }
-                titleElem.innerText = currentModalArticle.somaliFullTitle;
-                bodyElem.innerHTML = currentModalArticle.somaliFullBody;
-                btn.innerText = "🇺🇸 English";
-                isModalSomali = true;
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('articleModal').classList.add('hidden');
-        }
-
-        function switchChannel(channelKey, btn) {
-            document.querySelectorAll('.category-btn').forEach(b => {
-                b.classList.remove('bg-[#1d1d1f]', 'text-white');
-                b.classList.add('bg-white', 'text-[#1d1d1f]', 'border', 'border-[#e5e5e7]');
-            });
-
-            if (btn) {
-                btn.classList.remove('bg-white', 'text-[#1d1d1f]', 'border');
-                btn.classList.add('bg-[#1d1d1f]', 'text-white');
+                const imgSrc = art.thumbnail || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+                mediaContainer.innerHTML = `<img src="${imgSrc}" class="w-full max-h-80 object-cover">`;
             }
 
-            const titles = {
-                somalia: '🇸🇴 Somalia Live Security Coverage',
-                ethiopia: '🇪🇹 Ethiopia & Tigray Conflict',
-                kenya: '🇰🇪 Kenya Security & Border Intel',
-                djibouti: '🇩🇯 Djibouti & Red Sea Standoff',
-                middleeast: '🌐 Middle East Wire',
-                europe: '🌍 Europe Intelligence (Socio-Economic Unrest)',
-                us_na: '🇺🇸 USA & North America'
-            };
-
-            document.getElementById('channelTitle').innerText = titles[channelKey] || 'News Wire';
-            fetchFeed(channelKey);
+            document.getElementById('readerModal').classList.remove('hidden');
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchFeed('somalia');
-        });
+        function closeReader() {
+            document.getElementById('readerModal').classList.add('hidden');
+        }
 
-        window.onload = function() {
-            fetchFeed('somalia');
-        };
+        // Contact Drawer Functions
+        function openContactDrawer() {
+            document.getElementById('contactDrawer').classList.remove('hidden');
+        }
+
+        function closeContactDrawer() {
+            document.getElementById('contactDrawer').classList.add('hidden');
+            document.getElementById('formSuccessMsg').classList.add('hidden');
+        }
+
+        function handleContactSubmit(e) {
+            // Uncomment the next line if testing without a form backend:
+            // e.preventDefault();
+            document.getElementById('formSuccessMsg').classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => fetchFeed('somalia'));
     </script>
 </body>
 </html>
