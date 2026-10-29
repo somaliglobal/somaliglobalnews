@@ -3,203 +3,479 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somaliglobalnews.com — SGN</title>
+    <title>Somali Global News | Global News & Regional Insights</title>
+    <!-- Tailwind CSS for modern, clean Apple-style styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .serif-title { font-family: 'Merriweather', serif; }
-        .nav-btn { transition: all 0.2s ease; border-bottom: 2px solid transparent; }
-        .nav-btn.active { color: #0071e3; border-bottom-color: #0071e3; font-weight: 700; }
-        .article-content { overflow-wrap: anywhere; word-break: break-word; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #1d1d1f;
+        }
+        /* Custom scrollbar for clean aesthetics */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f5f7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d2d2d7;
+            border-radius: 3px;
+        }
     </style>
 </head>
-<body class="bg-[#f5f5f7] text-[#1d1d1f] min-h-screen">
+<body class="bg-white text-gray-900 antialiased min-h-screen flex flex-col selection:bg-blue-100 selection:text-blue-700">
 
-    <!-- Top Header -->
-    <header class="bg-white/80 backdrop-blur-md border-b border-[#e5e5e7] sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-2 sm:space-x-3">
-                <span class="w-8 h-8 bg-[#0071e3] text-white rounded-full flex items-center justify-center font-bold text-xs shadow-sm flex-shrink-0">SGN</span>
-                <a href="index.html" class="font-bold text-base sm:text-lg tracking-tight text-[#0071e3] hover:text-[#005bb5] transition truncate">Somali Global News</a>
+    <!-- Top Utility & Breaking News Bar -->
+    <div class="bg-[#f5f5f7] border-b border-gray-200 text-xs text-gray-600 py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-2 overflow-hidden">
+                <span class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider">Live</span>
+                <p id="breaking-ticker" class="truncate font-medium text-gray-800">Welcome to Somali Global News — Delivering independent insights across the Horn of Africa and the globe.</p>
             </div>
-            
-            <div class="flex items-center space-x-3 sm:space-x-6">
-                <span id="articleCount" class="text-xs text-[#86868b] font-medium hidden sm:inline">0 Stories</span>
-                <button id="langToggleBtn" onclick="toggleGlobalLanguage()" class="text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 bg-[#f0f4f8] hover:bg-[#e2e8f0] text-[#0071e3] rounded-full transition whitespace-nowrap">
-                    Somali / EN
-                </button>
-            </div>
-        </div>
-
-        <!-- Navigation Bar -->
-        <nav class="bg-[#f0f4f8] border-t border-[#e5e5e7]">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 flex gap-4 sm:gap-6 overflow-x-auto py-2.5 text-xs font-semibold text-[#515156] no-scrollbar">
-                <button onclick="filterFeed('all')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap active" data-cat="all">Home</button>
-                <button onclick="filterFeed('Somalia')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Somalia">Somalia</button>
-                <button onclick="filterFeed('Horn of Africa')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Horn of Africa">Horn of Africa</button>
-                <button onclick="filterFeed('Middle East')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Middle East">Middle East</button>
-                <button onclick="filterFeed('Europe')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Europe">Europe</button>
-                <button onclick="filterFeed('Americas')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Americas">Americas</button>
-                <button onclick="filterFeed('Sports')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Sports">Sports</button>
-                <button onclick="filterFeed('Opinion')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Opinion">Editorial</button>
-            </div>
-        </nav>
-    </header>
-
-    <!-- News Feed Grid -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
-        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"></div>
-    </main>
-
-    <!-- Reader Modal -->
-    <div id="readerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-2xl w-full max-h-[90vh] sm:max-h-[85vh] overflow-y-auto p-5 sm:p-8 relative shadow-2xl border border-[#e5e5e7]">
-            <button onclick="closeReader()" class="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-500 hover:text-black font-bold text-2xl w-8 h-8 flex items-center justify-center rounded-full bg-gray-100">&times;</button>
-            
-            <div class="flex justify-between items-center pr-10 mb-2">
-                <span id="modalSource" class="text-xs font-bold text-[#0071e3] uppercase tracking-wide">Bureau</span>
-                <button onclick="toggleSomaliTranslation()" class="text-[11px] font-semibold text-[#0071e3] hover:underline bg-[#f0f4f8] px-2.5 py-1 rounded-md">
-                    Af-Soomaali
-                </button>
-            </div>
-
-            <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold mt-1 mb-2 serif-title text-[#1d1d1f] leading-snug article-content"></h2>
-            <p id="modalDate" class="text-xs text-[#86868b] mb-4"></p>
-            
-            <div id="modalMediaContainer" class="mb-5 rounded-xl sm:rounded-2xl overflow-hidden bg-black"></div>
-            
-            <div id="modalBody" class="text-sm sm:text-base text-[#3a3a3c] leading-relaxed space-y-4 whitespace-pre-line article-content"></div>
-            <div id="modalSomaliBody" class="text-sm sm:text-base text-[#1d1d1f] leading-relaxed space-y-4 hidden bg-amber-50/60 p-4 rounded-xl border border-amber-200/60 mt-4 whitespace-pre-line article-content"></div>
+            <div id="current-date" class="text-gray-500 font-normal"></div>
         </div>
     </div>
 
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo & Brand -->
+            <div class="flex items-center space-x-3">
+                <a href="#" onclick="filterCategory('All')" class="group flex items-center space-x-2 text-left">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg shadow-sm">
+                        S
+                    </div>
+                    <div>
+                        <span class="block text-xl font-bold tracking-tight text-[#0071e3]">SOMALI GLOBAL NEWS</span>
+                        <span class="block text-[11px] text-gray-500 font-medium tracking-wide">Independent Global Intelligence</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Desktop Category Navigation & Home Button -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium text-gray-600">
+                <button onclick="filterCategory('All')" class="px-3 py-2 rounded-lg text-blue-600 bg-blue-50/80 transition-all font-semibold nav-btn" data-category="All">Home</button>
+                <button onclick="filterCategory('Somalia')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Somalia">Somalia</button>
+                <button onclick="filterCategory('Horn of Africa')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Horn of Africa">Horn of Africa</button>
+                <button onclick="filterCategory('Middle East')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Middle East">Middle East</button>
+                <button onclick="filterCategory('World')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="World">World</button>
+                <button onclick="filterCategory('Sports')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Sports">Sports</button>
+                <button onclick="filterCategory('Editorial')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Editorial">Editorial</button>
+            </nav>
+
+            <!-- Search -->
+            <div class="flex items-center space-x-3">
+                <div class="relative hidden sm:block">
+                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search articles..." class="bg-[#f5f5f7] border-none text-sm rounded-full pl-9 pr-4 py-2 w-48 lg:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-gray-800 placeholder-gray-400">
+                    <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Secondary Category Bar -->
+        <div class="md:hidden flex overflow-x-auto px-4 py-2 space-x-2 bg-gray-50 border-t border-gray-100 scrollbar-none">
+            <button onclick="filterCategory('All')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white nav-btn-mobile" data-category="All">Home</button>
+            <button onclick="filterCategory('Somalia')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Somalia">Somalia</button>
+            <button onclick="filterCategory('Horn of Africa')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Horn of Africa">Horn of Africa</button>
+            <button onclick="filterCategory('Middle East')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Middle East">Middle East</button>
+            <button onclick="filterCategory('World')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="World">World</button>
+            <button onclick="filterCategory('Sports')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Sports">Sports</button>
+            <button onclick="filterCategory('Editorial')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Editorial">Editorial</button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <!-- Hero / Featured Section -->
+        <section id="featured-section" class="mb-12"></section>
+
+        <!-- Category Title Header -->
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+            <h2 id="current-category-title" class="text-2xl font-bold tracking-tight text-gray-900">Latest Dispatches</h2>
+            <span id="article-count" class="text-sm text-gray-500 font-medium">Loading stories...</span>
+        </div>
+
+        <!-- Article Grid -->
+        <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+
+        <!-- Empty State Container -->
+        <div id="empty-state" class="hidden text-center py-20">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800">No stories found</h3>
+            <p class="text-gray-500 text-sm mt-1">Check back soon for new updates in this category.</p>
+        </div>
+    </main>
+
+    <!-- Full Article Modal / Reader View -->
+    <div id="article-modal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 my-8">
+            <div class="sticky top-0 bg-white/90 backdrop-blur-md px-6 py-4 border-b border-gray-100 flex items-center justify-between z-10">
+                <div class="flex items-center space-x-3">
+                    <span id="modal-category" class="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider"></span>
+                    <span id="modal-date" class="text-xs text-gray-400"></span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <!-- Somali Translation Button -->
+                    <button onclick="toggleTranslation()" id="translate-btn" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors">
+                        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
+                        <span id="translate-btn-text">Somali</span>
+                    </button>
+                    <!-- Close Modal Button -->
+                    <button onclick="closeArticleModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-6 sm:p-10 space-y-6">
+                <h1 id="modal-title" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 leading-tight"></h1>
+                
+                <div id="modal-image-container" class="rounded-xl overflow-hidden bg-gray-100 max-h-[400px]">
+                    <img id="modal-image" src="" alt="" class="w-full h-full object-cover">
+                </div>
+
+                <!-- English Content View -->
+                <div id="content-english" class="prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-4 text-base sm:text-lg"></div>
+
+                <!-- Somali Translation View -->
+                <div id="content-somali" class="hidden prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-4 text-base sm:text-lg font-normal bg-amber-50/50 p-6 rounded-2xl border border-amber-200/50"></div>
+
+                <!-- Reader Comment Section -->
+                <div class="mt-12 pt-8 border-t border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Reader Comments (<span id="comment-count">0</span>)</h3>
+                    
+                    <!-- Comment Submission Form -->
+                    <form id="comment-form" onsubmit="submitComment(event)" class="mb-8 space-y-3">
+                        <div>
+                            <input type="text" id="commenter-name" placeholder="Your Name" required class="w-full sm:w-1/2 bg-[#f5f5f7] border-none text-sm rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-gray-800 placeholder-gray-400">
+                        </div>
+                        <div>
+                            <textarea id="commenter-text" rows="3" placeholder="Leave your perspective or comment..." required class="w-full bg-[#f5f5f7] border-none text-sm rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-gray-800 placeholder-gray-400"></textarea>
+                        </div>
+                        <button type="submit" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors shadow-sm">Post Comment</button>
+                    </form>
+
+                    <!-- Comments List Container -->
+                    <div id="comments-list" class="space-y-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#f5f5f7] border-t border-gray-200 text-gray-500 text-sm py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <span class="font-bold text-[#0071e3] tracking-tight">SOMALI GLOBAL NEWS</span>
+                <p class="text-xs text-gray-400 mt-1">&copy; 2026 Somali Global News. All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6 text-xs font-medium">
+                <a href="#" onclick="filterCategory('All'); return false;" class="hover:text-blue-600 transition-colors">Home</a>
+                <a href="#" onclick="filterCategory('Editorial'); return false;" class="hover:text-blue-600 transition-colors">Editorial</a>
+                <a href="admin.html" class="hover:text-blue-600 transition-colors">Publisher Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Client Script -->
     <script>
-        let allArticles = [];
-        let filteredArticles = [];
-        let currentArticle = null;
-        let isSomaliMode = false;
+        // Display Current Date in Utility Bar
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', dateOptions);
+
+        let articlesStore = [];
+        let currentCategory = 'All';
+        let currentArticleId = null;
+        let isSomaliActive = false;
 
         async function initFeed() {
             try {
-                // Fetch central news.json with cache buster
-                const res = await fetch('news.json?t=' + Date.now());
-                if (!res.ok) throw new Error("news.json not found");
-                const data = await res.json();
-                allArticles = data.articles || [];
-                filterFeed('all');
+                // Fetch live news data from repo path
+                let res = await fetch('public/data/news.json?t=' + Date.now());
+                if (!res.ok) {
+                    res = await fetch('data/news.json?t=' + Date.now());
+                }
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const rawList = data.articles || (Array.isArray(data) ? data : []);
+                    
+                    // Normalize data structure so both schema versions work seamlessly
+                    articlesStore = rawList.map((item, idx) => ({
+                        id: item.id || `art-${idx}`,
+                        title: item.title || "Untitled Report",
+                        titleSomali: item.title_so || "",
+                        category: item.category || "General",
+                        location: item.location || "",
+                        date: item.publishedAt ? new Date(item.publishedAt).toLocaleDateString('en-US', dateOptions) : (item.date || "Recent"),
+                        image: item.imageUrl || item.image || item.thumbnail || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80",
+                        summary: item.summary || item.excerpt || "",
+                        summarySomali: item.summary_so || "",
+                        content: item.content || item.body || item.summary || "",
+                        contentSomali: item.content_so || item.somaliText || item.summary_so || "",
+                        comments: item.comments || []
+                    }));
+
+                    // Update breaking ticker with top headline
+                    if (articlesStore.length > 0) {
+                        document.getElementById('breaking-ticker').innerText = articlesStore[0].title;
+                    }
+                }
             } catch (err) {
-                console.error("Error loading news feed:", err);
-                document.getElementById('cardsGrid').innerHTML = `
-                    <div class="col-span-full text-center py-16 text-red-500 text-sm">
-                        Unable to load news.json. Check that the file exists in your repository root.
-                    </div>`;
+                console.warn("Could not fetch remote news.json, checking local storage cache.", err);
+                const localData = localStorage.getItem('sgn_articles');
+                if (localData) {
+                    articlesStore = JSON.parse(localData);
+                }
             }
+
+            renderArticles(currentCategory);
         }
 
-        function filterFeed(category) {
-            document.querySelectorAll('nav button').forEach(btn => {
-                if (btn.getAttribute('data-cat') === category) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+        // Render Articles Feed
+        function renderArticles(filter = 'All', searchQuery = '') {
+            const grid = document.getElementById('articles-grid');
+            const featuredSection = document.getElementById('featured-section');
+            const emptyState = document.getElementById('empty-state');
+            const articleCountEl = document.getElementById('article-count');
+
+            grid.innerHTML = '';
+            
+            let filtered = articlesStore.filter(art => {
+                const matchesCat = filter === 'All' || 
+                    (filter === 'Horn of Africa' && ['Horn of Africa', 'Ethiopia', 'Kenya', 'Djibouti', 'Eritrea'].includes(art.category)) ||
+                    art.category.toLowerCase() === filter.toLowerCase();
+                    
+                const matchesSearch = art.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      art.summary.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCat && matchesSearch;
             });
 
-            if (category === 'all') {
-                filteredArticles = allArticles;
-            } else if (category === 'Horn of Africa') {
-                filteredArticles = allArticles.filter(a => 
-                    a.category === 'Horn of Africa' || 
-                    a.category === 'Ethiopia' || 
-                    a.category === 'Kenya' || 
-                    a.category === 'Djibouti'
-                );
-            } else {
-                filteredArticles = allArticles.filter(a => a.category.toLowerCase() === category.toLowerCase());
-            }
+            articleCountEl.innerText = `${filtered.length} ${filtered.length === 1 ? 'story' : 'stories'}`;
 
-            document.getElementById('articleCount').innerText = `${filteredArticles.length} Stories`;
-            renderCards();
-        }
-
-        function renderCards() {
-            const grid = document.getElementById('cardsGrid');
-            grid.innerHTML = '';
-
-            if (filteredArticles.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-16 text-[#86868b] text-sm">No stories published in this category yet.</div>`;
+            if (filtered.length === 0) {
+                featuredSection.innerHTML = '';
+                emptyState.classList.remove('hidden');
                 return;
+            } else {
+                emptyState.classList.add('hidden');
             }
 
-            filteredArticles.forEach((art, idx) => {
-                const card = document.createElement('article');
-                card.className = "bg-white rounded-3xl border border-[#e5e5e7] overflow-hidden flex flex-col justify-between hover:shadow-xl transition cursor-pointer";
-                card.onclick = () => openReader(idx);
-
-                const titleText = isSomaliMode && art.title_so ? art.title_so : art.title;
-                const summaryText = isSomaliMode && art.summary_so ? art.summary_so : art.summary;
-                const imgSrc = art.imageUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
-
-                card.innerHTML = `
-                    <div>
-                        <img src="${imgSrc}" class="w-full h-48 sm:h-52 object-cover" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'">
-                        <div class="p-5 sm:p-6">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[10px] font-bold uppercase text-[#0071e3] tracking-wider">${art.category}</span>
-                                <span class="text-[10px] text-[#86868b]">${art.location || ''}</span>
+            // Render Featured Story (First item) if on 'All' view and no search query
+            if (filter === 'All' && !searchQuery && filtered.length > 0) {
+                const featured = filtered[0];
+                featuredSection.innerHTML = `
+                    <div onclick="openArticleModal('${featured.id}')" class="group cursor-pointer bg-gray-50 rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition-all flex flex-col lg:flex-row">
+                        <div class="lg:w-7/12 relative overflow-hidden bg-gray-200 min-h-[300px]">
+                            <img src="${featured.image}" alt="${featured.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'">
+                        </div>
+                        <div class="lg:w-5/12 p-8 sm:p-10 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">${featured.category}</span>
+                                    <span class="text-xs text-gray-400">${featured.date}</span>
+                                </div>
+                                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 group-hover:text-blue-600 transition-colors leading-snug mb-4">${featured.title}</h1>
+                                <p class="text-gray-600 text-base leading-relaxed mb-6">${featured.summary}</p>
                             </div>
-                            <h3 class="font-bold text-base sm:text-lg text-[#1d1d1f] mt-1 mb-2 serif-title leading-snug article-content">${titleText}</h3>
-                            <p class="text-xs text-[#515156] line-clamp-3 article-content">${summaryText || ''}</p>
+                            <div class="flex items-center text-blue-600 font-semibold text-sm group-hover:translate-x-1 transition-transform">
+                                Read Full Dispatch &rarr;
+                            </div>
                         </div>
                     </div>
-                    <div class="px-5 sm:px-6 py-4 border-t border-[#f0f0f2] text-[11px] text-[#86868b] flex justify-between items-center">
-                        <span>${new Date(art.publishedAt || Date.now()).toLocaleDateString()}</span>
-                        <span class="text-[#0071e3] font-semibold hover:underline">${isSomaliMode ? 'Akhri Warbixinta →' : 'Read Story →'}</span>
+                `;
+                filtered = filtered.slice(1);
+            } else {
+                featuredSection.innerHTML = '';
+            }
+
+            // Render Grid Articles
+            filtered.forEach(art => {
+                const comments = getCommentsForArticle(art.id);
+                const card = document.createElement('div');
+                card.className = "group cursor-pointer bg-white rounded-xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition-all flex flex-col justify-between";
+                card.setAttribute('onclick', `openArticleModal('${art.id}')`);
+                card.innerHTML = `
+                    <div>
+                        <div class="h-48 overflow-hidden bg-gray-100">
+                            <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-gray-100 text-gray-700 text-[11px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider">${art.category}</span>
+                                <span class="text-xs text-gray-400">${art.date}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors leading-snug mb-2">${art.title}</h3>
+                            <p class="text-gray-600 text-sm line-clamp-2 leading-relaxed">${art.summary}</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-gray-50 text-xs font-semibold text-blue-600">
+                        <span>Read Full</span>
+                        <span class="text-gray-400 font-normal">${comments.length} comments</span>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        function openReader(idx) {
-            const art = filteredArticles[idx];
-            if (!art) return;
-            currentArticle = art;
-
-            document.getElementById('modalSource').innerText = `${art.category} • ${art.location || 'SGN NewsDesk'}`;
-            document.getElementById('modalTitle').innerText = isSomaliMode && art.title_so ? art.title_so : art.title;
-            document.getElementById('modalDate').innerText = new Date(art.publishedAt || Date.now()).toLocaleString();
-            document.getElementById('modalBody').innerText = art.content || art.summary || '';
+        // Category Filter Logic
+        function filterCategory(category) {
+            currentCategory = category;
+            document.getElementById('current-category-title').innerText = category === 'All' ? 'Latest Dispatches' : category;
             
-            const somaliBox = document.getElementById('modalSomaliBody');
-            somaliBox.innerText = art.content_so || art.summary_so || "Warbixintan weli looma tarjumin Af-Soomaali.";
-            somaliBox.classList.add('hidden');
+            // Update desktop button active states
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-category') === category) {
+                    btn.className = "px-3 py-2 rounded-lg text-blue-600 bg-blue-50/80 transition-all font-semibold nav-btn";
+                } else {
+                    btn.className = "px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn text-gray-600";
+                }
+            });
 
-            const mediaContainer = document.getElementById('modalMediaContainer');
-            const imgSrc = art.imageUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
-            mediaContainer.innerHTML = `<img src="${imgSrc}" class="w-full max-h-60 sm:max-h-80 object-cover">`;
+            // Update mobile button active states
+            document.querySelectorAll('.nav-btn-mobile').forEach(btn => {
+                if (btn.getAttribute('data-category') === category) {
+                    btn.className = "whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white nav-btn-mobile";
+                } else {
+                    btn.className = "whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile";
+                }
+            });
 
-            document.getElementById('readerModal').classList.remove('hidden');
+            renderArticles(currentCategory, document.getElementById('search-input').value);
+        }
+
+        function handleSearch(query) {
+            renderArticles(currentCategory, query);
+        }
+
+        // Modal Reader Controls
+        function openArticleModal(id) {
+            currentArticleId = id;
+            isSomaliActive = false;
+            updateTranslationUI();
+
+            const article = articlesStore.find(a => String(a.id) === String(id));
+            if (!article) return;
+
+            document.getElementById('modal-category').innerText = article.location || article.category;
+            document.getElementById('modal-date').innerText = article.date;
+            document.getElementById('modal-title').innerText = article.title;
+            document.getElementById('modal-image').src = article.image;
+            
+            // Format body copy with clean paragraphs
+            const engParagraphs = (article.content || article.summary || '').split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
+            document.getElementById('content-english').innerHTML = engParagraphs;
+
+            const somaliSource = article.contentSomali || article.summarySomali;
+            if (somaliSource) {
+                const somTitle = article.titleSomali ? `<h3 class="text-xl font-bold text-gray-900 mb-2">${escapeHtml(article.titleSomali)}</h3>` : '';
+                const somParagraphs = somaliSource.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
+                document.getElementById('content-somali').innerHTML = `${somTitle}${somParagraphs}`;
+            } else {
+                document.getElementById('content-somali').innerHTML = `<p class="italic text-gray-500">Faahfaahin Af-Soomaali ah weli lama diyaarin warbixintan.</p>`;
+            }
+
+            renderComments(getCommentsForArticle(article.id));
+            document.getElementById('article-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeReader() {
-            document.getElementById('readerModal').classList.add('hidden');
-            document.body.style.overflow = '';
+        function closeArticleModal() {
+            document.getElementById('article-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            currentArticleId = null;
         }
 
-        function toggleSomaliTranslation() {
-            const box = document.getElementById('modalSomaliBody');
-            box.classList.toggle('hidden');
+        function toggleTranslation() {
+            isSomaliActive = !isSomaliActive;
+            updateTranslationUI();
         }
 
-        function toggleGlobalLanguage() {
-            isSomaliMode = !isSomaliMode;
-            document.getElementById('langToggleBtn').innerText = isSomaliMode ? 'English' : 'Somali / EN';
-            renderCards();
+        function updateTranslationUI() {
+            const engEl = document.getElementById('content-english');
+            const somEl = document.getElementById('content-somali');
+            const btnText = document.getElementById('translate-btn-text');
+
+            if (isSomaliActive) {
+                engEl.classList.add('hidden');
+                somEl.classList.remove('hidden');
+                btnText.innerText = "English";
+            } else {
+                engEl.classList.remove('hidden');
+                somEl.classList.add('hidden');
+                btnText.innerText = "Somali";
+            }
         }
 
+        // Comments Handling (Scoped to Local Storage per Story)
+        function getCommentsForArticle(articleId) {
+            return JSON.parse(localStorage.getItem(`sgn_comm_${articleId}`) || '[]');
+        }
+
+        function renderComments(comments) {
+            const container = document.getElementById('comments-list');
+            document.getElementById('comment-count').innerText = comments.length;
+            container.innerHTML = '';
+
+            if (comments.length === 0) {
+                container.innerHTML = `<p class="text-sm text-gray-400 italic">No comments yet. Be the first to share your perspective.</p>`;
+                return;
+            }
+
+            comments.forEach((c) => {
+                const item = document.createElement('div');
+                item.className = "bg-[#f5f5f7] p-4 rounded-xl space-y-1 relative group";
+                item.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="font-semibold text-sm text-gray-900">${escapeHtml(c.name)}</span>
+                        <span class="text-[11px] text-gray-400">${c.date}</span>
+                    </div>
+                    <p class="text-sm text-gray-700 leading-relaxed">${escapeHtml(c.text)}</p>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function submitComment(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('commenter-name');
+            const textInput = document.getElementById('commenter-text');
+
+            if (!nameInput.value.trim() || !textInput.value.trim() || !currentArticleId) return;
+
+            const comments = getCommentsForArticle(currentArticleId);
+            const newComment = {
+                name: nameInput.value.trim(),
+                text: textInput.value.trim(),
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            };
+
+            comments.unshift(newComment);
+            localStorage.setItem(`sgn_comm_${currentArticleId}`, JSON.stringify(comments));
+
+            renderComments(comments);
+            textInput.value = '';
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Initialize Feed
         document.addEventListener('DOMContentLoaded', initFeed);
     </script>
 </body>
