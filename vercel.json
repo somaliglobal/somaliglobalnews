@@ -1,14 +1,18 @@
 {
-"version": 2,
-"cleanUrls": true,
-"rewrites": [
-{
-"source": "/admin",
-"destination": "/admin.html"
-},
-{
-"source": "/(.*)",
-"destination": "/index.html"
-}
-]
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/data/(.*)",
+      "destination": "/data/$1"
+    },
+    {
+      "source": "/((?!data/|.*\\..*).*)",
+      "destination": "/index.html"
+    }
+  ]
 }
