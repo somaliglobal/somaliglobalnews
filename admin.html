@@ -1,341 +1,651 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGN Admin Portal — Somali Global News</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Inter', sans-serif; }</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SGN Editorial Portal | Somali Global News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fbfbfd;
+      --card-bg: #ffffff;
+      --border: #d2d2d7;
+      --border-subtle: #e5e5ea;
+      --text-primary: #1d1d1f;
+      --text-secondary: #86868b;
+      --accent-blue: #0071e3;
+      --accent-blue-hover: #0077ed;
+      --accent-light: #e8f2ff;
+      --success: #34c759;
+      --danger: #ff3b30;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Apple-style Top Navigation */
+    header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-badge {
+      background-color: var(--accent-light);
+      color: var(--accent-blue);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      color: var(--text-primary);
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-secondary {
+      background-color: #f5f5f7;
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e8e8ed;
+    }
+
+    /* Container & Layout */
+    .container {
+      max-width: 1240px;
+      margin: 32px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 960px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Clean Card Surfaces */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .card-header h2 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .card-header p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    label span.lang {
+      font-weight: 400;
+      color: var(--accent-blue);
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background-color: #ffffff;
+      color: var(--text-primary);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-blue);
+      color: #ffffff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-blue-hover);
+    }
+
+    .btn-primary:disabled {
+      background-color: #a1a1a6;
+      cursor: not-allowed;
+    }
+
+    /* Sidebar Story List */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      background: #f5f5f7;
+      border-radius: 12px;
+      color: var(--text-secondary);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .story-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 640px;
+      overflow-y: auto;
+      margin-top: 16px;
+    }
+
+    .story-item {
+      padding: 14px;
+      background: #fafafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .story-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+    }
+
+    .story-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.35;
+    }
+
+    .story-title-so {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    /* Apple Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.hidden {
+      display: none;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: 16px;
+      max-width: 440px;
+      width: 100%;
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .modal-box h3 {
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      margin-bottom: 6px;
+    }
+
+    .modal-box p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+  </style>
 </head>
-<body class="bg-[#f5f5f7] text-[#1d1d1f] min-h-screen">
+<body>
 
-    <!-- Auth & GitHub Config Screen -->
-    <div id="authOverlay" class="fixed inset-0 bg-[#f5f5f7] z-50 flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-3xl shadow-xl border border-[#e5e5e7] max-w-md w-full space-y-5">
-            <div class="text-center">
-                <div class="w-12 h-12 bg-[#1d1d1f] text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-3">SGN</div>
-                <h2 class="text-xl font-bold text-[#1d1d1f]">Editorial Admin Portal</h2>
-                <p class="text-xs text-[#86868b] mt-1">Connects directly to your GitHub repo for Vercel deployment.</p>
-            </div>
-            
-            <form onsubmit="handleLogin(event)" class="space-y-3">
-                <div>
-                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">Portal Password</label>
-                    <input id="adminPassword" type="password" placeholder="Default: sgn2026" required
-                           class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">GitHub Owner / Username</label>
-                    <input id="ghOwner" type="text" placeholder="e.g. YourGitHubUsername" required
-                           class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">GitHub Repository Name</label>
-                    <input id="ghRepo" type="text" placeholder="e.g. somaliglobalnews" required
-                           class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-semibold text-gray-700 mb-1">GitHub Personal Access Token (PAT)</label>
-                    <input id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxx" required
-                           class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                    <p class="text-[10px] text-gray-400 mt-1">Token needs 'repo' or 'contents:write' permission. Stored securely only in your browser.</p>
-                </div>
-                <button type="submit" class="w-full bg-[#0071e3] hover:bg-blue-600 text-white font-semibold text-xs py-3 rounded-xl transition">
-                    Unlock & Connect
-                </button>
-            </form>
-            <p id="authError" class="text-xs text-red-500 text-center hidden font-medium"></p>
+  <!-- Top Apple Navigation -->
+  <header>
+    <a href="/" class="brand">
+      <span class="brand-badge">SGN</span>
+      <div>
+        <div class="brand-title">SOMALI GLOBAL NEWS</div>
+        <div class="brand-subtitle">Editorial Desk & Content Control</div>
+      </div>
+    </a>
+    <div class="header-actions">
+      <span id="wireStatus" class="status-badge"><span class="status-dot"></span> Checking GitHub...</span>
+      <button class="btn-secondary" onclick="lockPortal()">Lock Desk</button>
+    </div>
+  </header>
+
+  <!-- Login Modal -->
+  <div id="authModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Newsroom Access</h3>
+      <p>Enter your desk credentials to manage the news wire.</p>
+
+      <form id="authForm" onsubmit="handleAuth(event)">
+        <div class="form-group">
+          <label>Portal Passcode</label>
+          <input type="password" id="authPasscode" placeholder="Enter desk passcode" required>
         </div>
+
+        <div class="form-group">
+          <label>GitHub Owner / Username</label>
+          <input type="text" id="authOwner" placeholder="e.g., your-username" required>
+        </div>
+
+        <div class="form-group">
+          <label>Repository Name</label>
+          <input type="text" id="authRepo" placeholder="e.g., somaliglobalnews" required>
+        </div>
+
+        <div class="form-group">
+          <label>Personal Access Token (classic)</label>
+          <input type="password" id="authToken" placeholder="ghp_..." required>
+        </div>
+
+        <button type="submit" class="btn-primary" id="loginBtn">Connect to News Feed</button>
+      </form>
     </div>
+  </div>
 
-    <!-- Main Dashboard -->
-    <div id="dashboardContent" class="hidden">
-        <header class="bg-white border-b border-[#e5e5e7] sticky top-0 z-40">
-            <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <span class="w-8 h-8 bg-[#1d1d1f] text-white rounded-full flex items-center justify-center font-bold text-xs">SGN</span>
-                    <span class="font-bold text-base text-[#1d1d1f]">Editorial Desk</span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="index.html" class="text-xs font-semibold text-[#0071e3] hover:underline">← View Live Site</a>
-                    <button onclick="lockPortal()" class="text-xs font-semibold text-red-600 hover:underline">Lock Portal</button>
-                </div>
-            </div>
-        </header>
+  <!-- Workspace Layout -->
+  <main class="container">
+    
+    <!-- Publishing Console -->
+    <section class="card">
+      <div class="card-header">
+        <h2>Publish New Dispatch</h2>
+        <p>Compose verified reports for immediate commit to the public news feed.</p>
+      </div>
 
-        <main class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Left Column: Form -->
-            <div class="lg:col-span-2 space-y-8">
-                <div class="bg-white rounded-3xl p-8 border border-[#e5e5e7] shadow-sm">
-                    <h2 class="text-lg font-bold text-[#1d1d1f] mb-1">Publish New Story</h2>
-                    <p class="text-xs text-[#86868b] mb-6">Article updates will commit directly to GitHub and trigger a live Vercel rebuild.</p>
+      <form id="publishForm" onsubmit="handlePublish(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <select id="articleCategory" required>
+              <option value="Somalia">Somalia</option>
+              <option value="World">World</option>
+              <option value="Middle East">Middle East</option>
+              <option value="Sports">Sports</option>
+              <option value="Business">Business</option>
+              <option value="Technology">Technology</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Bureau / Location</label>
+            <input type="text" id="articleLocation" placeholder="e.g., Mogadishu Bureau" required>
+          </div>
+        </div>
 
-                    <form id="newsForm" onsubmit="publishArticle(event)" class="space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Category</label>
-                                <select id="artCategory" required class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                                    <option value="Somalia">Somalia</option>
-                                    <option value="Horn of Africa">Horn of Africa</option>
-                                    <option value="Middle East">Middle East</option>
-                                    <option value="Europe">Europe</option>
-                                    <option value="Americas">Americas</option>
-                                    <option value="World">World</option>
-                                    <option value="Sports">Sports</option>
-                                    <option value="Opinion">Editorial / Opinion</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">Bureau / Location</label>
-                                <input id="artLocation" type="text" placeholder="e.g. Mogadishu Bureau" required
-                                       class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                            </div>
-                        </div>
+        <div class="form-group">
+          <label>Headline <span class="lang">English</span></label>
+          <input type="text" id="articleTitle" placeholder="Full English headline" required>
+        </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">English Headline</label>
-                            <input id="artTitle" type="text" placeholder="Headline in English" required
-                                   class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                        </div>
+        <div class="form-group">
+          <label>Headline <span class="lang">Af-Soomaali</span></label>
+          <input type="text" id="articleTitleSo" placeholder="Ciwaanka warbixinta oo Af-Soomaali ah" required>
+        </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Somali Headline (Ciwaanka Af-Soomaali)</label>
-                            <input id="artTitleSo" type="text" placeholder="Ciwaanka maqaalka oo Af-Soomaali ah"
-                                   class="w-full px-3 py-2.5 rounded-xl border border-amber-300 bg-amber-50/20 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                        </div>
+        <div class="form-group">
+          <label>Summary <span class="lang">English</span></label>
+          <textarea id="articleSummary" rows="2" placeholder="Brief 1-2 sentence lead paragraph" required></textarea>
+        </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Image Thumbnail URL</label>
-                            <input id="artImage" type="url" placeholder="https://..." required
-                                   class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                        </div>
+        <div class="form-group">
+          <label>Summary <span class="lang">Af-Soomaali</span></label>
+          <textarea id="articleSummarySo" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah" required></textarea>
+        </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Short Summary (English)</label>
-                            <textarea id="artSummary" rows="2" placeholder="1-2 sentences overview..." required
-                                      class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none"></textarea>
-                        </div>
+        <div class="form-group">
+          <label>Full Content <span class="lang">English</span></label>
+          <textarea id="articleContent" rows="4" placeholder="Full report text in English" required></textarea>
+        </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Somali Summary (Dulmar Kooban)</label>
-                            <textarea id="artSummarySo" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah..."
-                                      class="w-full px-3 py-2.5 rounded-xl border border-amber-300 bg-amber-50/20 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none"></textarea>
-                        </div>
+        <div class="form-group">
+          <label>Full Content <span class="lang">Af-Soomaali</span></label>
+          <textarea id="articleContentSo" rows="4" placeholder="Faahfaahinta maqaalka oo Af-Soomaali ah" required></textarea>
+        </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Full Article Content (English)</label>
-                            <textarea id="artContent" rows="6" placeholder="Full English body text..." required
-                                      class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none"></textarea>
-                        </div>
+        <div class="form-group">
+          <label>Image Thumbnail URL</label>
+          <input type="url" id="articleImageUrl" placeholder="https://images.unsplash.com/..." required>
+        </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Somali Translation (Warbixinta Buuxda)</label>
-                            <textarea id="artContentSo" rows="6" placeholder="Faahfaahinta buuxda ee maqaalka..."
-                                      class="w-full px-3 py-2.5 rounded-xl border border-amber-300 bg-amber-50/20 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none"></textarea>
-                        </div>
+        <button type="submit" class="btn-primary" id="publishBtn">Commit & Publish to Vercel</button>
+      </form>
+    </section>
 
-                        <button id="submitBtn" type="submit" class="w-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-bold py-3.5 rounded-xl transition shadow-sm">
-                            Commit & Publish to Vercel
-                        </button>
-                    </form>
-                </div>
-            </div>
+    <!-- Live Wire Feed -->
+    <aside class="card">
+      <div class="card-header">
+        <h2>Live Stories in news.json</h2>
+        <p>Published reports currently active in your feed.</p>
+      </div>
 
-            <!-- Right Column: Articles -->
-            <div class="space-y-8">
-                <div class="bg-white rounded-3xl p-6 border border-[#e5e5e7] shadow-sm">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-sm font-bold text-[#1d1d1f]">Live Stories in news.json</h3>
-                        <span id="publishedCount" class="text-xs text-[#86868b]">Loading...</span>
-                    </div>
-                    <div id="articlesList" class="space-y-3 max-h-[600px] overflow-y-auto pr-1"></div>
-                </div>
-            </div>
-        </main>
-    </div>
+      <div id="storyCountText" class="brand-subtitle" style="margin-bottom: 8px;">Loading dispatches...</div>
+      <div id="storyList" class="story-list"></div>
+    </aside>
 
-    <script>
-        const PASS_KEY = "sgn2026";
-        let fileSha = null;
-        let newsData = { updatedAt: "", articles: [] };
+  </main>
 
-        function handleLogin(e) {
-            e.preventDefault();
-            const pass = document.getElementById('adminPassword').value;
-            const owner = document.getElementById('ghOwner').value.trim();
-            const repo = document.getElementById('ghRepo').value.trim();
-            const token = document.getElementById('ghToken').value.trim();
+  <script>
+    const MASTER_PIN = "sgn2026";
+    let fileSha = "";
+    let currentNews = { updatedAt: "", articles: [] };
 
-            if (pass !== PASS_KEY) {
-                showAuthError("Incorrect password.");
-                return;
-            }
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedPass = localStorage.getItem("sgn_admin_pin");
+      const savedOwner = localStorage.getItem("sgn_gh_owner");
+      const savedRepo = localStorage.getItem("sgn_gh_repo");
+      const savedToken = localStorage.getItem("sgn_gh_token");
 
-            localStorage.setItem('sgn_gh_owner', owner);
-            localStorage.setItem('sgn_gh_repo', repo);
-            localStorage.setItem('sgn_gh_token', token);
+      if (savedPass === MASTER_PIN && savedOwner && savedRepo && savedToken) {
+        document.getElementById("authModal").classList.add("hidden");
+        fetchFeed();
+      } else {
+        document.getElementById("authModal").classList.remove("hidden");
+      }
+    });
 
-            document.getElementById('authOverlay').classList.add('hidden');
-            document.getElementById('dashboardContent').classList.remove('hidden');
-            fetchNewsFile();
-        }
+    async function handleAuth(e) {
+      e.preventDefault();
+      const pin = document.getElementById("authPasscode").value.trim();
+      const owner = document.getElementById("authOwner").value.trim();
+      const repo = document.getElementById("authRepo").value.trim();
+      const token = document.getElementById("authToken").value.trim();
 
-        function showAuthError(msg) {
-            const err = document.getElementById('authError');
-            err.innerText = msg;
-            err.classList.remove('hidden');
-        }
+      if (pin !== MASTER_PIN) {
+        alert("Invalid portal passcode.");
+        return;
+      }
 
-        function lockPortal() {
-            document.getElementById('authOverlay').classList.remove('hidden');
-            document.getElementById('dashboardContent').classList.add('hidden');
-            document.getElementById('adminPassword').value = '';
-        }
+      localStorage.setItem("sgn_admin_pin", pin);
+      localStorage.setItem("sgn_gh_owner", owner);
+      localStorage.setItem("sgn_gh_repo", repo);
+      localStorage.setItem("sgn_gh_token", token);
 
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('sgn_gh_owner')) document.getElementById('ghOwner').value = localStorage.getItem('sgn_gh_owner');
-            if (localStorage.getItem('sgn_gh_repo')) document.getElementById('ghRepo').value = localStorage.getItem('sgn_gh_repo');
-            if (localStorage.getItem('sgn_gh_token')) document.getElementById('ghToken').value = localStorage.getItem('sgn_gh_token');
+      document.getElementById("authModal").classList.add("hidden");
+      fetchFeed();
+    }
+
+    function lockPortal() {
+      localStorage.removeItem("sgn_admin_pin");
+      location.reload();
+    }
+
+    async function fetchFeed() {
+      const owner = localStorage.getItem("sgn_gh_owner");
+      const repo = localStorage.getItem("sgn_gh_repo");
+      const token = localStorage.getItem("sgn_gh_token");
+      const statusEl = document.getElementById("wireStatus");
+
+      statusEl.innerHTML = `<span class="status-dot" style="background:#ff9500"></span> Connecting...`;
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/public/data/news.json?t=${Date.now()}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Accept": "application/vnd.github.v3+json"
+          }
         });
 
-        async function fetchNewsFile() {
-            const owner = localStorage.getItem('sgn_gh_owner');
-            const repo = localStorage.getItem('sgn_gh_repo');
-            const token = localStorage.getItem('sgn_gh_token');
-
-            try {
-                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/news.json?t=` + Date.now(), {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (!res.ok) {
-                    alert("Could not load news.json from GitHub. Check Owner, Repo name, and Token permissions.");
-                    return;
-                }
-
-                const data = await res.json();
-                fileSha = data.sha;
-                const decoded = decodeURIComponent(escape(atob(data.content)));
-                newsData = JSON.parse(decoded);
-                renderArticles();
-            } catch (err) {
-                alert("GitHub Fetch Error: " + err.message);
-            }
+        if (!res.ok) {
+          const err = await res.json();
+          statusEl.innerHTML = `<span class="status-dot" style="background:#ff3b30"></span> Error (${res.status})`;
+          alert(`GitHub Error (${res.status}): ${err.message}\nCheck Owner, Repo, and Token permissions.`);
+          return;
         }
 
-        function renderArticles() {
-            const list = document.getElementById('articlesList');
-            list.innerHTML = '';
-            const items = newsData.articles || [];
-            document.getElementById('publishedCount').innerText = `${items.length} stories`;
+        const data = await res.json();
+        fileSha = data.sha;
 
-            if (items.length === 0) {
-                list.innerHTML = `<p class="text-xs text-[#86868b] italic">No articles found in news.json.</p>`;
-                return;
-            }
+        // Clean out whitespace/newlines that GitHub injects into base64
+        const cleanBase64 = data.content.replace(/\s/g, '');
 
-            items.forEach((art, idx) => {
-                const item = document.createElement('div');
-                item.className = "flex justify-between items-center p-3 bg-[#f5f5f7] rounded-xl text-xs";
-                item.innerHTML = `
-                    <div class="pr-2 truncate">
-                        <span class="text-[10px] uppercase font-bold text-[#0071e3]">${art.category}</span>
-                        <p class="font-bold text-[#1d1d1f] truncate">${art.title}</p>
-                    </div>
-                    <button onclick="deleteArticle(${idx})" class="text-red-500 font-semibold hover:underline text-[11px] whitespace-nowrap">Delete</button>
-                `;
-                list.appendChild(item);
-            });
+        // Safe UTF-8 decoding for Somali vowels and special characters
+        const binaryString = atob(cleanBase64);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const decodedText = new TextDecoder('utf-8').decode(bytes);
+
+        currentNews = JSON.parse(decodedText);
+        renderStories();
+        statusEl.innerHTML = `<span class="status-dot"></span> Connected`;
+      } catch (err) {
+        statusEl.innerHTML = `<span class="status-dot" style="background:#ff3b30"></span> Parse Error`;
+        alert("Decoding error: " + err.message);
+      }
+    }
+
+    function renderStories() {
+      const container = document.getElementById("storyList");
+      const countText = document.getElementById("storyCountText");
+      container.innerHTML = "";
+
+      const articles = currentNews.articles || [];
+      countText.innerText = `${articles.length} dispatches live in public feed`;
+
+      articles.forEach((item) => {
+        const el = document.createElement("div");
+        el.className = "story-item";
+        el.innerHTML = `
+          <div class="story-meta">
+            <span>${item.category || "General"}</span>
+            <span>${item.isManual ? "Manual Post" : "Automated Wire"}</span>
+          </div>
+          <div class="story-title">${item.title || "Untitled"}</div>
+          <div class="story-title-so">${item.title_so || ""}</div>
+        `;
+        container.appendChild(el);
+      });
+    }
+
+    async function handlePublish(e) {
+      e.preventDefault();
+      const publishBtn = document.getElementById("publishBtn");
+      publishBtn.disabled = true;
+      publishBtn.innerText = "Committing to GitHub...";
+
+      const owner = localStorage.getItem("sgn_gh_owner");
+      const repo = localStorage.getItem("sgn_gh_repo");
+      const token = localStorage.getItem("sgn_gh_token");
+
+      const newArticle = {
+        id: `manual-${Date.now()}`,
+        isManual: true,
+        title: document.getElementById("articleTitle").value.trim(),
+        title_so: document.getElementById("articleTitleSo").value.trim(),
+        category: document.getElementById("articleCategory").value,
+        location: document.getElementById("articleLocation").value.trim(),
+        summary: document.getElementById("articleSummary").value.trim(),
+        summary_so: document.getElementById("articleSummarySo").value.trim(),
+        content: document.getElementById("articleContent").value.trim(),
+        content_so: document.getElementById("articleContentSo").value.trim(),
+        imageUrl: document.getElementById("articleImageUrl").value.trim(),
+        publishedAt: new Date().toISOString()
+      };
+
+      // Add to beginning of articles array
+      if (!currentNews.articles) currentNews.articles = [];
+      currentNews.articles.unshift(newArticle);
+      currentNews.updatedAt = new Date().toISOString();
+
+      // Proper UTF-8 base64 encoding
+      const jsonString = JSON.stringify(currentNews, null, 2);
+      const utf8Bytes = new TextEncoder().encode(jsonString);
+      let binary = "";
+      for (let i = 0; i < utf8Bytes.length; i++) {
+        binary += String.fromCharCode(utf8Bytes[i]);
+      }
+      const encodedPayload = btoa(binary);
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/public/data/news.json`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Accept": "application/vnd.github.v3+json"
+          },
+          body: JSON.stringify({
+            message: `Publish dispatch: ${newArticle.title.substring(0, 48)}... [skip ci]`,
+            content: encodedPayload,
+            sha: fileSha
+          })
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          alert(`Commit rejected (${res.status}): ${err.message}`);
+          publishBtn.disabled = false;
+          publishBtn.innerText = "Commit & Publish to Vercel";
+          return;
         }
 
-        async function publishArticle(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerText = "Saving to GitHub...";
-
-            const now = new Date().toISOString();
-            const newArticle = {
-                id: "art-" + Date.now(),
-                title: document.getElementById('artTitle').value.trim(),
-                title_so: document.getElementById('artTitleSo').value.trim() || document.getElementById('artTitle').value.trim(),
-                category: document.getElementById('artCategory').value,
-                location: document.getElementById('artLocation').value.trim(),
-                summary: document.getElementById('artSummary').value.trim(),
-                summary_so: document.getElementById('artSummarySo').value.trim() || document.getElementById('artSummary').value.trim(),
-                content: document.getElementById('artContent').value.trim(),
-                content_so: document.getElementById('artContentSo').value.trim() || document.getElementById('artContent').value.trim(),
-                imageUrl: document.getElementById('artImage').value.trim(),
-                publishedAt: now
-            };
-
-            if (!newsData.articles) newsData.articles = [];
-            newsData.articles.unshift(newArticle);
-            newsData.updatedAt = now;
-
-            const success = await pushCommitToGitHub("Publish article: " + newArticle.title);
-            btn.disabled = false;
-            btn.innerText = "Commit & Publish to Vercel";
-
-            if (success) {
-                alert("Article committed successfully! Vercel is now deploying your updated news feed.");
-                document.getElementById('newsForm').reset();
-                renderArticles();
-            }
-        }
-
-        async function deleteArticle(index) {
-            if (!confirm("Are you sure you want to remove this story from news.json?")) return;
-            newsData.articles.splice(index, 1);
-            newsData.updatedAt = new Date().toISOString();
-
-            const success = await pushCommitToGitHub("Remove article at index " + index);
-            if (success) {
-                alert("Article removed from news.json.");
-                renderArticles();
-            }
-        }
-
-        async function pushCommitToGitHub(commitMsg) {
-            const owner = localStorage.getItem('sgn_gh_owner');
-            const repo = localStorage.getItem('sgn_gh_repo');
-            const token = localStorage.getItem('sgn_gh_token');
-
-            const contentString = JSON.stringify(newsData, null, 2);
-            const encodedContent = btoa(unescape(encodeURIComponent(contentString)));
-
-            try {
-                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/news.json`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: commitMsg,
-                        content: encodedContent,
-                        sha: fileSha
-                    })
-                });
-
-                if (!res.ok) {
-                    const errData = await res.json();
-                    throw new Error(errData.message || "Failed to commit");
-                }
-
-                const data = await res.json();
-                fileSha = data.content.sha;
-                return true;
-            } catch (err) {
-                alert("Commit failed: " + err.message);
-                return false;
-            }
-        }
-    </script>
+        const responseData = await res.json();
+        fileSha = responseData.content.sha;
+        renderStories();
+        document.getElementById("publishForm").reset();
+        alert("Article published successfully. Vercel is now deploying your updated feed.");
+      } catch (err) {
+        alert("Commit error: " + err.message);
+      } finally {
+        publishBtn.disabled = false;
+        publishBtn.innerText = "Commit & Publish to Vercel";
+      }
+    }
+  </script>
 </body>
 </html>
