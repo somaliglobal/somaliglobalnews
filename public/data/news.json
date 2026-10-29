@@ -1,19 +1,4 @@
 {
-  "updatedAt": "2026-10-29T22:52:30.653Z",
-  "articles": [
-    {
-      "id": "manual-1793310086940",
-      "isManual": true,
-      "title": "Test Dispatch: Editorial Portal Verified",
-      "title_so": "Tijaabada Xarunta Wararka: Nidaamka Waa Diyaar",
-      "category": "Somalia",
-      "location": "Somaliglobalnews:NewsDesk",
-      "summary": "Testing the direct publishing workflow to verify live Vercel updates.",
-      "summary_so": "Tijaabinta daabacaadda tooska ah ee xogta wararka cusub.",
-      "content": "This is an operational test dispatch confirming seamless GitHub API commits and automated feed updates.",
-      "content_so": "Warbixintan waxay xaqiijinaysaa in nidaamka daabacaaddu u shaqaynayo si hagar la'aan ah.",
-      "imageUrl": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
-      "publishedAt": "2026-10-29T21:41:26.940Z"
-    }
-  ]
+  "updatedAt": "2026-10-29T23:06:10.839Z",
+  "articles": []
 }
