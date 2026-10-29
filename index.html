@@ -151,14 +151,6 @@
         let loadedArticles = [];
         let currentArticle = null;
         let isSomaliMode = false;
-        const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
-
-        function isWithin3Days(pubDate) {
-            if (!pubDate) return true;
-            const articleTime = new Date(pubDate).getTime();
-            if (isNaN(articleTime)) return true;
-            return (Date.now() - articleTime) <= THREE_DAYS_MS;
-        }
 
         async function fetchFeed(channelKey) {
             document.querySelectorAll('nav button').forEach(btn => {
@@ -170,24 +162,18 @@
             });
 
             try {
-                let database = { somalia: [], ethiopia: [], kenya: [], djibouti: [], middleeast: [], europe: [], us_na: [], opinion: [] };
-                
-                try {
-                    const res = await fetch('public/data/news.json');
-                    if (res.ok) {
-                        const jsonData = await res.json();
-                        database = { ...database, ...jsonData };
-                    }
-                } catch (e) {
-                    // Local fallback
-                }
+                let database = { 
+                    somalia: [], ethiopia: [], kenya: [], djibouti: [], 
+                    middleeast: [], europe: [], us_na: [], opinion: [] 
+                };
 
+                // Read directly and exclusively from manual admin posts
                 const storedRaw = localStorage.getItem('sgn_custom_database');
                 if (storedRaw) {
                     const customData = JSON.parse(storedRaw);
                     for (let cat in customData) {
                         if (!database[cat]) database[cat] = [];
-                        database[cat] = [...customData[cat], ...database[cat]];
+                        database[cat] = [...customData[cat]];
                     }
                 }
 
@@ -211,7 +197,8 @@
                     rawArticles = database[channelKey] || [];
                 }
 
-                loadedArticles = rawArticles.filter(art => isWithin3Days(art.pubDate));
+                // Show all published admin articles
+                loadedArticles = rawArticles;
 
                 document.getElementById('articleCount').innerText = `${loadedArticles.length} Stories`;
                 renderCards();
@@ -225,7 +212,7 @@
             grid.innerHTML = '';
 
             if (loadedArticles.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-16 text-[#86868b] text-sm">No stories available in this category from the past 3 days.</div>`;
+                grid.innerHTML = `<div class="col-span-full text-center py-16 text-[#86868b] text-sm">No stories published in this category yet. Use admin.html to publish articles.</div>`;
                 return;
             }
 
