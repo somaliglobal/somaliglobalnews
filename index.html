@@ -11,11 +11,7 @@
         .serif-title { font-family: 'Merriweather', serif; }
         .nav-btn { transition: all 0.2s ease; border-bottom: 2px solid transparent; }
         .nav-btn.active { color: #0071e3; border-bottom-color: #0071e3; font-weight: 700; }
-        /* Fix long text or link overflow on mobile */
-        .article-content {
-            overflow-wrap: anywhere;
-            word-break: break-word;
-        }
+        .article-content { overflow-wrap: anywhere; word-break: break-word; }
     </style>
 </head>
 <body class="bg-[#f5f5f7] text-[#1d1d1f] min-h-screen">
@@ -24,22 +20,12 @@
     <header class="bg-white/80 backdrop-blur-md border-b border-[#e5e5e7] sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2 sm:space-x-3">
-                <!-- SGN Light Blue Badge -->
                 <span class="w-8 h-8 bg-[#0071e3] text-white rounded-full flex items-center justify-center font-bold text-xs shadow-sm flex-shrink-0">SGN</span>
-                <!-- Somali Global News Light Blue Title -->
                 <a href="index.html" class="font-bold text-base sm:text-lg tracking-tight text-[#0071e3] hover:text-[#005bb5] transition truncate">Somali Global News</a>
             </div>
             
             <div class="flex items-center space-x-3 sm:space-x-6">
                 <span id="articleCount" class="text-xs text-[#86868b] font-medium hidden sm:inline">0 Stories</span>
-                
-                <!-- Contact Us Button -->
-                <button onclick="openContactDrawer()" class="flex items-center space-x-1 text-xs font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition cursor-pointer bg-transparent border-none">
-                    <span>✉️</span>
-                    <span class="hidden xs:inline">Contact</span>
-                </button>
-
-                <!-- Somali Toggle -->
                 <button id="langToggleBtn" onclick="toggleGlobalLanguage()" class="text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 bg-[#f0f4f8] hover:bg-[#e2e8f0] text-[#0071e3] rounded-full transition whitespace-nowrap">
                     Somali / EN
                 </button>
@@ -49,13 +35,14 @@
         <!-- Navigation Bar -->
         <nav class="bg-[#f0f4f8] border-t border-[#e5e5e7]">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 flex gap-4 sm:gap-6 overflow-x-auto py-2.5 text-xs font-semibold text-[#515156] no-scrollbar">
-                <button onclick="fetchFeed('home')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap active" data-cat="home">Home</button>
-                <button onclick="fetchFeed('somalia')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="somalia">Somalia</button>
-                <button onclick="fetchFeed('horn_africa')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="horn_africa">Horn of Africa</button>
-                <button onclick="fetchFeed('middleeast')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="middleeast">Middle East</button>
-                <button onclick="fetchFeed('europe')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="europe">Europe</button>
-                <button onclick="fetchFeed('americas')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="americas">Americas</button>
-                <button onclick="fetchFeed('editorial')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="editorial">Editorial</button>
+                <button onclick="filterFeed('all')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap active" data-cat="all">Home</button>
+                <button onclick="filterFeed('Somalia')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Somalia">Somalia</button>
+                <button onclick="filterFeed('Horn of Africa')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Horn of Africa">Horn of Africa</button>
+                <button onclick="filterFeed('Middle East')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Middle East">Middle East</button>
+                <button onclick="filterFeed('Europe')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Europe">Europe</button>
+                <button onclick="filterFeed('Americas')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Americas">Americas</button>
+                <button onclick="filterFeed('Sports')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Sports">Sports</button>
+                <button onclick="filterFeed('Opinion')" class="nav-btn py-1 hover:text-[#0071e3] whitespace-nowrap" data-cat="Opinion">Editorial</button>
             </div>
         </nav>
     </header>
@@ -65,183 +52,110 @@
         <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"></div>
     </main>
 
-    <!-- Reader Modal (Mobile Optimized) -->
+    <!-- Reader Modal -->
     <div id="readerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-2xl w-full max-h-[90vh] sm:max-h-[85vh] overflow-y-auto p-5 sm:p-8 relative shadow-2xl border border-[#e5e5e7]">
             <button onclick="closeReader()" class="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-500 hover:text-black font-bold text-2xl w-8 h-8 flex items-center justify-center rounded-full bg-gray-100">&times;</button>
             
             <div class="flex justify-between items-center pr-10 mb-2">
-                <span id="modalSource" class="text-xs font-bold text-[#0071e3] uppercase tracking-wide">Source</span>
+                <span id="modalSource" class="text-xs font-bold text-[#0071e3] uppercase tracking-wide">Bureau</span>
                 <button onclick="toggleSomaliTranslation()" class="text-[11px] font-semibold text-[#0071e3] hover:underline bg-[#f0f4f8] px-2.5 py-1 rounded-md">
-                    Somali
+                    Af-Soomaali
                 </button>
             </div>
 
-            <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold mt-1 mb-2 serif-title text-[#1d1d1f] leading-snug article-content">Title</h2>
-            <p id="modalDate" class="text-xs text-[#86868b] mb-4">Date</p>
+            <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold mt-1 mb-2 serif-title text-[#1d1d1f] leading-snug article-content"></h2>
+            <p id="modalDate" class="text-xs text-[#86868b] mb-4"></p>
             
             <div id="modalMediaContainer" class="mb-5 rounded-xl sm:rounded-2xl overflow-hidden bg-black"></div>
             
-            <div id="modalBody" class="text-sm sm:text-base text-[#3a3a3c] leading-relaxed space-y-4 article-content"></div>
-            <div id="modalSomaliBody" class="text-sm sm:text-base text-[#1d1d1f] leading-relaxed space-y-4 hidden bg-amber-50/60 p-4 rounded-xl border border-amber-200/60 mt-4 article-content"></div>
-
-            <!-- Comments Section -->
-            <hr class="my-6 sm:my-8 border-gray-200">
-            <div class="space-y-5">
-                <h3 class="text-base font-bold text-[#1d1d1f]">Reader Comments</h3>
-
-                <form onsubmit="submitComment(event)" class="space-y-3">
-                    <input id="commentAuthor" type="text" placeholder="Your Name" required class="w-full text-xs p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0071e3]">
-                    <textarea id="commentText" rows="3" placeholder="Share your thoughts..." required class="w-full text-xs p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0071e3]"></textarea>
-                    <button type="submit" class="bg-[#0071e3] hover:bg-blue-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition w-full sm:w-auto">Post Comment</button>
-                </form>
-
-                <div id="commentsList" class="space-y-3 pt-2">
-                    <!-- Dynamic Comments -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Side Contact Drawer -->
-    <div id="contactDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
-        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity" onclick="closeContactDrawer()"></div>
-
-        <div class="absolute inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
-            <div class="w-screen max-w-md bg-white shadow-2xl p-6 sm:p-8 flex flex-col justify-between border-l border-[#e5e5e7]">
-                <div>
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xl font-bold text-[#1d1d1f] serif-title">Get in Touch</h3>
-                        <button onclick="closeContactDrawer()" class="text-gray-400 hover:text-black text-2xl font-bold">&times;</button>
-                    </div>
-                    <p class="text-xs text-[#86868b] mb-6">Have a news tip, correction, or inquiry? Send a message directly to the SGN editorial desk.</p>
-
-                    <form action="https://formspree.io/f/your-form-id" method="POST" class="space-y-4" onsubmit="handleContactSubmit(event)">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Your Name</label>
-                            <input type="text" name="name" required placeholder="Enter your name" 
-                                   class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Your Email</label>
-                            <input type="email" name="email" required placeholder="name@example.com" 
-                                   class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Message</label>
-                            <textarea name="message" rows="5" required placeholder="Write your message here..." 
-                                      class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-xs focus:ring-2 focus:ring-[#0071e3] focus:outline-none"></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-bold py-3 rounded-xl transition shadow-sm">
-                            Send Message
-                        </button>
-                    </form>
-                    <div id="formSuccessMsg" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-xs text-green-800 text-center font-medium">
-                        Thank you! Your message has been sent successfully.
-                    </div>
-                </div>
-                <div class="text-center text-[10px] text-[#86868b] pt-4 border-t border-gray-100">
-                    Somali Global News • Secure Editorial Desk
-                </div>
-            </div>
+            <div id="modalBody" class="text-sm sm:text-base text-[#3a3a3c] leading-relaxed space-y-4 whitespace-pre-line article-content"></div>
+            <div id="modalSomaliBody" class="text-sm sm:text-base text-[#1d1d1f] leading-relaxed space-y-4 hidden bg-amber-50/60 p-4 rounded-xl border border-amber-200/60 mt-4 whitespace-pre-line article-content"></div>
         </div>
     </div>
 
     <script>
-        let loadedArticles = [];
+        let allArticles = [];
+        let filteredArticles = [];
         let currentArticle = null;
         let isSomaliMode = false;
 
-        async function fetchFeed(channelKey) {
+        async function initFeed() {
+            try {
+                // Fetch central news.json with cache buster
+                const res = await fetch('news.json?t=' + Date.now());
+                if (!res.ok) throw new Error("news.json not found");
+                const data = await res.json();
+                allArticles = data.articles || [];
+                filterFeed('all');
+            } catch (err) {
+                console.error("Error loading news feed:", err);
+                document.getElementById('cardsGrid').innerHTML = `
+                    <div class="col-span-full text-center py-16 text-red-500 text-sm">
+                        Unable to load news.json. Check that the file exists in your repository root.
+                    </div>`;
+            }
+        }
+
+        function filterFeed(category) {
             document.querySelectorAll('nav button').forEach(btn => {
-                if(btn.getAttribute('data-cat') === channelKey) {
+                if (btn.getAttribute('data-cat') === category) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
                 }
             });
 
-            try {
-                let database = { 
-                    somalia: [], ethiopia: [], kenya: [], djibouti: [], 
-                    middleeast: [], europe: [], us_na: [], opinion: [] 
-                };
-
-                // Read directly and exclusively from manual admin posts
-                const storedRaw = localStorage.getItem('sgn_custom_database');
-                if (storedRaw) {
-                    const customData = JSON.parse(storedRaw);
-                    for (let cat in customData) {
-                        if (!database[cat]) database[cat] = [];
-                        database[cat] = [...customData[cat]];
-                    }
-                }
-
-                let rawArticles = [];
-
-                if (channelKey === 'home') {
-                    Object.values(database).forEach(arr => {
-                        if (Array.isArray(arr)) rawArticles.push(...arr);
-                    });
-                } else if (channelKey === 'horn_africa') {
-                    rawArticles = [
-                        ...(database.ethiopia || []),
-                        ...(database.kenya || []),
-                        ...(database.djibouti || [])
-                    ];
-                } else if (channelKey === 'americas') {
-                    rawArticles = database.us_na || [];
-                } else if (channelKey === 'editorial') {
-                    rawArticles = database.opinion || database.editorial || [];
-                } else {
-                    rawArticles = database[channelKey] || [];
-                }
-
-                // Show all published admin articles
-                loadedArticles = rawArticles;
-
-                document.getElementById('articleCount').innerText = `${loadedArticles.length} Stories`;
-                renderCards();
-            } catch (err) {
-                console.error("Error loading feed:", err);
+            if (category === 'all') {
+                filteredArticles = allArticles;
+            } else if (category === 'Horn of Africa') {
+                filteredArticles = allArticles.filter(a => 
+                    a.category === 'Horn of Africa' || 
+                    a.category === 'Ethiopia' || 
+                    a.category === 'Kenya' || 
+                    a.category === 'Djibouti'
+                );
+            } else {
+                filteredArticles = allArticles.filter(a => a.category.toLowerCase() === category.toLowerCase());
             }
+
+            document.getElementById('articleCount').innerText = `${filteredArticles.length} Stories`;
+            renderCards();
         }
 
         function renderCards() {
             const grid = document.getElementById('cardsGrid');
             grid.innerHTML = '';
 
-            if (loadedArticles.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-16 text-[#86868b] text-sm">No stories published in this category yet. Use admin.html to publish articles.</div>`;
+            if (filteredArticles.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-16 text-[#86868b] text-sm">No stories published in this category yet.</div>`;
                 return;
             }
 
-            loadedArticles.forEach((art, idx) => {
+            filteredArticles.forEach((art, idx) => {
                 const card = document.createElement('article');
                 card.className = "bg-white rounded-3xl border border-[#e5e5e7] overflow-hidden flex flex-col justify-between hover:shadow-xl transition cursor-pointer";
                 card.onclick = () => openReader(idx);
 
-                let mediaHtml = `<img src="${art.thumbnail || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'}" class="w-full h-48 sm:h-52 object-cover" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'">`;
-                if (art.videoUrl) {
-                    mediaHtml = `
-                        <div class="relative w-full h-48 sm:h-52 bg-black">
-                            <video src="${art.videoUrl}" class="w-full h-48 sm:h-52 object-cover" autoplay muted loop playsinline></video>
-                            <span class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full font-semibold backdrop-blur-sm">▶ Video Clip</span>
-                        </div>`;
-                }
+                const titleText = isSomaliMode && art.title_so ? art.title_so : art.title;
+                const summaryText = isSomaliMode && art.summary_so ? art.summary_so : art.summary;
+                const imgSrc = art.imageUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
 
                 card.innerHTML = `
                     <div>
-                        ${mediaHtml}
+                        <img src="${imgSrc}" class="w-full h-48 sm:h-52 object-cover" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'">
                         <div class="p-5 sm:p-6">
-                            <span class="text-[10px] font-bold uppercase text-[#0071e3] tracking-wider">${art.sourceName || art.source || 'SGN'}</span>
-                            <h3 class="font-bold text-base sm:text-lg text-[#1d1d1f] mt-1 mb-2 serif-title leading-snug article-content">${art.title}</h3>
-                            <p class="text-xs text-[#515156] line-clamp-3 article-content">${art.description || art.excerpt || ''}</p>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] font-bold uppercase text-[#0071e3] tracking-wider">${art.category}</span>
+                                <span class="text-[10px] text-[#86868b]">${art.location || ''}</span>
+                            </div>
+                            <h3 class="font-bold text-base sm:text-lg text-[#1d1d1f] mt-1 mb-2 serif-title leading-snug article-content">${titleText}</h3>
+                            <p class="text-xs text-[#515156] line-clamp-3 article-content">${summaryText || ''}</p>
                         </div>
                     </div>
                     <div class="px-5 sm:px-6 py-4 border-t border-[#f0f0f2] text-[11px] text-[#86868b] flex justify-between items-center">
-                        <span>${new Date(art.pubDate || Date.now()).toLocaleDateString()}</span>
-                        <span class="text-[#0071e3] font-semibold hover:underline">Read Story →</span>
+                        <span>${new Date(art.publishedAt || Date.now()).toLocaleDateString()}</span>
+                        <span class="text-[#0071e3] font-semibold hover:underline">${isSomaliMode ? 'Akhri Warbixinta →' : 'Read Story →'}</span>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -249,30 +163,23 @@
         }
 
         function openReader(idx) {
-            const art = loadedArticles[idx];
+            const art = filteredArticles[idx];
             if (!art) return;
             currentArticle = art;
 
-            document.getElementById('modalSource').innerText = art.sourceName || art.source || 'SGN Wire';
-            document.getElementById('modalTitle').innerText = art.title;
-            document.getElementById('modalDate').innerText = new Date(art.pubDate || Date.now()).toLocaleString();
-            document.getElementById('modalBody').innerHTML = art.fullText || art.body || art.description || '';
+            document.getElementById('modalSource').innerText = `${art.category} • ${art.location || 'SGN NewsDesk'}`;
+            document.getElementById('modalTitle').innerText = isSomaliMode && art.title_so ? art.title_so : art.title;
+            document.getElementById('modalDate').innerText = new Date(art.publishedAt || Date.now()).toLocaleString();
+            document.getElementById('modalBody').innerText = art.content || art.summary || '';
             
             const somaliBox = document.getElementById('modalSomaliBody');
-            somaliBox.innerText = art.somaliText || "Warbixintan weli looma tarjumin Af-Somali.";
+            somaliBox.innerText = art.content_so || art.summary_so || "Warbixintan weli looma tarjumin Af-Soomaali.";
             somaliBox.classList.add('hidden');
 
             const mediaContainer = document.getElementById('modalMediaContainer');
-            mediaContainer.innerHTML = '';
-            
-            if (art.videoUrl) {
-                mediaContainer.innerHTML = `<video src="${art.videoUrl}" class="w-full max-h-60 sm:max-h-80 object-cover" controls autoplay></video>`;
-            } else {
-                const imgSrc = art.thumbnail || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
-                mediaContainer.innerHTML = `<img src="${imgSrc}" class="w-full max-h-60 sm:max-h-80 object-cover">`;
-            }
+            const imgSrc = art.imageUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+            mediaContainer.innerHTML = `<img src="${imgSrc}" class="w-full max-h-60 sm:max-h-80 object-cover">`;
 
-            renderComments(art.id || art.title);
             document.getElementById('readerModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -290,76 +197,10 @@
         function toggleGlobalLanguage() {
             isSomaliMode = !isSomaliMode;
             document.getElementById('langToggleBtn').innerText = isSomaliMode ? 'English' : 'Somali / EN';
-            alert(isSomaliMode ? "Waqtigan xaadirka ah wararka waxaad ku akhrisan kartaa Af-Somali markaad riixdo 'Somali' gudaha maqaalka." : "Language set to English.");
+            renderCards();
         }
 
-        function getArticleCommentsKey(id) {
-            return `sgn_comments_${id}`;
-        }
-
-        function renderComments(articleId) {
-            const list = document.getElementById('commentsList');
-            list.innerHTML = '';
-            const key = getArticleCommentsKey(articleId);
-            const comments = JSON.parse(localStorage.getItem(key) || '[]');
-
-            if (comments.length === 0) {
-                list.innerHTML = `<p class="text-xs text-[#86868b] italic">No comments yet. Be the first to share your perspective!</p>`;
-                return;
-            }
-
-            comments.forEach(c => {
-                const div = document.createElement('div');
-                div.className = "bg-[#f5f5f7] p-3 rounded-xl text-xs space-y-1";
-                div.innerHTML = `
-                    <div class="flex justify-between font-bold text-[#1d1d1f]">
-                        <span>${c.author}</span>
-                        <span class="text-[10px] text-[#86868b] font-normal">${new Date(c.date).toLocaleDateString()}</span>
-                    </div>
-                    <p class="text-[#515156] article-content">${c.text}</p>
-                `;
-                list.appendChild(div);
-            });
-        }
-
-        function submitComment(e) {
-            e.preventDefault();
-            if (!currentArticle) return;
-
-            const authorInput = document.getElementById('commentAuthor');
-            const textInput = document.getElementById('commentText');
-
-            const newComment = {
-                author: authorInput.value.trim(),
-                text: textInput.value.trim(),
-                date: new Date().toISOString()
-            };
-
-            const key = getArticleCommentsKey(currentArticle.id || currentArticle.title);
-            const comments = JSON.parse(localStorage.getItem(key) || '[]');
-            comments.push(newComment);
-            localStorage.setItem(key, JSON.stringify(comments));
-
-            authorInput.value = '';
-            textInput.value = '';
-            renderComments(currentArticle.id || currentArticle.title);
-        }
-
-        function openContactDrawer() {
-            document.getElementById('contactDrawer').classList.remove('hidden');
-        }
-
-        function closeContactDrawer() {
-            document.getElementById('contactDrawer').classList.add('hidden');
-            document.getElementById('formSuccessMsg').classList.add('hidden');
-        }
-
-        function handleContactSubmit(e) {
-            e.preventDefault();
-            document.getElementById('formSuccessMsg').classList.remove('hidden');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => fetchFeed('home'));
+        document.addEventListener('DOMContentLoaded', initFeed);
     </script>
 </body>
 </html>
