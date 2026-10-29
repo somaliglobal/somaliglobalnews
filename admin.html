@@ -18,9 +18,10 @@
       --accent-blue: #0071e3;
       --accent-blue-hover: #0077ed;
       --accent-light: #e8f2ff;
+      --somali-accent: #d9531e;
+      --somali-bg: #fff8f5;
       --success: #34c759;
       --danger: #ff3b30;
-      --danger-hover: #e02d23;
       --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
       --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
       --radius: 12px;
@@ -40,7 +41,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Top Apple Header */
+    /* Header */
     header {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(20px);
@@ -107,6 +108,7 @@
       background-color: #e8e8ed;
     }
 
+    /* Layout */
     .container {
       max-width: 1280px;
       margin: 32px auto;
@@ -148,6 +150,49 @@
       margin-top: 4px;
     }
 
+    /* Section Separators */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 28px 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border-subtle);
+    }
+
+    .section-divider.somali {
+      border-bottom-color: #f6dcd0;
+    }
+
+    .section-tag-en {
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--accent-light);
+      color: var(--accent-blue);
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-tag-so {
+      font-size: 11px;
+      font-weight: 700;
+      background: #fdeee7;
+      color: var(--somali-accent);
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Form Fields */
     .form-group {
       margin-bottom: 18px;
     }
@@ -159,26 +204,19 @@
     }
 
     label {
-      display: block;
+      display: flex;
+      align-items: center;
       font-size: 13px;
       font-weight: 600;
       color: var(--text-primary);
       margin-bottom: 6px;
+      gap: 6px;
     }
 
-    label span.lang {
-      font-weight: 400;
-      color: var(--accent-blue);
+    .opt-note {
       font-size: 11px;
-      text-transform: uppercase;
-      margin-left: 4px;
-    }
-
-    label span.opt {
       font-weight: 400;
       color: var(--text-secondary);
-      font-size: 11px;
-      margin-left: 4px;
     }
 
     input[type="text"],
@@ -213,13 +251,14 @@
       background-color: var(--accent-blue);
       color: #ffffff;
       border: none;
-      padding: 12px 20px;
+      padding: 13px 20px;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       width: 100%;
       transition: background-color 0.2s ease;
+      margin-top: 14px;
     }
 
     .btn-primary:hover {
@@ -231,7 +270,7 @@
       cursor: not-allowed;
     }
 
-    /* Live Feed & Story Cards */
+    /* Right Column Live Wire */
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -255,7 +294,7 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      max-height: 720px;
+      max-height: 820px;
       overflow-y: auto;
       margin-top: 16px;
       padding-right: 4px;
@@ -418,10 +457,12 @@
     <section class="card">
       <div class="card-header">
         <h2>Publish New Dispatch</h2>
-        <p>Compose verified reports for immediate commit to the public news feed.</p>
+        <p>Complete the English wire and media assets, then provide the Af-Soomaali translation.</p>
       </div>
 
       <form id="publishForm" onsubmit="handlePublish(event)">
+        
+        <!-- Metadata: Category & Bureau -->
         <div class="form-row">
           <div class="form-group">
             <label>Category</label>
@@ -439,51 +480,75 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label>Headline <span class="lang">English</span></label>
-          <input type="text" id="articleTitle" placeholder="Full English headline" required>
+        <!-- ============================================== -->
+        <!-- PART 1: ENGLISH WIRE & MEDIA ASSETS            -->
+        <!-- ============================================== -->
+        <div class="section-divider">
+          <span class="section-tag-en">English</span>
+          <span class="section-title">Primary Dispatch & Media Assets</span>
         </div>
 
+        <!-- 1. Headline English -->
         <div class="form-group">
-          <label>Headline <span class="lang">Af-Soomaali</span></label>
-          <input type="text" id="articleTitleSo" placeholder="Ciwaanka warbixinta oo Af-Soomaali ah" required>
+          <label>1. Headline (English)</label>
+          <input type="text" id="articleTitle" placeholder="Enter clear, informative English headline" required>
         </div>
 
+        <!-- 2. Summary English -->
         <div class="form-group">
-          <label>Image Thumbnail URL <span class="lang">Required</span></label>
+          <label>2. Summary (English)</label>
+          <textarea id="articleSummary" rows="2" placeholder="Brief 1-2 sentence lead summary paragraph in English" required></textarea>
+        </div>
+
+        <!-- 3. Image URL -->
+        <div class="form-group">
+          <label>3. Image URL <span class="opt-note">(Required Thumbnail)</span></label>
           <input type="url" id="articleImageUrl" placeholder="https://images.unsplash.com/..." required>
         </div>
 
+        <!-- 4. Video Snippet -->
         <div class="form-group">
-          <label>Video Snippet URL <span class="opt">(Optional - MP4 / Direct link)</span></label>
+          <label>4. Video Snippet URL <span class="opt-note">(Optional - Direct MP4 / Video Link)</span></label>
           <input type="url" id="articleVideoUrl" placeholder="https://domain.com/video.mp4">
         </div>
 
+        <!-- 5. Full Content English -->
         <div class="form-group">
-          <label>Summary <span class="lang">English</span></label>
-          <textarea id="articleSummary" rows="2" placeholder="Brief 1-2 sentence lead paragraph" required></textarea>
+          <label>5. Full Content (English)</label>
+          <textarea id="articleContent" rows="6" placeholder="Full comprehensive article text in English..." required></textarea>
         </div>
 
-        <div class="form-group">
-          <label>Summary <span class="lang">Af-Soomaali</span></label>
-          <textarea id="articleSummarySo" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah" required></textarea>
+        <!-- ============================================== -->
+        <!-- PART 2: AF-SOOMAALI TRANSLATION                -->
+        <!-- ============================================== -->
+        <div class="section-divider somali">
+          <span class="section-tag-so">Af-Soomaali</span>
+          <span class="section-title">Tarjumada iyo Faahfaahinta Af-Soomaaliga</span>
         </div>
 
+        <!-- 6. Headline Somali -->
         <div class="form-group">
-          <label>Full Content <span class="lang">English</span></label>
-          <textarea id="articleContent" rows="5" placeholder="Full report text in English" required></textarea>
+          <label>6. Headline (Af-Soomaali)</label>
+          <input type="text" id="articleTitleSo" placeholder="Ciwaanka warbixinta oo Af-Soomaali sax ah" required>
         </div>
 
+        <!-- 7. Summary Somali -->
         <div class="form-group">
-          <label>Full Content <span class="lang">Af-Soomaali</span></label>
-          <textarea id="articleContentSo" rows="5" placeholder="Faahfaahinta maqaalka oo Af-Soomaali ah" required></textarea>
+          <label>7. Summary (Af-Soomaali)</label>
+          <textarea id="articleSummarySo" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah..." required></textarea>
+        </div>
+
+        <!-- 8. Full Content Somali -->
+        <div class="form-group">
+          <label>8. Full Content (Af-Soomaali)</label>
+          <textarea id="articleContentSo" rows="6" placeholder="Faahfaahinta maqaalka oo Af-Soomaali ah..." required></textarea>
         </div>
 
         <button type="submit" class="btn-primary" id="publishBtn">Commit & Publish to Vercel</button>
       </form>
     </section>
 
-    <!-- Live Wire Feed with Deletion -->
+    <!-- Live Wire Feed with Delete Control -->
     <aside class="card">
       <div class="card-header">
         <h2>Live Stories in news.json</h2>
@@ -632,10 +697,10 @@
         location: document.getElementById("articleLocation").value.trim() || "SomaliGlobalNews:NewsDesk",
         summary: document.getElementById("articleSummary").value.trim(),
         summary_so: document.getElementById("articleSummarySo").value.trim(),
-        content: document.getElementById("articleContent").value.trim(),
-        content_so: document.getElementById("articleContentSo").value.trim(),
         imageUrl: document.getElementById("articleImageUrl").value.trim(),
         videoUrl: document.getElementById("articleVideoUrl").value.trim() || null,
+        content: document.getElementById("articleContent").value.trim(),
+        content_so: document.getElementById("articleContentSo").value.trim(),
         publishedAt: new Date().toISOString()
       };
 
@@ -648,7 +713,6 @@
         document.getElementById("articleLocation").value = "SomaliGlobalNews:NewsDesk";
         alert("Article published successfully. Vercel is now deploying your updated feed.");
       }, () => {
-        // Rollback local change if commit fails
         currentNews.articles.shift();
       });
 
@@ -671,7 +735,6 @@
       await commitNewsPayload(`Delete dispatch: ${target.title.substring(0, 48)}... [skip ci]`, () => {
         alert("Article deleted successfully from public feed.");
       }, () => {
-        // Rollback if failed
         currentNews.articles.splice(index, 0, removed);
         renderStories();
       });
