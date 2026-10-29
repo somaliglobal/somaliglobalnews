@@ -20,6 +20,7 @@
       --accent-light: #e8f2ff;
       --success: #34c759;
       --danger: #ff3b30;
+      --danger-hover: #e02d23;
       --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
       --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
       --radius: 12px;
@@ -39,7 +40,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Apple-style Top Navigation */
+    /* Top Apple Header */
     header {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(20px);
@@ -106,23 +107,21 @@
       background-color: #e8e8ed;
     }
 
-    /* Container & Layout */
     .container {
-      max-width: 1240px;
+      max-width: 1280px;
       margin: 32px auto;
       padding: 0 20px;
       display: grid;
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: 1.35fr 1fr;
       gap: 32px;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 1024px) {
       .container {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Clean Card Surfaces */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border-subtle);
@@ -149,9 +148,8 @@
       margin-top: 4px;
     }
 
-    /* Form Elements */
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .form-row {
@@ -176,8 +174,16 @@
       margin-left: 4px;
     }
 
+    label span.opt {
+      font-weight: 400;
+      color: var(--text-secondary);
+      font-size: 11px;
+      margin-left: 4px;
+    }
+
     input[type="text"],
     input[type="url"],
+    input[type="password"],
     select,
     textarea {
       width: 100%;
@@ -225,7 +231,7 @@
       cursor: not-allowed;
     }
 
-    /* Sidebar Story List */
+    /* Live Feed & Story Cards */
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -248,25 +254,27 @@
     .story-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      max-height: 640px;
+      gap: 14px;
+      max-height: 720px;
       overflow-y: auto;
       margin-top: 16px;
+      padding-right: 4px;
     }
 
     .story-item {
-      padding: 14px;
+      padding: 16px;
       background: #fafafc;
       border: 1px solid var(--border-subtle);
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 10px;
     }
 
     .story-meta {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
@@ -286,7 +294,33 @@
       line-height: 1.35;
     }
 
-    /* Apple Modal Overlay */
+    .story-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .btn-delete {
+      background-color: #fff1f0;
+      color: var(--danger);
+      border: 1px solid #ffccc7;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-delete:hover {
+      background-color: var(--danger);
+      color: #ffffff;
+      border-color: var(--danger);
+    }
+
+    /* Modal Overlay */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -335,7 +369,7 @@
     <a href="/" class="brand">
       <span class="brand-badge">SGN</span>
       <div>
-        <div class="brand-title">SOMALI GLOBAL NEWS</div>
+        <div class="brand-title">SGN SOMALI GLOBAL NEWS</div>
         <div class="brand-subtitle">Editorial Desk & Content Control</div>
       </div>
     </a>
@@ -349,7 +383,7 @@
   <div id="authModal" class="modal-overlay">
     <div class="modal-box">
       <h3>Newsroom Access</h3>
-      <p>Enter your desk credentials to manage the news wire.</p>
+      <p>Desk credentials are saved locally in your browser.</p>
 
       <form id="authForm" onsubmit="handleAuth(event)">
         <div class="form-group">
@@ -359,12 +393,12 @@
 
         <div class="form-group">
           <label>GitHub Owner / Username</label>
-          <input type="text" id="authOwner" placeholder="e.g., your-username" required>
+          <input type="text" id="authOwner" value="somaliglobal" required>
         </div>
 
         <div class="form-group">
           <label>Repository Name</label>
-          <input type="text" id="authRepo" placeholder="e.g., somaliglobalnews" required>
+          <input type="text" id="authRepo" value="somaliglobalnews" required>
         </div>
 
         <div class="form-group">
@@ -393,16 +427,15 @@
             <label>Category</label>
             <select id="articleCategory" required>
               <option value="Somalia">Somalia</option>
-              <option value="World">World</option>
+              <option value="Horn of Africa">Horn of Africa</option>
               <option value="Middle East">Middle East</option>
-              <option value="Sports">Sports</option>
-              <option value="Business">Business</option>
-              <option value="Technology">Technology</option>
+              <option value="World">World</option>
+              <option value="Editorial">Editorial</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Bureau / Location</label>
-            <input type="text" id="articleLocation" placeholder="e.g., Mogadishu Bureau" required>
+            <label>Bureau / Attribution</label>
+            <input type="text" id="articleLocation" value="SomaliGlobalNews:NewsDesk" required>
           </div>
         </div>
 
@@ -417,6 +450,16 @@
         </div>
 
         <div class="form-group">
+          <label>Image Thumbnail URL <span class="lang">Required</span></label>
+          <input type="url" id="articleImageUrl" placeholder="https://images.unsplash.com/..." required>
+        </div>
+
+        <div class="form-group">
+          <label>Video Snippet URL <span class="opt">(Optional - MP4 / Direct link)</span></label>
+          <input type="url" id="articleVideoUrl" placeholder="https://domain.com/video.mp4">
+        </div>
+
+        <div class="form-group">
           <label>Summary <span class="lang">English</span></label>
           <textarea id="articleSummary" rows="2" placeholder="Brief 1-2 sentence lead paragraph" required></textarea>
         </div>
@@ -428,28 +471,23 @@
 
         <div class="form-group">
           <label>Full Content <span class="lang">English</span></label>
-          <textarea id="articleContent" rows="4" placeholder="Full report text in English" required></textarea>
+          <textarea id="articleContent" rows="5" placeholder="Full report text in English" required></textarea>
         </div>
 
         <div class="form-group">
           <label>Full Content <span class="lang">Af-Soomaali</span></label>
-          <textarea id="articleContentSo" rows="4" placeholder="Faahfaahinta maqaalka oo Af-Soomaali ah" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Image Thumbnail URL</label>
-          <input type="url" id="articleImageUrl" placeholder="https://images.unsplash.com/..." required>
+          <textarea id="articleContentSo" rows="5" placeholder="Faahfaahinta maqaalka oo Af-Soomaali ah" required></textarea>
         </div>
 
         <button type="submit" class="btn-primary" id="publishBtn">Commit & Publish to Vercel</button>
       </form>
     </section>
 
-    <!-- Live Wire Feed -->
+    <!-- Live Wire Feed with Deletion -->
     <aside class="card">
       <div class="card-header">
         <h2>Live Stories in news.json</h2>
-        <p>Published reports currently active in your feed.</p>
+        <p>Active articles in your feed. Click Delete to remove any story.</p>
       </div>
 
       <div id="storyCountText" class="brand-subtitle" style="margin-bottom: 8px;">Loading dispatches...</div>
@@ -465,11 +503,17 @@
 
     window.addEventListener("DOMContentLoaded", () => {
       const savedPass = localStorage.getItem("sgn_admin_pin");
-      const savedOwner = localStorage.getItem("sgn_gh_owner");
-      const savedRepo = localStorage.getItem("sgn_gh_repo");
+      const savedOwner = localStorage.getItem("sgn_gh_owner") || "somaliglobal";
+      const savedRepo = localStorage.getItem("sgn_gh_repo") || "somaliglobalnews";
       const savedToken = localStorage.getItem("sgn_gh_token");
 
-      if (savedPass === MASTER_PIN && savedOwner && savedRepo && savedToken) {
+      if (document.getElementById("authOwner")) document.getElementById("authOwner").value = savedOwner;
+      if (document.getElementById("authRepo")) document.getElementById("authRepo").value = savedRepo;
+      if (savedToken && document.getElementById("authToken")) {
+        document.getElementById("authToken").value = savedToken;
+      }
+
+      if (savedPass === MASTER_PIN && savedToken) {
         document.getElementById("authModal").classList.add("hidden");
         fetchFeed();
       } else {
@@ -504,8 +548,8 @@
     }
 
     async function fetchFeed() {
-      const owner = localStorage.getItem("sgn_gh_owner");
-      const repo = localStorage.getItem("sgn_gh_repo");
+      const owner = localStorage.getItem("sgn_gh_owner") || "somaliglobal";
+      const repo = localStorage.getItem("sgn_gh_repo") || "somaliglobalnews";
       const token = localStorage.getItem("sgn_gh_token");
       const statusEl = document.getElementById("wireStatus");
 
@@ -522,17 +566,14 @@
         if (!res.ok) {
           const err = await res.json();
           statusEl.innerHTML = `<span class="status-dot" style="background:#ff3b30"></span> Error (${res.status})`;
-          alert(`GitHub Error (${res.status}): ${err.message}\nCheck Owner, Repo, and Token permissions.`);
+          alert(`GitHub Error (${res.status}): ${err.message}`);
           return;
         }
 
         const data = await res.json();
         fileSha = data.sha;
 
-        // Clean out whitespace/newlines that GitHub injects into base64
         const cleanBase64 = data.content.replace(/\s/g, '');
-
-        // Safe UTF-8 decoding for Somali vowels and special characters
         const binaryString = atob(cleanBase64);
         const bytes = new Uint8Array(binaryString.length);
         for (let i = 0; i < binaryString.length; i++) {
@@ -557,7 +598,7 @@
       const articles = currentNews.articles || [];
       countText.innerText = `${articles.length} dispatches live in public feed`;
 
-      articles.forEach((item) => {
+      articles.forEach((item, index) => {
         const el = document.createElement("div");
         el.className = "story-item";
         el.innerHTML = `
@@ -565,8 +606,12 @@
             <span>${item.category || "General"}</span>
             <span>${item.isManual ? "Manual Post" : "Automated Wire"}</span>
           </div>
-          <div class="story-title">${item.title || "Untitled"}</div>
-          <div class="story-title-so">${item.title_so || ""}</div>
+          <div class="story-title">${escapeHtml(item.title || "Untitled")}</div>
+          <div class="story-title-so">${escapeHtml(item.title_so || "")}</div>
+          <div class="story-footer">
+            <span style="font-size: 11px; color: var(--text-secondary);">${new Date(item.publishedAt || Date.now()).toLocaleDateString()}</span>
+            <button class="btn-delete" onclick="deleteStory(${index})">Delete Dispatch</button>
+          </div>
         `;
         container.appendChild(el);
       });
@@ -578,31 +623,65 @@
       publishBtn.disabled = true;
       publishBtn.innerText = "Committing to GitHub...";
 
-      const owner = localStorage.getItem("sgn_gh_owner");
-      const repo = localStorage.getItem("sgn_gh_repo");
-      const token = localStorage.getItem("sgn_gh_token");
-
       const newArticle = {
         id: `manual-${Date.now()}`,
         isManual: true,
         title: document.getElementById("articleTitle").value.trim(),
         title_so: document.getElementById("articleTitleSo").value.trim(),
         category: document.getElementById("articleCategory").value,
-        location: document.getElementById("articleLocation").value.trim(),
+        location: document.getElementById("articleLocation").value.trim() || "SomaliGlobalNews:NewsDesk",
         summary: document.getElementById("articleSummary").value.trim(),
         summary_so: document.getElementById("articleSummarySo").value.trim(),
         content: document.getElementById("articleContent").value.trim(),
         content_so: document.getElementById("articleContentSo").value.trim(),
         imageUrl: document.getElementById("articleImageUrl").value.trim(),
+        videoUrl: document.getElementById("articleVideoUrl").value.trim() || null,
         publishedAt: new Date().toISOString()
       };
 
-      // Add to beginning of articles array
       if (!currentNews.articles) currentNews.articles = [];
       currentNews.articles.unshift(newArticle);
       currentNews.updatedAt = new Date().toISOString();
 
-      // Proper UTF-8 base64 encoding
+      await commitNewsPayload(`Publish dispatch: ${newArticle.title.substring(0, 48)}... [skip ci]`, () => {
+        document.getElementById("publishForm").reset();
+        document.getElementById("articleLocation").value = "SomaliGlobalNews:NewsDesk";
+        alert("Article published successfully. Vercel is now deploying your updated feed.");
+      }, () => {
+        // Rollback local change if commit fails
+        currentNews.articles.shift();
+      });
+
+      publishBtn.disabled = false;
+      publishBtn.innerText = "Commit & Publish to Vercel";
+    }
+
+    async function deleteStory(index) {
+      const target = currentNews.articles[index];
+      if (!target) return;
+
+      const confirmDel = confirm(`Are you sure you want to permanently delete this article?\n\n"${target.title}"`);
+      if (!confirmDel) return;
+
+      const removed = currentNews.articles.splice(index, 1)[0];
+      currentNews.updatedAt = new Date().toISOString();
+
+      renderStories();
+
+      await commitNewsPayload(`Delete dispatch: ${target.title.substring(0, 48)}... [skip ci]`, () => {
+        alert("Article deleted successfully from public feed.");
+      }, () => {
+        // Rollback if failed
+        currentNews.articles.splice(index, 0, removed);
+        renderStories();
+      });
+    }
+
+    async function commitNewsPayload(commitMessage, onSuccess, onError) {
+      const owner = localStorage.getItem("sgn_gh_owner") || "somaliglobal";
+      const repo = localStorage.getItem("sgn_gh_repo") || "somaliglobalnews";
+      const token = localStorage.getItem("sgn_gh_token");
+
       const jsonString = JSON.stringify(currentNews, null, 2);
       const utf8Bytes = new TextEncoder().encode(jsonString);
       let binary = "";
@@ -620,7 +699,7 @@
             "Accept": "application/vnd.github.v3+json"
           },
           body: JSON.stringify({
-            message: `Publish dispatch: ${newArticle.title.substring(0, 48)}... [skip ci]`,
+            message: commitMessage,
             content: encodedPayload,
             sha: fileSha
           })
@@ -629,22 +708,23 @@
         if (!res.ok) {
           const err = await res.json();
           alert(`Commit rejected (${res.status}): ${err.message}`);
-          publishBtn.disabled = false;
-          publishBtn.innerText = "Commit & Publish to Vercel";
+          if (onError) onError();
           return;
         }
 
         const responseData = await res.json();
         fileSha = responseData.content.sha;
         renderStories();
-        document.getElementById("publishForm").reset();
-        alert("Article published successfully. Vercel is now deploying your updated feed.");
+        if (onSuccess) onSuccess();
       } catch (err) {
-        alert("Commit error: " + err.message);
-      } finally {
-        publishBtn.disabled = false;
-        publishBtn.innerText = "Commit & Publish to Vercel";
+        alert("Commit network error: " + err.message);
+        if (onError) onError();
       }
+    }
+
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
     }
   </script>
 </body>
