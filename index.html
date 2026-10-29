@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somali Global News | Global News & Regional Insights</title>
+    <title>SGN SomaliGlobalNews | Global News & Regional Insights</title>
     <!-- Tailwind CSS for modern, clean Apple-style styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,6 @@
             background-color: #ffffff;
             color: #1d1d1f;
         }
-        /* Custom scrollbar for clean aesthetics */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -35,7 +34,7 @@
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
             <div class="flex items-center gap-2 overflow-hidden">
                 <span class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider">Live</span>
-                <p id="breaking-ticker" class="truncate font-medium text-gray-800">Welcome to Somali Global News — Delivering independent insights across the Horn of Africa and the globe.</p>
+                <p id="breaking-ticker" class="truncate font-medium text-gray-800">Welcome to SGN SomaliGlobalNews — Delivering independent insights across the Horn of Africa and the globe.</p>
             </div>
             <div id="current-date" class="text-gray-500 font-normal"></div>
         </div>
@@ -45,27 +44,26 @@
     <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             
-            <!-- Logo & Brand -->
+            <!-- Logo & Brand: SGN SomaliGlobalNews -->
             <div class="flex items-center space-x-3">
-                <a href="#" onclick="filterCategory('All')" class="group flex items-center space-x-2 text-left">
-                    <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg shadow-sm">
-                        S
+                <a href="#" onclick="filterCategory('All')" class="group flex items-center space-x-3 text-left">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0071e3] font-bold text-sm shadow-sm tracking-tight">
+                        SGN
                     </div>
                     <div>
-                        <span class="block text-xl font-bold tracking-tight text-[#0071e3]">SOMALI GLOBAL NEWS</span>
+                        <span class="block text-xl font-bold tracking-tight text-[#0071e3]">SGN SomaliGlobalNews</span>
                         <span class="block text-[11px] text-gray-500 font-medium tracking-wide">Independent Global Intelligence</span>
                     </div>
                 </a>
             </div>
 
-            <!-- Desktop Category Navigation & Home Button -->
+            <!-- Desktop Category Navigation (NO SPORTS BUTTON) -->
             <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium text-gray-600">
                 <button onclick="filterCategory('All')" class="px-3 py-2 rounded-lg text-blue-600 bg-blue-50/80 transition-all font-semibold nav-btn" data-category="All">Home</button>
                 <button onclick="filterCategory('Somalia')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Somalia">Somalia</button>
                 <button onclick="filterCategory('Horn of Africa')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Horn of Africa">Horn of Africa</button>
                 <button onclick="filterCategory('Middle East')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Middle East">Middle East</button>
                 <button onclick="filterCategory('World')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="World">World</button>
-                <button onclick="filterCategory('Sports')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Sports">Sports</button>
                 <button onclick="filterCategory('Editorial')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Editorial">Editorial</button>
             </nav>
 
@@ -80,14 +78,13 @@
             </div>
         </div>
 
-        <!-- Mobile Secondary Category Bar -->
+        <!-- Mobile Secondary Category Bar (NO SPORTS BUTTON) -->
         <div class="md:hidden flex overflow-x-auto px-4 py-2 space-x-2 bg-gray-50 border-t border-gray-100 scrollbar-none">
             <button onclick="filterCategory('All')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white nav-btn-mobile" data-category="All">Home</button>
             <button onclick="filterCategory('Somalia')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Somalia">Somalia</button>
             <button onclick="filterCategory('Horn of Africa')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Horn of Africa">Horn of Africa</button>
             <button onclick="filterCategory('Middle East')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Middle East">Middle East</button>
             <button onclick="filterCategory('World')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="World">World</button>
-            <button onclick="filterCategory('Sports')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Sports">Sports</button>
             <button onclick="filterCategory('Editorial')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Editorial">Editorial</button>
         </div>
     </header>
@@ -179,8 +176,8 @@
     <footer class="bg-[#f5f5f7] border-t border-gray-200 text-gray-500 text-sm py-12 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-center md:text-left">
-                <span class="font-bold text-[#0071e3] tracking-tight">SOMALI GLOBAL NEWS</span>
-                <p class="text-xs text-gray-400 mt-1">&copy; 2026 Somali Global News. All rights reserved.</p>
+                <span class="font-bold text-[#0071e3] tracking-tight">SGN SomaliGlobalNews</span>
+                <p class="text-xs text-gray-400 mt-1">&copy; 2026 SGN SomaliGlobalNews. All rights reserved.</p>
             </div>
             <div class="flex space-x-6 text-xs font-medium">
                 <a href="#" onclick="filterCategory('All'); return false;" class="hover:text-blue-600 transition-colors">Home</a>
@@ -192,7 +189,6 @@
 
     <!-- Client Script -->
     <script>
-        // Display Current Date in Utility Bar
         const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', dateOptions);
 
@@ -203,7 +199,6 @@
 
         async function initFeed() {
             try {
-                // Fetch live news data from repo path
                 let res = await fetch('public/data/news.json?t=' + Date.now());
                 if (!res.ok) {
                     res = await fetch('data/news.json?t=' + Date.now());
@@ -213,7 +208,6 @@
                     const data = await res.json();
                     const rawList = data.articles || (Array.isArray(data) ? data : []);
                     
-                    // Normalize data structure so both schema versions work seamlessly
                     articlesStore = rawList.map((item, idx) => ({
                         id: item.id || `art-${idx}`,
                         title: item.title || "Untitled Report",
@@ -229,7 +223,6 @@
                         comments: item.comments || []
                     }));
 
-                    // Update breaking ticker with top headline
                     if (articlesStore.length > 0) {
                         document.getElementById('breaking-ticker').innerText = articlesStore[0].title;
                     }
@@ -245,7 +238,6 @@
             renderArticles(currentCategory);
         }
 
-        // Render Articles Feed
         function renderArticles(filter = 'All', searchQuery = '') {
             const grid = document.getElementById('articles-grid');
             const featuredSection = document.getElementById('featured-section');
@@ -274,7 +266,6 @@
                 emptyState.classList.add('hidden');
             }
 
-            // Render Featured Story (First item) if on 'All' view and no search query
             if (filter === 'All' && !searchQuery && filtered.length > 0) {
                 const featured = filtered[0];
                 featuredSection.innerHTML = `
@@ -302,7 +293,6 @@
                 featuredSection.innerHTML = '';
             }
 
-            // Render Grid Articles
             filtered.forEach(art => {
                 const comments = getCommentsForArticle(art.id);
                 const card = document.createElement('div');
@@ -331,12 +321,10 @@
             });
         }
 
-        // Category Filter Logic
         function filterCategory(category) {
             currentCategory = category;
             document.getElementById('current-category-title').innerText = category === 'All' ? 'Latest Dispatches' : category;
             
-            // Update desktop button active states
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 if (btn.getAttribute('data-category') === category) {
                     btn.className = "px-3 py-2 rounded-lg text-blue-600 bg-blue-50/80 transition-all font-semibold nav-btn";
@@ -345,7 +333,6 @@
                 }
             });
 
-            // Update mobile button active states
             document.querySelectorAll('.nav-btn-mobile').forEach(btn => {
                 if (btn.getAttribute('data-category') === category) {
                     btn.className = "whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white nav-btn-mobile";
@@ -361,7 +348,6 @@
             renderArticles(currentCategory, query);
         }
 
-        // Modal Reader Controls
         function openArticleModal(id) {
             currentArticleId = id;
             isSomaliActive = false;
@@ -375,7 +361,6 @@
             document.getElementById('modal-title').innerText = article.title;
             document.getElementById('modal-image').src = article.image;
             
-            // Format body copy with clean paragraphs
             const engParagraphs = (article.content || article.summary || '').split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
             document.getElementById('content-english').innerHTML = engParagraphs;
 
@@ -420,7 +405,6 @@
             }
         }
 
-        // Comments Handling (Scoped to Local Storage per Story)
         function getCommentsForArticle(articleId) {
             return JSON.parse(localStorage.getItem(`sgn_comm_${articleId}`) || '[]');
         }
@@ -475,7 +459,6 @@
             return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
-        // Initialize Feed
         document.addEventListener('DOMContentLoaded', initFeed);
     </script>
 </body>
