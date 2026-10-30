@@ -116,10 +116,10 @@
         </div>
     </main>
 
-    <!-- Full Article Modal / Reader View -->
-    <div id="article-modal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+    <!-- Full Article Modal / Reader View (Photos & Video Snippets) -->
+    <div id="article-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 my-8">
-            <div class="sticky top-0 bg-white/90 backdrop-blur-md px-6 py-4 border-b border-gray-100 flex items-center justify-between z-10">
+            <div class="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-gray-100 flex items-center justify-between z-10">
                 <div class="flex items-center space-x-3">
                     <span id="modal-category" class="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider"></span>
                     <span id="modal-date" class="text-xs text-gray-400"></span>
@@ -138,8 +138,16 @@
             <div class="p-6 sm:p-10 space-y-6">
                 <h1 id="modal-title" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 leading-tight"></h1>
                 
-                <div id="modal-image-container" class="rounded-xl overflow-hidden bg-gray-100 max-h-[400px]">
-                    <img id="modal-image" src="" alt="" class="w-full h-full object-cover">
+                <!-- Adaptive Media Container (Video or Photo) -->
+                <div id="modal-media-container" class="rounded-xl overflow-hidden bg-black/5 border border-gray-100">
+                    <!-- Image Display -->
+                    <img id="modal-image" src="" alt="" class="w-full max-h-[420px] object-cover">
+                    
+                    <!-- Video Snippet Player (Shown only when videoUrl exists) -->
+                    <div id="modal-video-wrapper" class="hidden aspect-video w-full bg-black">
+                        <iframe id="modal-iframe" class="w-full h-full" src="" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                        <video id="modal-video" class="w-full h-full hidden" controls playsinline></video>
+                    </div>
                 </div>
 
                 <div id="content-english" class="prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-4 text-base sm:text-lg"></div>
@@ -180,7 +188,6 @@
                     </div>
                     <p class="text-xs text-gray-500 mb-6">Have a news tip, press release, correction, or inquiry? Send a message directly to the SGN editorial team.</p>
 
-                    <!-- Formspree Endpoint Form -->
                     <form onsubmit="handleContactSubmit(event)" class="space-y-4">
                         <div>
                             <label class="block text-xs font-semibold text-gray-700 mb-1">Your Name</label>
@@ -264,6 +271,7 @@
                         location: item.location || "",
                         date: item.publishedAt ? new Date(item.publishedAt).toLocaleDateString('en-US', dateOptions) : (item.date || "Recent"),
                         image: item.imageUrl || item.image || item.thumbnail || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80",
+                        videoUrl: item.videoUrl || item.video || null,
                         summary: item.summary || item.excerpt || "",
                         summarySomali: item.summary_so || "",
                         content: item.content || item.body || item.summary || "",
@@ -348,8 +356,9 @@
                 card.setAttribute('onclick', `openArticleModal('${art.id}')`);
                 card.innerHTML = `
                     <div>
-                        <div class="h-48 overflow-hidden bg-gray-100">
+                        <div class="h-48 overflow-hidden bg-gray-100 relative">
                             <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'">
+                            ${art.videoUrl ? '<span class="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 backdrop-blur-sm">▶ Video</span>' : ''}
                         </div>
                         <div class="p-6">
                             <div class="flex items-center justify-between mb-3">
@@ -407,7 +416,46 @@
             document.getElementById('modal-category').innerText = article.location || article.category;
             document.getElementById('modal-date').innerText = article.date;
             document.getElementById('modal-title').innerText = article.title;
-            document.getElementById('modal-image').src = article.image;
+
+            // Handle Video Snippet vs Image
+            const videoWrapper = document.getElementById('modal-video-wrapper');
+            const imageEl = document.getElementById('modal-image');
+            const iframeEl = document.getElementById('modal-iframe');
+            const videoEl = document.getElementById('modal-video');
+
+            if (article.videoUrl && article.videoUrl.trim() !== "") {
+                imageEl.classList.add('hidden');
+                videoWrapper.classList.remove('hidden');
+
+                const vUrl = article.videoUrl.trim();
+                let ytId = null;
+
+                // Match various YouTube URL formats (standard, shorts, youtu.be)
+                const ytMatch = vUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
+                if (ytMatch && ytMatch[1]) {
+                    ytId = ytMatch[1];
+                }
+
+                if (ytId) {
+                    iframeEl.src = `https://www.youtube.com/embed/${ytId}?rel=0&enablejsapi=1`;
+                    iframeEl.classList.remove('hidden');
+                    videoEl.classList.add('hidden');
+                    videoEl.pause();
+                } else {
+                    // Direct video file (e.g., .mp4, .webm)
+                    videoEl.src = vUrl;
+                    videoEl.classList.remove('hidden');
+                    iframeEl.classList.add('hidden');
+                    iframeEl.src = "";
+                }
+            } else {
+                // Fall back cleanly to image
+                videoWrapper.classList.add('hidden');
+                iframeEl.src = "";
+                videoEl.src = "";
+                imageEl.src = article.image;
+                imageEl.classList.remove('hidden');
+            }
             
             const engParagraphs = (article.content || article.summary || '').split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
             document.getElementById('content-english').innerHTML = engParagraphs;
@@ -427,6 +475,12 @@
         }
 
         function closeArticleModal() {
+            // Stop video immediately upon closing
+            document.getElementById('modal-iframe').src = "";
+            const vid = document.getElementById('modal-video');
+            vid.pause();
+            vid.src = "";
+
             document.getElementById('article-modal').classList.add('hidden');
             document.body.style.overflow = 'auto';
             currentArticleId = null;
