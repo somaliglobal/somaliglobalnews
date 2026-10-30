@@ -1,6 +1,21 @@
 {
-  "updatedAt": "2026-10-30T20:44:22.017Z",
+  "updatedAt": "2026-10-30T20:54:28.078Z",
   "articles": [
+    {
+      "id": "manual-1793393668078",
+      "isManual": true,
+      "title": "Strait of Hormuz Security Framework Advances as Regional Mediators Secure Commercial Transit Guarantees",
+      "title_so": "Heshiis Ku Saabsan Badbaadada Marinka Hormuz oo la Gaaray Kadib Dadaallo Diblomaasiyadeed oo Goboleed",
+      "category": "World",
+      "location": "SomaliGlobalNews:NewsDesk",
+      "summary": "Diplomatic envoys have finalized a coordinated de-escalation protocol across the Strait of Hormuz, establishing reinforced maritime monitoring corridors and direct communication channels between coastal authorities to safeguard international energy shipments.",
+      "summary_so": "Dadaallo diblomaasiyadeed oo ay wadeen dhex-dhexaadiyeyaal goboleed ayaa horseeday heshiis lagu sugayo amniga marinka istiraatiijiga ah ee Hormuz, iyadoo la sameeyay hab cusub oo lagula soconayo marinnada maraakiibta shidaalka iyo ganacsiga.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Strait_of_Hormuz.jpg",
+      "videoUrl": null,
+      "content": "Regional mediation efforts have resulted in an updated operational framework governing commercial navigation through the Strait of Hormuz, the critical chokepoint handling roughly one-fifth of global petroleum consumption. The multilateral diplomatic initiative—backed by regional facilitators seeking maritime stabilization—centers on instituting rapid-response de-confliction hotlines between littoral security commands and commercial shipping registries.\nUnder the framework, commercial tankers and cargo carriers transiting the narrow strait will operate along defined safe-transit lanes monitored by non-belligerent technical observation posts. The agreement prioritizes technical transparency, reduces spontaneous vessel boardings, and establishes shared radar verification protocols to eliminate accidental cross-strait escalation. The initiative provides immediate stabilization for maritime insurance rates while sustaining unhindered passage through the Persian Gulf and Gulf of Oman.",
+      "content_so": "Dadaallada diblomaasiyadeed ee lagu qaboojinayo xiisadaha ka taagan marinka Hormuz ayaa keenay qorshe howleed cusub oo lagu ilaalinayo badqabka maraakiibta ganacsiga ee isticmaala marinkaas muhiimka u ah shidaalka caalamka. Heshiiskan ayaa diiradda saaraya samaynta xiriir degdeg ah oo dhexmara maamullada xeebaha iyo maraakiibta ganacsiga si looga fogaado isku-dhacyo iyo khaladaad amni oo saameeya dhaqdhaqaaqa ganacsiga caalamiga ah.\nQorshaha la ansixiyay wuxuu dhigayaa in maraakiibta shidaalka iyo alaabada xamuulka ah ee dhex mara marinka ay raacaan jidad cayiman oo si dhow looga kormeero xarumaha farsamada iyo radar-yada gobolka. Tallaabadan ayaa la filayaa inay hoos u dhigto kharashyada caymiska maraakiibta isla markaana ay dammaanad-qaaddo socodka xorta ah ee gaadiidka badda ee isaga gudba Gacanka Carbeed iyo Badda Cumaan.",
+      "publishedAt": "2026-10-30T20:54:28.078Z"
+    },
     {
       "id": "manual-1793393062017",
       "isManual": true,
