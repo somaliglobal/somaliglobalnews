@@ -1,6 +1,21 @@
 {
-  "updatedAt": "2026-10-30T19:57:14.791Z",
+  "updatedAt": "2026-10-30T20:00:54.938Z",
   "articles": [
+    {
+      "id": "manual-1793390454938",
+      "isManual": true,
+      "title": "European Defense Chiefs Realign Eastern Flank Readiness Amid Escalating Deep-Strike Drone Warfare",
+      "title_so": "Wasiirrada Gaashaandhigga Yurub oo Dib u Habeyn ku Sameynaya Ciidamada Jiidda Bari ee Qaaradda",
+      "category": "World",
+      "location": "SomaliGlobalNews:NewsDesk",
+      "summary": "European defense ministries have initiated emergency operational reviews along the eastern theater following deep-penetration drone engagements targeting critical energy nodes and fresh airspace defense realignments across the Black Sea and Baltic sectors.",
+      "summary_so": "Wasaaradaha difaaca ee dalalka waaweyn ee Yurub ayaa bilaabay qorshe lagu xoojinayo nidaamka difaaca cirka iyo ilaalinta xuduudaha bari, kaddib markii ay kordheen weerarrada diyaaradaha aan duuliyaha lahayn ee lala beegsanayo xarumaha shidaalka.",
+      "imageUrl": "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=80",
+      "videoUrl": null,
+      "content": "Defense ministers from Britain, France, Germany, and Poland concluded coordinated consultations in Warsaw to recalibrate frontline defensive architectures and counter-drone capabilities. The joint session followed repeated overnight long-range drone exchanges across the Ukrainian-Russian border corridor, where strikes targeting petrochemical terminals and refining nodes prompted massive air defense scrambles across adjacent border perimeters.\nNATO eastern flank commanders noted that rapid advancements in low-altitude, autonomous uncrewed aerial systems (UAS) require an immediate transition from traditional surface-to-air interceptors to integrated electronic warfare and kinetic counter-UAS grids. The allied ministers confirmed accelerated timelines for deploying multinational joint-training brigades in Poland and Romania, ensuring synchronized radar monitoring along Black Sea corridors to prevent uncoordinated projectile spillover into European civil airspace.",
+      "content_so": "Wasiirrada gaashaandhigga ee dalalka UK, Faransiiska, Jarmalka, iyo Poland ayaa kulan degdeg ah oo ka dhacay magaalada Warsaw kaga hadlay amniga guud ee qaaradda Yurub iyo ilaalinta xuduudaha dhinaca bari. Kulankan ayaa yimid kaddib markii ay sii kordheen weerarrada loo adeegsado diyaaradaha aan duuliyaha lahayn (drones) ee ku dhufta xarumaha shidaalka iyo goobaha muhiimka ah ee ku yaalla aagagga dagaalka ee Ukraine iyo Ruushka.\nTaliska ciidamada gaashaandhigga Yurub ayaa carrabka ku adkeeyay in loo baahan yahay in si degdeg ah loo qalabeeyo ciidamada ku sugan jiidda hore, iyadoo la kordhinayo aaladaha casriga ah ee lagu ogaado laguna toogto diyaaradaha yar-yar ee duulimaadka hoose ku gala hawada xorta ah. Dalalka xulafada ah ayaa ku heshiiyay in la kordhiyo dhoolatuska ciidan ee ka socda dalalka Poland iyo Romania si loo sugo nabadgelyada hawada qaaradda Yurub.",
+      "publishedAt": "2026-10-30T20:00:54.938Z"
+    },
     {
       "id": "manual-1793390234791",
       "isManual": true,
