@@ -1,6 +1,21 @@
 {
-  "updatedAt": "2026-10-30T15:20:03.888Z",
+  "updatedAt": "2026-10-30T15:24:39.312Z",
   "articles": [
+    {
+      "id": "manual-1793373879312",
+      "isManual": true,
+      "title": "Mogadishu Advances Constitutional Consultations Ahead of Universal Suffrage Electoral Rollout",
+      "title_so": "Wadatashiyo Ku Saabsan Nidaamka Doorashooyinka Qof iyo Cod oo ka Socda Magaalada Muqdisho",
+      "category": "Somalia",
+      "location": "SomaliGlobalNews:NewsDesk",
+      "summary": "Somali federal leadership is holding consultative dialogues in Mogadishu to align federal and state administrative mechanisms toward a direct, universal-suffrage ballot system.",
+      "summary_so": "Madaxda dowladda federaalka Soomaaliya ayaa magaalada Muqdisho ka wada wadatashiyo ku aaddan diyaarinta nidaamka doorashooyinka qof iyo cod ah ee dalka ka dhici doona.",
+      "imageUrl": "https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?auto=format&fit=crop&w=1200&q=80",
+      "videoUrl": null,
+      "content": "The Federal Government of Somalia is holding wide-ranging political and constitutional briefings in Mogadishu aimed at harmonizing the national electoral roadmap. In discussions monitored by regional analysts and international correspondents, parliamentary leaders reiterated their commitment to implementing direct 'one-person, one-vote' municipal and parliamentary models.\nWhile federal authorities continue structured reviews to broaden stakeholder consensus across all federal-member states, election commission technical teams are establishing institutional groundwork for biometric registration and district-level polling logistics. The consultative process seeks to establish sustainable democratic mechanisms that ensure civic participation across urban and rural constituencies.",
+      "content_so": "Magaalada Muqdisho waxaa ka socda shirar iyo wadatashiyo ballaaran oo ay yeelanayaan madaxda dowladda federaalka iyo khubarrada shuruucda, kuwaas oo looga hadlayo dardargelinta qorshaha doorashooyinka tooska ah ee qof iyo codka ah. Qorshahan ayaa lagu doonayaa in shacabka Soomaaliyeed loo suurtageliyo inay si toos ah u doortaan hoggaankooda hoose iyo kan sare.\nGuddiga doorashooyinka iyo hay'adaha ku howlan nidaamka sharciga ayaa wada qabanqaabada farsamo ee diiwaangelinta codbixiyeyaasha, iyadoo lagu dadaalayo in la gaaro is-afgarad buuxa oo dhexmara dhammaan dowlad-goboleedyada xubnaha ka ah dowladda federaalka si loo xaqiijiyo doorasho hufan oo dimuqraadi ah.",
+      "publishedAt": "2026-10-30T15:24:39.312Z"
+    },
     {
       "id": "manual-1793373603888",
       "isManual": true,
