@@ -57,7 +57,7 @@
                 </a>
             </div>
 
-            <!-- Desktop Category Navigation (NO SPORTS BUTTON) -->
+            <!-- Desktop Category Navigation (No Sports) -->
             <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium text-gray-600">
                 <button onclick="filterCategory('All')" class="px-3 py-2 rounded-lg text-blue-600 bg-blue-50/80 transition-all font-semibold nav-btn" data-category="All">Home</button>
                 <button onclick="filterCategory('Somalia')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Somalia">Somalia</button>
@@ -67,10 +67,15 @@
                 <button onclick="filterCategory('Editorial')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Editorial">Editorial</button>
             </nav>
 
-            <!-- Search -->
+            <!-- Search & Contact Us Actions -->
             <div class="flex items-center space-x-3">
+                <button onclick="openContactDrawer()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-blue-600 transition-colors">
+                    <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <span>Contact Us</span>
+                </button>
+
                 <div class="relative hidden sm:block">
-                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search articles..." class="bg-[#f5f5f7] border-none text-sm rounded-full pl-9 pr-4 py-2 w-48 lg:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-gray-800 placeholder-gray-400">
+                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search articles..." class="bg-[#f5f5f7] border-none text-sm rounded-full pl-9 pr-4 py-2 w-44 lg:w-56 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-gray-800 placeholder-gray-400">
                     <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
@@ -78,7 +83,7 @@
             </div>
         </div>
 
-        <!-- Mobile Secondary Category Bar (NO SPORTS BUTTON) -->
+        <!-- Mobile Secondary Category Bar -->
         <div class="md:hidden flex overflow-x-auto px-4 py-2 space-x-2 bg-gray-50 border-t border-gray-100 scrollbar-none">
             <button onclick="filterCategory('All')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white nav-btn-mobile" data-category="All">Home</button>
             <button onclick="filterCategory('Somalia')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Somalia">Somalia</button>
@@ -91,20 +96,15 @@
 
     <!-- Main Content Area -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        
-        <!-- Hero / Featured Section -->
         <section id="featured-section" class="mb-12"></section>
 
-        <!-- Category Title Header -->
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
             <h2 id="current-category-title" class="text-2xl font-bold tracking-tight text-gray-900">Latest Dispatches</h2>
             <span id="article-count" class="text-sm text-gray-500 font-medium">Loading stories...</span>
         </div>
 
-        <!-- Article Grid -->
         <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
 
-        <!-- Empty State Container -->
         <div id="empty-state" class="hidden text-center py-20">
             <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,12 +125,10 @@
                     <span id="modal-date" class="text-xs text-gray-400"></span>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <!-- Somali Translation Button -->
                     <button onclick="toggleTranslation()" id="translate-btn" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors">
                         <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
                         <span id="translate-btn-text">Somali</span>
                     </button>
-                    <!-- Close Modal Button -->
                     <button onclick="closeArticleModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
@@ -144,17 +142,12 @@
                     <img id="modal-image" src="" alt="" class="w-full h-full object-cover">
                 </div>
 
-                <!-- English Content View -->
                 <div id="content-english" class="prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-4 text-base sm:text-lg"></div>
-
-                <!-- Somali Translation View -->
                 <div id="content-somali" class="hidden prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-4 text-base sm:text-lg font-normal bg-amber-50/50 p-6 rounded-2xl border border-amber-200/50"></div>
 
-                <!-- Reader Comment Section -->
                 <div class="mt-12 pt-8 border-t border-gray-100">
                     <h3 class="text-lg font-bold text-gray-900 mb-4">Reader Comments (<span id="comment-count">0</span>)</h3>
                     
-                    <!-- Comment Submission Form -->
                     <form id="comment-form" onsubmit="submitComment(event)" class="mb-8 space-y-3">
                         <div>
                             <input type="text" id="commenter-name" placeholder="Your Name" required class="w-full sm:w-1/2 bg-[#f5f5f7] border-none text-sm rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-gray-800 placeholder-gray-400">
@@ -165,8 +158,62 @@
                         <button type="submit" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors shadow-sm">Post Comment</button>
                     </form>
 
-                    <!-- Comments List Container -->
                     <div id="comments-list" class="space-y-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side Contact Drawer (Formspree Connected) -->
+    <div id="contactDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="closeContactDrawer()"></div>
+
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl p-6 sm:p-8 flex flex-col justify-between border-l border-[#e5e5e7]">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-7 h-7 bg-blue-50 text-[#0071e3] font-bold text-xs rounded-lg flex items-center justify-center border border-blue-100">SGN</span>
+                            <h3 class="text-xl font-bold text-[#1d1d1f]">Contact News Desk</h3>
+                        </div>
+                        <button onclick="closeContactDrawer()" class="text-gray-400 hover:text-black text-2xl font-bold w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">&times;</button>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-6">Have a news tip, press release, correction, or inquiry? Send a message directly to the SGN editorial team.</p>
+
+                    <!-- Formspree Endpoint Form -->
+                    <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Your Name</label>
+                            <input type="text" name="name" required placeholder="Enter your full name" 
+                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Your Email</label>
+                            <input type="email" name="email" required placeholder="name@example.com" 
+                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Subject</label>
+                            <input type="text" name="subject" placeholder="News Tip / Editorial Inquiry" 
+                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#0071e3] focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Message</label>
+                            <textarea name="message" rows="5" required placeholder="Write your message here..." 
+                                      class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#0071e3] focus:outline-none"></textarea>
+                        </div>
+                        <button type="submit" id="contactSubmitBtn" class="w-full bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold py-3 rounded-xl transition shadow-sm">
+                            Send Message to Desk
+                        </button>
+                    </form>
+
+                    <div id="contactSuccessMsg" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-xs text-green-800 text-center font-medium">
+                        ✓ Thank you! Your message has been sent to the editorial desk.
+                    </div>
+                </div>
+
+                <div class="text-center text-[11px] text-gray-400 pt-6 border-t border-gray-100">
+                    SGN SomaliGlobalNews • Secure Editorial Desk
                 </div>
             </div>
         </div>
@@ -182,6 +229,7 @@
             <div class="flex space-x-6 text-xs font-medium">
                 <a href="#" onclick="filterCategory('All'); return false;" class="hover:text-blue-600 transition-colors">Home</a>
                 <a href="#" onclick="filterCategory('Editorial'); return false;" class="hover:text-blue-600 transition-colors">Editorial</a>
+                <a href="javascript:void(0)" onclick="openContactDrawer()" class="hover:text-blue-600 transition-colors">Contact Us</a>
                 <a href="admin.html" class="hover:text-blue-600 transition-colors">Publisher Portal</a>
             </div>
         </div>
@@ -402,6 +450,51 @@
                 engEl.classList.remove('hidden');
                 somEl.classList.add('hidden');
                 btnText.innerText = "Somali";
+            }
+        }
+
+        /* Contact Drawer Functions */
+        function openContactDrawer() {
+            document.getElementById('contactDrawer').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeContactDrawer() {
+            document.getElementById('contactDrawer').classList.add('hidden');
+            document.getElementById('contactSuccessMsg').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        async function handleContactSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const btn = document.getElementById('contactSubmitBtn');
+            const originalText = btn.innerText;
+
+            btn.disabled = true;
+            btn.innerText = "Sending to Desk...";
+
+            try {
+                const response = await fetch("https://formspree.io/f/xqppdbel", {
+                    method: "POST",
+                    body: new FormData(form),
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    document.getElementById('contactSuccessMsg').classList.remove('hidden');
+                    form.reset();
+                } else {
+                    const data = await response.json();
+                    alert(data.errors ? data.errors.map(err => err.message).join(", ") : "Could not send message. Please try again.");
+                }
+            } catch (err) {
+                alert("Network error: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = originalText;
             }
         }
 
