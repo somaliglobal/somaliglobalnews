@@ -1,6 +1,21 @@
 {
-  "updatedAt": "2026-10-30T23:27:11.118Z",
+  "updatedAt": "2026-10-30T23:50:58.762Z",
   "articles": [
+    {
+      "id": "manual-1793404258762",
+      "isManual": true,
+      "title": "Missiles Target Aden Presidential Palace and Regional Air Defenses Scramble as Yemen Hostilities Flare",
+      "title_so": "Gantaallo Lala Beegsaday Qasriga Madaxtooyada ee Cadan iyo Dagaallo Cusub oo ka Qarxay Yemen",
+      "category": "Somalia",
+      "location": "SomaliGlobalNews:NewsDesk",
+      "summary": "Yemen's interim capital of Aden was targeted by ballistic missiles aimed at the presidential palace, while regional air defenses intercepted multiple drones over Gulf airspace amid intensifying clashes around Taiz.",
+      "summary_so": "Magaalada Cadan ee xarunta ku-meel-gaarka ah ee dowladda Yemen ayaa la kulantay weerarro gantaallo ah oo lagu beegsaday qasriga madaxtooyada, iyadoo difaaca cirka ee gobolkuna uu toogtay diyaarado drone ah oo ku socday dhulka Sacuudiga.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/91/Crater%2C_Aden.jpg",
+      "videoUrl": null,
+      "content": "A sharp escalation in hostilities has shaken southern Yemen and the wider Arabian Peninsula after Houthi forces launched two missiles directly targeting the presidential palace complex in the interim capital of Aden. The strikes on the seat of the internationally recognized government sent plumes of smoke over the coastal city and triggered widespread alarm across urban neighborhoods, where municipal services and civilian air travel remain disrupted.\nConcurrently, regional defense networks were placed on heightened alert across Saudi Arabia's southern and western corridors. Air defense commands confirmed the interception of inbound drones and ballistic projectiles over regional airspace, including near Mecca and southern border zones. Across the interior front lines, heavy artillery and ground skirmishes intensified around the besieged city of Taiz, prompting international humanitarian liaisons to issue emergency appeals for humanitarian access as vital healthcare centers face severe fuel and medical supply deficits.",
+      "content_so": "Xaaladda dalka Yemen ayaa gashay marxalad aad u kacsan kaddib markii gantaallo culus lala beegsaday dhismaha qasriga madaxtooyada ee magaalada Cadan, halkaas oo ay ku shaqeyso dowladda caalamku aqoonsan yahay ee dalkaas. Weerarkan ayaa cabsi weyn ku abuuray dadka shacabka ah ee ku nool magaalada, iyadoo qoysas badani bilaabeen inay raadsadaan goobo ay kaga gabaadsadaan colaadda sii xoogeysanaysa.\nDhinaca kale, ciidamada difaaca cirka ee isbahaysiga ayaa soo riday diyaarado aan duuliyaha lahayn iyo gantaallo lagu bartilmaameedsaday aagagga koonfureed iyo deegaannada u dhow magaalada barakaysan ee Maka. Furimaha dagaalka ee gudaha Yemen, gaar ahaan magaalada go'doonsan ee Taiz, waxaa ka socda dagaallo culus oo dhulka ah, taas oo keentay in hay'adaha gargaarka degdegga ahi ay ku baaqaan in si degdeg ah loo furo waddooyinka saadka si loo gaarsiiyo daawooyin iyo shidaal isbitaallada qarka u saaran inay howlahooda joojiyaan.",
+      "publishedAt": "2026-10-30T23:50:58.762Z"
+    },
     {
       "id": "manual-1793402831118",
       "isManual": true,
