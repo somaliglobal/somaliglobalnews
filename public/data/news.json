@@ -1,6 +1,21 @@
 {
-  "updatedAt": "2026-10-30T21:31:32.968Z",
+  "updatedAt": "2026-10-30T21:43:05.174Z",
   "articles": [
+    {
+      "id": "manual-1793396585174",
+      "isManual": true,
+      "title": "Kenya and Russia Reach Agreement to Halt Military Recruitment of Kenyan Nationals",
+      "title_so": "Kenya iyo Ruushka oo Ku Heshiiyay in La Joojiyo Askareynta Muwaadiniinta Kenyaanka ah ee Ciidanka Ruushka",
+      "category": "Horn of Africa",
+      "location": "SomaliGlobalNews:NewsDesk",
+      "summary": "President William Ruto and Russian President Vladimir Putin have finalized an accord in Moscow classifying Kenya as a non-source nation for Russian military recruitment, accompanied by the appointment of a Kenyan defense liaison to process the repatriation of citizens currently in Russia.",
+      "summary_so": "Madaxweyne William Ruto iyo dhiggiisa Ruushka Vladimir Putin ayaa ku heshiiyay in dalka Kenya laga saaro liiska waddamada laga qoro askarta u dagaallanta Ruushka, iyadoo saraakiil loo magacaabay soo celinta dhalinyarada ku sugan furimaha dagaalka.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4b/State_House_Nairobi.jpg",
+      "videoUrl": null,
+      "content": "President William Ruto held bilateral discussions with Russian President Vladimir Putin at the Kremlin, securing formal assurances that Russia will terminate the enlistment of Kenyan citizens into its armed forces. Under the agreement, Kenya has officially been placed on Russia’s non-recruitment roster, addressing growing domestic outcry over private intermediary networks that lured young jobseekers into front-line service.\nThe Kenyan government has appointed a dedicated Defence Attaché to its embassy in Moscow to oversee repatriation logistics, establish casualty numbers, and negotiate compensation frameworks alongside Russia’s Ministry of Defence. Alongside security negotiations, the bilateral talks addressed bilateral educational partnerships, with Moscow agreeing to increase academic scholarships for Kenyan students in engineering, aviation, cybersecurity, and artificial intelligence.",
+      "content_so": "Madaxweynaha dalka Kenya, William Ruto, oo wadahadallo kula yeeshay magaalada Moscow Madaxweynaha Ruushka Vladimir Putin, ayaa shaaciyay in xukuumadda Moscow ay gebi ahaanba joojisay askareynta muwaadiniinta reer Kenya ee la geeyo dagaalka. Go’aankan ayaa yimid kaddib markii baaritaanno madax-bannaan ay daaha ka rogeen shabakado shaqo-abuur been ah u ballanqaaday dhalinyaro badan oo markii dambe loo daadgureeyay furimaha dagaalka.\nDowladda Kenya ayaa u magacawday sarkaal gaar ah safaaradda ay ku leedahay Moscow si uu xiriir toos ah ula yeesho Wasaaradda Difaaca ee Ruushka, isagoo ka shaqeyn doona soo celinta muwaadiniinta Kenyaanka ah iyo magdhowga qoysaska ay waxyeelladu soo gaartay. Labada dhinac ayaa sidoo kale ka wada hadlay kordhinta deeqaha waxbarasho ee Ruushku siiyo ardayda reer Kenya ee dhinacyada tiknoolajiyadda, duulimaadka, iyo amniga internet-ka.",
+      "publishedAt": "2026-10-30T21:43:05.174Z"
+    },
     {
       "id": "manual-1793395892968",
       "isManual": true,
