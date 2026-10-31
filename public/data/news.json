@@ -1,6 +1,21 @@
 {
-  "updatedAt": "2026-10-31T17:21:34.243Z",
+  "updatedAt": "2026-10-31T17:58:04.244Z",
   "articles": [
+    {
+      "id": "manual-1793469484244",
+      "isManual": true,
+      "title": "Digital Rails and Rebuilt Roads: How FinTech Interoperability and Modern Infrastructure Power Somalia’s Cashless Economy",
+      "title_so": "Dhismaha Kaabayaasha iyo Dhaqaalaha Casriga ah: Isku-xirka Lacagaha Dijitaalka ah iyo Horumarka Kaabayaasha Dhaqaalaha Soomaaliya",
+      "category": "Somalia",
+      "location": "SomaliGlobalNews:NewsDesk",
+      "summary": "The Central Bank of Somalia and federal ministries are accelerating dual modernizations—pairing the nationwide expansion of the Somalia Instant Payment System (SIPS) and SOMQR standards with major road, solar, and fiber optic civil works under the National Transformation Plan.",
+      "summary_so": "Bankiga Dhexe ee Soomaaliya iyo wasaaradaha federaalka ayaa darargelinaya qorshaha casriyeynta maaliyadda iyo dhismaha kaabayaasha, iyadoo la ballaariyay nidaamka lacag-bixinta degdegga ah (SIPS) iyo dhismaha jidadka waaweyn ee dalka.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Central_Bank_of_Somalia,_Mogadishu.png",
+      "videoUrl": null,
+      "content": "Somalia is consolidating one of the continent's most advanced digital financial ecosystems, aligning high-speed mobile commerce with nationwide infrastructure rehabilitation. Under the Federal Government’s National Transformation Plan, civil engineering teams are repaving critical arterial corridors across Mogadishu, restoring energy grids with municipal solar street lighting, and expanding fiber optic backbones connected to high-capacity subsea telecommunication landings.\nAt the core of this economic transformation is the Central Bank of Somalia (CBS), which has expanded the National Payment System (NPS) and the Somalia Instant Payment System (SIPS) to bridge commercial banking institutions with mobile money operators. With mobile wallet penetration exceeding 70% of the adult population and platforms like Hormuud’s EVC Plus, eDahab, and regional services handling billions in monthly trade, regulatory reforms—including EMVCo-compliant Somali Quick Response (SOMQR) codes and IBAN standardization—have created a secure, interoperable domestic financial network.\nThe integration of national biometric identification overseen by the National Identification and Registration Authority (NIRA) into digital wallets is further formalizing retail and interbank transfers. By marrying physical infrastructure upgrades—such as modernized port container terminals and trade corridors—with frictionless cashless transaction rails, Somalia is reducing transaction frictions, stimulating micro-enterprise growth, and laying resilient foundations for formal economic integration across the Horn of Africa.",
+      "content_so": "Soomaaliya ayaa tallaabooyin wax-ku-ool ah u qaadday xaqiijinta dhaqaale ku dhisan nidaamka dijitaalka ah ee aan lacagta caddaanka ah loo baahneyn, iyadoo dhanka kalena ay socdaan mashaariic waaweyn oo dib loogu dhisayo kaabayaasha aasaasiga ah. Qorshaha Isbeddelka Qaranka ayaa xoogga saaraya dhismaha waddooyinka laamiga ah ee xiriiriya magaalada Muqdisho iyo gobollada dalka, rakibidda nalalka cadceedda ku shaqeeya ee waddooyinka, iyo fidinta xargaha internet-ka ee fiber optic-ga ah.\nIlaa hadda, Bankiga Dhexe ee Soomaaliya ayaa ku guuleystay horumarinta Nidaamka Qaran ee Lacag-bixinta (NPS) iyo hirgelinta nidaamka lacag-bixinta degdegga ah ee SIPS, kaas oo si buuxda isugu xiraya bangiyada ganacsiga iyo shirkadaha bixiya adeegyada lacagaha taleefanka sida EVC Plus iyo eDahab. Maadaama in ka badan 70% bulshada qaangaarka ah ay isticmaalaan lacagaha mobilada, adeegyada cusub sida lambarka gaarka ah ee SOMQR iyo habka caalamiga ah ee IBAN ayaa fududeeyay in ganacsiyada yaryar iyo kuwa waaweyn ay si dhib yar u wadaagaan lacagaha.\nDadaalladan waxaa barbar socda diiwaangelinta aqoonsiga qaranka ee NIRA, taas oo lagu xirayo lambarrada taleefannada iyo xisaabaadka bangiyada si loo xaqiijiyo hufnaanta nidaamka maaliyadda. Isku-darka kaabayaasha dhulka sida casriyeynta dekadaha iyo jidadka ganacsiga, oo ay weheliso fududeynta lacag-bixinta elektaroonigga ah, ayaa horseedaya koror dhaqaale, shaqo abuur cusub, iyo kalsooni dheeraad ah oo lagu qabo nidaamka maaliyadeed ee dalka.",
+      "publishedAt": "2026-10-31T17:58:04.244Z"
+    },
     {
       "id": "manual-1793467294243",
       "isManual": true,
