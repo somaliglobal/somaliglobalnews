@@ -1,6 +1,21 @@
 {
-  "updatedAt": "2026-10-31T16:15:47.883Z",
+  "updatedAt": "2026-10-31T16:31:25.836Z",
   "articles": [
+    {
+      "id": "manual-1793464285836",
+      "isManual": true,
+      "title": "Marathon Gulf Negotiations Push for De-Escalation as Regional Battles Intensify Across Yemen and the Strait",
+      "title_so": "Wadahadallo Degdeg ah oo ka Socda Khaliijka iyo Dagaallada Yemen oo Sababay Barakac Horleh",
+      "category": "Middle East",
+      "location": "SomaliGlobalNews:NewsDesk",
+      "summary": "Regional mediators in Doha engaged in round-the-clock diplomacy to lower tensions in the Gulf, while concurrent fighting and supply blockades across Yemen continue to displace hundreds of thousands of civilians",
+      "summary_so": "Dhex-dhexaadiyeyaasha gobolka ayaa magaalada Dooxa ku qabtay kulamo xiriir ah oo lagu qaboojinayo xiisadaha ka taagan marinnada Khaliijka, xilli dagaallada ka socda gudaha Yemen ay qasbeen barakaca kumanaan qoys.",
+      "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Best_view_of_Doha_Skyline.jpg",
+      "videoUrl": null,
+      "content": "Diplomatic efforts across the Middle East reached a pivotal juncture as regional mediators convened extensive talks in Doha aimed at defusing heightened military friction across the Persian Gulf and establishing reliable parameters for maritime security. Negotiators held intensive discussions focused on de-escalation protocols and communication channels to safeguard vital commercial transit lanes through the Strait of Hormuz, where military detachments have maintained heightened alert postures.\nWhile high-level envoys explored diplomatic off-ramps, severe security and humanitarian challenges continued across the southern theater. In Yemen, ground fighting across mountain ridges near Taiz and peripheral districts of Aden has displaced more than a quarter of a million residents in recent weeks. Aid agencies and regional observers warned that the disruption of essential supply lines has severely strained municipal services and medical facilities, reinforcing urgent international demands for unimpeded humanitarian corridors and a comprehensive political settlement.",
+      "content_so": "Dadaallada diblomaasiyadeed ee Bariga Dhexe ayaa gaaray heer xasaasi ah kaddib markii wadahadallo ballaaran ay ka furmeen magaalada Dooxa ee dalka Qadar, kuwaas oo looga golleeyahay in lagu yareeyo xiisadda amni ee ka taagan Gacanka Carbeed laguna ilaaliyo badqabka marinnada maraakiibta ee Marinka Hormuz. Kulamadan ayaa diiradda lagu saaray samaynta isfaham degdeg ah oo lagaga hortagayo isku-dhacyo milatari oo saameeya ganacsiga iyo amniga tamarta dunida.\nDhanka kale, furimaha dagaalka ee dalka Yemen ayaa weli la ciirciiraya dhibaatooyin bini'aadantinimo oo aad u daran. Dagaallada ka socda duleedka magaalada Taiz iyo aagagga ku dhow magaalada Cadan ayaa sababay in boqolaal kun oo qof ay guryahooda ka barakacaan, iyadoo goobaha caafimaadka iyo adeegyada aasaasiga ahi ay wajahayaan culeys aad u weyn. Hay'adaha caalamiga ah ayaa ku baaqaya in la furo waddooyinka gargaarka si loo badbaadiyo shacabka ku dhibaataysan deegaannada ay colaaduhu saameeyeen.",
+      "publishedAt": "2026-10-31T16:31:25.836Z"
+    },
     {
       "id": "manual-1793463347883",
       "isManual": true,
