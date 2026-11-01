@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <title>SGN SomaliGlobalNews | Global News & Regional Insights</title>
     <!-- Tailwind CSS for modern, clean Apple-style styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -141,7 +142,7 @@
                 <!-- Adaptive Media Container (Video or Photo) -->
                 <div id="modal-media-container" class="rounded-xl overflow-hidden bg-black/5 border border-gray-100">
                     <!-- Image Display -->
-                    <img id="modal-image" src="" alt="" class="w-full max-h-[420px] object-cover">
+                    <img id="modal-image" src="" alt="" referrerpolicy="no-referrer" class="w-full max-h-[420px] object-cover">
                     
                     <!-- Video Snippet Player (Shown only when videoUrl exists) -->
                     <div id="modal-video-wrapper" class="hidden aspect-video w-full bg-black">
@@ -327,7 +328,7 @@
                 featuredSection.innerHTML = `
                     <div onclick="openArticleModal('${featured.id}')" class="group cursor-pointer bg-gray-50 rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition-all flex flex-col lg:flex-row">
                         <div class="lg:w-7/12 relative overflow-hidden bg-gray-200 min-h-[300px]">
-                            <img src="${featured.image}" alt="${featured.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'">
+                            <img src="${featured.image}" alt="${featured.title}" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'">
                         </div>
                         <div class="lg:w-5/12 p-8 sm:p-10 flex flex-col justify-between">
                             <div>
@@ -357,7 +358,7 @@
                 card.innerHTML = `
                     <div>
                         <div class="h-48 overflow-hidden bg-gray-100 relative">
-                            <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'">
+                            <img src="${art.image}" alt="${art.title}" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'">
                             ${art.videoUrl ? '<span class="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 backdrop-blur-sm">▶ Video</span>' : ''}
                         </div>
                         <div class="p-6">
