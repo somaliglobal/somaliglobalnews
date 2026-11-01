@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
   <title>SGN Editorial Portal | Somali Global News</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -503,7 +504,13 @@
         <!-- 3. Image URL -->
         <div class="form-group">
           <label>3. Image URL <span class="opt-note">(Required Thumbnail)</span></label>
-          <input type="url" id="articleImageUrl" placeholder="https://images.unsplash.com/..." required>
+          <input type="url" id="articleImageUrl" placeholder="https://upload.wikimedia.org/..." required>
+          
+          <!-- Live Preview Box -->
+          <div id="imagePreviewBox" style="margin-top: 10px; display: none;">
+            <img id="liveImgPreview" src="" alt="Thumbnail Preview" referrerpolicy="no-referrer" style="width: 100%; max-height: 220px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
+            <div id="imageLoadError" style="display: none; font-size: 12px; color: var(--danger); margin-top: 4px;">⚠️ Image URL failed to load. Ensure it points directly to an image file.</div>
+          </div>
         </div>
 
         <!-- 4. Video Snippet -->
@@ -584,7 +591,42 @@
       } else {
         document.getElementById("authModal").classList.remove("hidden");
       }
+
+      // Attach image preview listener
+      setupImagePreview();
     });
+
+    function setupImagePreview() {
+      const imgInput = document.getElementById("articleImageUrl");
+      const box = document.getElementById("imagePreviewBox");
+      const img = document.getElementById("liveImgPreview");
+      const errorMsg = document.getElementById("imageLoadError");
+
+      if (!imgInput || !box || !img) return;
+
+      imgInput.addEventListener("input", () => {
+        const url = imgInput.value.trim();
+        if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
+          errorMsg.style.display = "none";
+          img.style.display = "block";
+          img.src = url;
+          box.style.display = "block";
+        } else {
+          box.style.display = "none";
+          img.src = "";
+        }
+      });
+
+      img.addEventListener("error", () => {
+        img.style.display = "none";
+        errorMsg.style.display = "block";
+      });
+
+      img.addEventListener("load", () => {
+        img.style.display = "block";
+        errorMsg.style.display = "none";
+      });
+    }
 
     async function handleAuth(e) {
       e.preventDefault();
@@ -711,6 +753,8 @@
       await commitNewsPayload(`Publish dispatch: ${newArticle.title.substring(0, 48)}... [skip ci]`, () => {
         document.getElementById("publishForm").reset();
         document.getElementById("articleLocation").value = "SomaliGlobalNews:NewsDesk";
+        const box = document.getElementById("imagePreviewBox");
+        if (box) box.style.display = "none";
         alert("Article published successfully. Vercel is now deploying your updated feed.");
       }, () => {
         currentNews.articles.shift();
