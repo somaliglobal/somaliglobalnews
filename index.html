@@ -146,7 +146,14 @@
                     
                     <!-- Video Snippet Player (Shown only when videoUrl exists) -->
                     <div id="modal-video-wrapper" class="hidden aspect-video w-full bg-black">
-                        <iframe id="modal-iframe" class="w-full h-full" src="" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                        <iframe id="modal-iframe" 
+                                class="w-full h-full" 
+                                src="" 
+                                frameborder="0" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                        </iframe>
                         <video id="modal-video" class="w-full h-full hidden" controls playsinline></video>
                     </div>
                 </div>
@@ -431,17 +438,23 @@
                 const vUrl = article.videoUrl.trim();
                 let ytId = null;
 
-                // Match various YouTube URL formats (standard, shorts, youtu.be)
-                const ytMatch = vUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
+                // Match standard watch, share link, embed, shorts, or URLs with timestamps/tracking params
+                const ytMatch = vUrl.match(/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/i);
                 if (ytMatch && ytMatch[1]) {
                     ytId = ytMatch[1];
                 }
 
                 if (ytId) {
-                    iframeEl.src = `https://www.youtube.com/embed/${ytId}?rel=0&enablejsapi=1`;
+                    // Safe origin check: only append origin if running on http/https
+                    const originParam = (window.location.origin && window.location.origin !== "null" && window.location.protocol.startsWith("http")) 
+                        ? `&origin=${encodeURIComponent(window.location.origin)}` 
+                        : "";
+                    
+                    iframeEl.src = `https://www.youtube.com/embed/${ytId}?rel=0&enablejsapi=1${originParam}`;
                     iframeEl.classList.remove('hidden');
                     videoEl.classList.add('hidden');
                     videoEl.pause();
+                    videoEl.src = "";
                 } else {
                     // Direct video file (e.g., .mp4, .webm)
                     videoEl.src = vUrl;
@@ -453,6 +466,7 @@
                 // Fall back cleanly to image
                 videoWrapper.classList.add('hidden');
                 iframeEl.src = "";
+                videoEl.pause();
                 videoEl.src = "";
                 imageEl.src = article.image;
                 imageEl.classList.remove('hidden');
