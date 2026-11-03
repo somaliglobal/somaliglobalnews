@@ -68,7 +68,7 @@
                 </a>
             </div>
 
-            <!-- Desktop Category Navigation -->
+            <!-- Desktop Category Navigation (No Sports) -->
             <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium text-gray-600">
                 <button onclick="filterCategory('All')" class="px-3 py-2 rounded-lg text-blue-600 bg-blue-50/80 transition-all font-semibold nav-btn" data-category="All">Home</button>
                 <button onclick="filterCategory('Somalia')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Somalia">Somalia</button>
@@ -127,7 +127,7 @@
         </div>
     </main>
 
-    <!-- Full Article Modal / Reader View -->
+    <!-- Full Article Modal / Reader View (Photos & Video Snippets) -->
     <div id="article-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 my-8">
             <div class="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-gray-100 flex items-center justify-between z-10">
@@ -149,12 +149,12 @@
             <div class="p-6 sm:p-10 space-y-6">
                 <h1 id="modal-title" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 leading-tight"></h1>
                 
-                <!-- Adaptive Media Container -->
+                <!-- Adaptive Media Container (Video or Photo) -->
                 <div id="modal-media-container" class="rounded-xl overflow-hidden bg-black/5 border border-gray-100">
                     <!-- Image Display -->
                     <img id="modal-image" src="" alt="" referrerpolicy="no-referrer" class="w-full max-h-[420px] object-cover">
                     
-                    <!-- Video Snippet Player -->
+                    <!-- Video Snippet Player (Shown only when videoUrl exists) -->
                     <div id="modal-video-wrapper" class="hidden aspect-video w-full bg-black">
                         <iframe id="modal-iframe" 
                                 class="w-full h-full" 
@@ -190,7 +190,7 @@
         </div>
     </div>
 
-    <!-- Side Contact Drawer -->
+    <!-- Side Contact Drawer (Formspree Connected) -->
     <div id="contactDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="closeContactDrawer()"></div>
 
@@ -266,4 +266,171 @@
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', dateOptions);
 
         let articlesStore = [];
-        let currentCategory =
+        let currentCategory = 'All';
+        let currentArticleId = null;
+        let isSomaliActive = false;
+
+        async function initFeed() {
+            try {
+                let res = await fetch('public/data/news.json?t=' + Date.now());
+                if (!res.ok) {
+                    res = await fetch('data/news.json?t=' + Date.now());
+                }
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const rawList = data.articles || (Array.isArray(data) ? data : []);
+                    
+                    articlesStore = rawList.map((item, idx) => ({
+                        id: item.id || `art-${idx}`,
+                        title: item.title || "Untitled Report",
+                        titleSomali: item.title_so || "",
+                        category: item.category || "General",
+                        location: item.location || "",
+                        date: item.publishedAt ? new Date(item.publishedAt).toLocaleDateString('en-US', dateOptions) : (item.date || "Recent"),
+                        image: item.imageUrl || item.image || item.thumbnail || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80",
+                        videoUrl: item.videoUrl || item.video || null,
+                        summary: item.summary || item.excerpt || "",
+                        summarySomali: item.summary_so || "",
+                        content: item.content || item.body || item.summary || "",
+                        contentSomali: item.content_so || item.somaliText || item.summary_so || "",
+                        comments: item.comments || []
+                    }));
+
+                    if (articlesStore.length > 0) {
+                        document.getElementById('breaking-ticker').innerText = articlesStore[0].title;
+                    }
+                }
+            } catch (err) {
+                console.warn("Could not fetch remote news.json, checking local storage cache.", err);
+                const localData = localStorage.getItem('sgn_articles');
+                if (localData) {
+                    articlesStore = JSON.parse(localData);
+                }
+            }
+
+            renderArticles(currentCategory);
+        }
+
+        function renderArticles(filter = 'All', searchQuery = '') {
+            const grid = document.getElementById('articles-grid');
+            const featuredSection = document.getElementById('featured-section');
+            const emptyState = document.getElementById('empty-state');
+            const articleCountEl = document.getElementById('article-count');
+
+            grid.innerHTML = '';
+            
+            let filtered = articlesStore.filter(art => {
+                const matchesCat = filter === 'All' || 
+                    (filter === 'Horn of Africa' && ['Horn of Africa', 'Ethiopia', 'Kenya', 'Djibouti', 'Eritrea'].includes(art.category)) ||
+                    art.category.toLowerCase() === filter.toLowerCase();
+                    
+                const matchesSearch = art.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      art.summary.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCat && matchesSearch;
+            });
+
+            articleCountEl.innerText = `${filtered.length} ${filtered.length === 1 ? 'story' : 'stories'}`;
+
+            if (filtered.length === 0) {
+                featuredSection.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            if (filter === 'All' && !searchQuery && filtered.length > 0) {
+                const featured = filtered[0];
+                featuredSection.innerHTML = `
+                    <div onclick="openArticleModal('${featured.id}')" class="group cursor-pointer bg-gray-50 rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition-all flex flex-col lg:flex-row">
+                        <div class="lg:w-7/12 relative overflow-hidden bg-gray-200 min-h-[300px]">
+                            <img src="${featured.image}" alt="${featured.title}" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'">
+                        </div>
+                        <div class="lg:w-5/12 p-8 sm:p-10 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">${featured.category}</span>
+                                    <span class="text-xs text-gray-400">${featured.date}</span>
+                                </div>
+                                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 group-hover:text-blue-600 transition-colors leading-snug mb-4">${featured.title}</h1>
+                                <p class="text-gray-600 text-base leading-relaxed mb-6">${featured.summary}</p>
+                            </div>
+                            <div class="flex items-center text-blue-600 font-semibold text-sm group-hover:translate-x-1 transition-transform">
+                                Read Full Dispatch &rarr;
+                            </div>
+                        </div>
+                    </div>
+                `;
+                filtered = filtered.slice(1);
+            } else {
+                featuredSection.innerHTML = '';
+            }
+
+            filtered.forEach(art => {
+                const comments = getCommentsForArticle(art.id);
+                const card = document.createElement('div');
+                card.className = "group cursor-pointer bg-white rounded-xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition-all flex flex-col justify-between";
+                card.setAttribute('onclick', `openArticleModal('${art.id}')`);
+                card.innerHTML = `
+                    <div>
+                        <div class="h-48 overflow-hidden bg-gray-100 relative">
+                            <img src="${art.image}" alt="${art.title}" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'">
+                            ${art.videoUrl ? '<span class="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 backdrop-blur-sm">▶ Video</span>' : ''}
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-gray-100 text-gray-700 text-[11px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider">${art.category}</span>
+                                <span class="text-xs text-gray-400">${art.date}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors leading-snug mb-2">${art.title}</h3>
+                            <p class="text-gray-600 text-sm line-clamp-2 leading-relaxed">${art.summary}</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-gray-50 text-xs font-semibold text-blue-600">
+                        <span>Read Full</span>
+                        <span class="text-gray-400 font-normal">${comments.length} comments</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            document.getElementById('current-category-title').innerText = category === 'All' ? 'Latest Dispatches' : category;
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-category') === category) {
+                    btn.className = "px-3 py-2 rounded-lg text-blue-600 bg-blue-50/80 transition-all font-semibold nav-btn";
+                } else {
+                    btn.className = "px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn text-gray-600";
+                }
+            });
+
+            document.querySelectorAll('.nav-btn-mobile').forEach(btn => {
+                if (btn.getAttribute('data-category') === category) {
+                    btn.className = "whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white nav-btn-mobile";
+                } else {
+                    btn.className = "whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile";
+                }
+            });
+
+            renderArticles(currentCategory, document.getElementById('search-input').value);
+        }
+
+        function handleSearch(query) {
+            renderArticles(currentCategory, query);
+        }
+
+        function openArticleModal(id) {
+            currentArticleId = id;
+            isSomaliActive = false;
+            updateTranslationUI();
+
+            const article = articlesStore.find(a => String(a.id) === String(id));
+            if (!article) return;
+
+            document.getElementById('modal-category').innerText = article.location || article.category;
+            document.getElementById('modal-date').innerText = article.date;
+            document.getElementById('modal-title').innerText = article.title;
