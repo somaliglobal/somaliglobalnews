@@ -1,838 +1,507 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="referrer" content="no-referrer">
-  <title>SGN Editorial Portal | Somali Global News</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #fbfbfd;
-      --card-bg: #ffffff;
-      --border: #d2d2d7;
-      --border-subtle: #e5e5ea;
-      --text-primary: #1d1d1f;
-      --text-secondary: #86868b;
-      --accent-blue: #0071e3;
-      --accent-blue-hover: #0077ed;
-      --accent-light: #e8f2ff;
-      --somali-accent: #d9531e;
-      --somali-bg: #fff8f5;
-      --success: #34c759;
-      --danger: #ff3b30;
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
-      --radius: 12px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publisher Portal | SGN SomaliGlobalNews</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-primary);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Header */
-    header {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-subtle);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      padding: 14px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-
-    .brand-badge {
-      background-color: var(--accent-light);
-      color: var(--accent-blue);
-      font-weight: 700;
-      font-size: 13px;
-      padding: 4px 9px;
-      border-radius: 6px;
-      letter-spacing: 0.5px;
-    }
-
-    .brand-title {
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: -0.2px;
-      color: var(--text-primary);
-    }
-
-    .brand-subtitle {
-      font-size: 12px;
-      color: var(--text-secondary);
-      font-weight: 400;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .btn-secondary {
-      background-color: #f5f5f7;
-      color: var(--text-primary);
-      border: 1px solid var(--border-subtle);
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-secondary:hover {
-      background-color: #e8e8ed;
-    }
-
-    /* Layout */
-    .container {
-      max-width: 1280px;
-      margin: 32px auto;
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: 1.35fr 1fr;
-      gap: 32px;
-    }
-
-    @media (max-width: 1024px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius);
-      padding: 28px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .card-header {
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .card-header h2 {
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: -0.3px;
-    }
-
-    .card-header p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-
-    /* Section Separators */
-    .section-divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 28px 0 16px 0;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--border-subtle);
-    }
-
-    .section-divider.somali {
-      border-bottom-color: #f6dcd0;
-    }
-
-    .section-tag-en {
-      font-size: 11px;
-      font-weight: 700;
-      background: var(--accent-light);
-      color: var(--accent-blue);
-      padding: 3px 8px;
-      border-radius: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .section-tag-so {
-      font-size: 11px;
-      font-weight: 700;
-      background: #fdeee7;
-      color: var(--somali-accent);
-      padding: 3px 8px;
-      border-radius: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .section-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    /* Form Fields */
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    label {
-      display: flex;
-      align-items: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 6px;
-      gap: 6px;
-    }
-
-    .opt-note {
-      font-size: 11px;
-      font-weight: 400;
-      color: var(--text-secondary);
-    }
-
-    input[type="text"],
-    input[type="url"],
-    input[type="password"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 10px 14px;
-      font-size: 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background-color: #ffffff;
-      color: var(--text-primary);
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-      outline: none;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .btn-primary {
-      background-color: var(--accent-blue);
-      color: #ffffff;
-      border: none;
-      padding: 13px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.2s ease;
-      margin-top: 14px;
-    }
-
-    .btn-primary:hover {
-      background-color: var(--accent-blue-hover);
-    }
-
-    .btn-primary:disabled {
-      background-color: #a1a1a6;
-      cursor: not-allowed;
-    }
-
-    /* Right Column Live Wire */
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 4px 10px;
-      background: #f5f5f7;
-      border-radius: 12px;
-      color: var(--text-secondary);
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--success);
-    }
-
-    .story-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      max-height: 820px;
-      overflow-y: auto;
-      margin-top: 16px;
-      padding-right: 4px;
-    }
-
-    .story-item {
-      padding: 16px;
-      background: #fafafc;
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .story-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      color: var(--accent-blue);
-    }
-
-    .story-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.35;
-    }
-
-    .story-title-so {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.35;
-    }
-
-    .story-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 8px;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .btn-delete {
-      background-color: #fff1f0;
-      color: var(--danger);
-      border: 1px solid #ffccc7;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-delete:hover {
-      background-color: var(--danger);
-      color: #ffffff;
-      border-color: var(--danger);
-    }
-
-    /* Modal Overlay */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-    }
-
-    .modal-overlay.hidden {
-      display: none;
-    }
-
-    .modal-box {
-      background: #ffffff;
-      border-radius: 16px;
-      max-width: 440px;
-      width: 100%;
-      padding: 32px;
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border-subtle);
-    }
-
-    .modal-box h3 {
-      font-size: 21px;
-      font-weight: 600;
-      letter-spacing: -0.4px;
-      margin-bottom: 6px;
-    }
-
-    .modal-box p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-bottom: 24px;
-    }
-  </style>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .sgn-glowing-badge {
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.45), 0 0 4px rgba(14, 165, 233, 0.6);
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col antialiased">
 
-  <!-- Top Apple Navigation -->
-  <header>
-    <a href="/" class="brand">
-      <span class="brand-badge">SGN</span>
-      <div>
-        <div class="brand-title">SGN SOMALI GLOBAL NEWS</div>
-        <div class="brand-subtitle">Editorial Desk & Content Control</div>
-      </div>
-    </a>
-    <div class="header-actions">
-      <span id="wireStatus" class="status-badge"><span class="status-dot"></span> Checking GitHub...</span>
-      <button class="btn-secondary" onclick="lockPortal()">Lock Desk</button>
-    </div>
-  </header>
+    <!-- Top Admin Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <!-- Option A Inline Emblem -->
+                <div class="sgn-glowing-badge w-10 h-10 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300">
+                    <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
+                        <svg class="w-7 h-7 text-sky-400" viewBox="0 0 100 100" fill="none">
+                            <circle cx="50" cy="50" r="46" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="3 3" opacity="0.6"/>
+                            <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+                            <text x="50" y="54" fill="#ffffff" font-family="'Inter', sans-serif" font-size="15" font-weight="900" letter-spacing="0.8" text-anchor="middle" dominant-baseline="central">SGN</text>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold text-[#0071e3] leading-none">SGN SomaliGlobalNews</h1>
+                    <p class="text-[11px] text-gray-500 font-semibold tracking-wide uppercase mt-1">Publisher &amp; Editorial Desk</p>
+                </div>
+            </div>
 
-  <!-- Login Modal -->
-  <div id="authModal" class="modal-overlay">
-    <div class="modal-box">
-      <h3>Newsroom Access</h3>
-      <p>Desk credentials are saved locally in your browser.</p>
-
-      <form id="authForm" onsubmit="handleAuth(event)">
-        <div class="form-group">
-          <label>Portal Passcode</label>
-          <input type="password" id="authPasscode" placeholder="Enter desk passcode" required>
+            <div class="flex items-center space-x-3">
+                <a href="index.html" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
+                    <span>&larr; View Live Site</span>
+                </a>
+                <button onclick="exportNewsJson()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    <span>Export news.json</span>
+                </button>
+            </div>
         </div>
+    </header>
 
-        <div class="form-group">
-          <label>GitHub Owner / Username</label>
-          <input type="text" id="authOwner" value="somaliglobal" required>
-        </div>
-
-        <div class="form-group">
-          <label>Repository Name</label>
-          <input type="text" id="authRepo" value="somaliglobalnews" required>
-        </div>
-
-        <div class="form-group">
-          <label>Personal Access Token (classic)</label>
-          <input type="password" id="authToken" placeholder="ghp_..." required>
-        </div>
-
-        <button type="submit" class="btn-primary" id="loginBtn">Connect to News Feed</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Workspace Layout -->
-  <main class="container">
-    
-    <!-- Publishing Console -->
-    <section class="card">
-      <div class="card-header">
-        <h2>Publish New Dispatch</h2>
-        <p>Complete the English wire and media assets, then provide the Af-Soomaali translation.</p>
-      </div>
-
-      <form id="publishForm" onsubmit="handlePublish(event)">
+    <!-- Main Container -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
         
-        <!-- Metadata: Category & Bureau -->
-        <div class="form-row">
-          <div class="form-group">
-            <label>Category</label>
-            <select id="articleCategory" required>
-              <option value="Somalia">Somalia</option>
-              <option value="Horn of Africa">Horn of Africa</option>
-              <option value="Middle East">Middle East</option>
-              <option value="World">World</option>
-              <option value="Editorial">Editorial</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Bureau / Attribution</label>
-            <input type="text" id="articleLocation" value="SomaliGlobalNews:NewsDesk" required>
-          </div>
+        <!-- Status Notification Banner -->
+        <div id="status-banner" class="hidden p-4 rounded-xl text-sm font-medium border"></div>
+
+        <!-- Article Publishing Form -->
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                <h2 class="text-base font-bold text-gray-900" id="form-heading">Create New Dispatch</h2>
+                <button type="button" onclick="resetForm()" class="text-xs text-gray-500 hover:text-gray-800 underline">Reset Form</button>
+            </div>
+
+            <form id="article-form" onsubmit="handleFormSubmit(event)" class="p-6 sm:p-8 space-y-6">
+                <input type="hidden" id="edit-article-id" value="">
+
+                <!-- Metadata Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Category *</label>
+                        <select id="article-category" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white">
+                            <option value="Somalia">Somalia</option>
+                            <option value="Horn of Africa">Horn of Africa</option>
+                            <option value="Middle East">Middle East</option>
+                            <option value="World">World</option>
+                            <option value="Editorial">Editorial</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Location / Bureau Dateline</label>
+                        <input type="text" id="article-location" placeholder="e.g. MOGADISHU, ADEN, NAIROBI" 
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Publish Date (Auto or Custom)</label>
+                        <input type="text" id="article-date" placeholder="Leave empty for current time" 
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- SMART IMAGE INPUT & CLIPBOARD PASTE SYSTEM -->
+                <div class="bg-sky-50/40 rounded-2xl p-5 border border-sky-100 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <label class="block text-xs font-bold text-sky-900 uppercase tracking-wider">
+                            Smart Image Engine (Anti-403 &amp; Paste Enabled) *
+                        </label>
+                        <span class="text-[11px] text-gray-500">Supports direct URLs, file upload, or Ctrl+V</span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" 
+                               id="article-image-url" 
+                               required
+                               placeholder="Paste any image web URL, or use the paste zone below..." 
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white"
+                               oninput="updateImagePreview(this.value)">
+                        
+                        <div class="flex gap-2">
+                            <button type="button" 
+                                    onclick="document.getElementById('article-image-file').click()" 
+                                    class="px-4 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-xl text-xs font-semibold whitespace-nowrap shadow-sm transition">
+                                Browse File
+                            </button>
+                            <input type="file" id="article-image-file" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+                        </div>
+                    </div>
+
+                    <!-- Paste & Drop Target Zone -->
+                    <div id="image-drop-zone" 
+                         tabindex="0"
+                         class="border-2 border-dashed border-sky-300 bg-white/70 rounded-xl p-4 text-center cursor-pointer hover:border-sky-500 hover:bg-sky-50 transition focus:outline-none focus:ring-2 focus:ring-sky-400">
+                        <p class="text-xs text-sky-800 font-medium pointer-events-none">
+                            📋 Click this box and press <kbd class="px-2 py-0.5 bg-white border border-sky-200 rounded text-xs font-mono font-semibold shadow-xs">Ctrl + V</kbd> to paste a copied image or screenshot
+                        </p>
+                    </div>
+
+                    <!-- Live Image Preview Box -->
+                    <div id="image-preview-container" class="hidden relative rounded-xl overflow-hidden border border-gray-200 bg-gray-900 h-48 w-full max-w-md mx-auto shadow-inner">
+                        <img id="image-preview" src="" alt="Preview" class="w-full h-full object-cover">
+                        <button type="button" 
+                                onclick="clearImage()" 
+                                title="Remove image"
+                                class="absolute top-2 right-2 bg-black/70 hover:bg-black text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Video URL Field -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Optional Video Snippet URL (YouTube Embed / Direct Video)</label>
+                    <input type="text" id="article-video-url" placeholder="e.g. https://www.youtube.com/watch?v=... or leave empty" 
+                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                </div>
+
+                <!-- English Content Section -->
+                <div class="border-t border-gray-100 pt-5 space-y-4">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">English Dispatch</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Headline (English) *</label>
+                        <input type="text" id="article-title" required placeholder="Enter primary news headline" 
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Summary / Lead Paragraph (English) *</label>
+                        <textarea id="article-summary" rows="2" required placeholder="Concise overview for cards and reader view..." 
+                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Full Article Body (English) *</label>
+                        <textarea id="article-content" rows="6" required placeholder="Write the full news report. Separate paragraphs with a blank line." 
+                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Af-Soomaali Content Section -->
+                <div class="border-t border-gray-100 pt-5 space-y-4">
+                    <h3 class="text-xs font-bold text-amber-700 uppercase tracking-wider">Faahfaahinta Af-Soomaaliga (Optional but Recommended)</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Cinwaanka (Af-Soomaali)</label>
+                        <input type="text" id="article-title-so" placeholder="Geli cinwaanka warbixinta oo Af-Soomaali ah" 
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Soo-koobidda (Af-Soomaali)</label>
+                        <textarea id="article-summary-so" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah..." 
+                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Qoraalka Buuxa (Af-Soomaali)</label>
+                        <textarea id="article-content-so" rows="6" placeholder="Qoraalka oo faahfaahsan. Sadar bannaan u dhexeysii cutubyada." 
+                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4 flex items-center justify-end space-x-3">
+                    <button type="submit" id="submit-btn" class="px-6 py-3 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
+                        Publish Article to Portal
+                    </button>
+                </div>
+            </form>
         </div>
 
-        <!-- ============================================== -->
-        <!-- PART 1: ENGLISH WIRE & MEDIA ASSETS            -->
-        <!-- ============================================== -->
-        <div class="section-divider">
-          <span class="section-tag-en">English</span>
-          <span class="section-title">Primary Dispatch & Media Assets</span>
+        <!-- Manage Existing Articles -->
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-4">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                <h3 class="text-base font-bold text-gray-900">Manage Published Articles</h3>
+                <span id="total-articles-count" class="text-xs text-gray-500 font-medium">0 articles</span>
+            </div>
+            
+            <div id="articles-table-container" class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-gray-600">
+                    <thead class="text-xs text-gray-400 uppercase bg-gray-50 border-b border-gray-100">
+                        <tr>
+                            <th class="py-3 px-4">Image</th>
+                            <th class="py-3 px-4">Headline</th>
+                            <th class="py-3 px-4">Category</th>
+                            <th class="py-3 px-4">Date</th>
+                            <th class="py-3 px-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articles-list-body" class="divide-y divide-gray-100"></tbody>
+                </table>
+            </div>
         </div>
+    </main>
 
-        <!-- 1. Headline English -->
-        <div class="form-group">
-          <label>1. Headline (English)</label>
-          <input type="text" id="articleTitle" placeholder="Enter clear, informative English headline" required>
-        </div>
+    <!-- Unified Script -->
+    <script>
+        let articles = [];
 
-        <!-- 2. Summary English -->
-        <div class="form-group">
-          <label>2. Summary (English)</label>
-          <textarea id="articleSummary" rows="2" placeholder="Brief 1-2 sentence lead summary paragraph in English" required></textarea>
-        </div>
-
-        <!-- 3. Image URL -->
-        <div class="form-group">
-          <label>3. Image URL <span class="opt-note">(Required Thumbnail)</span></label>
-          <input type="url" id="articleImageUrl" placeholder="https://upload.wikimedia.org/..." required>
-          
-          <!-- Live Preview Box -->
-          <div id="imagePreviewBox" style="margin-top: 10px; display: none;">
-            <img id="liveImgPreview" src="" alt="Thumbnail Preview" referrerpolicy="no-referrer" style="width: 100%; max-height: 220px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
-            <div id="imageLoadError" style="display: none; font-size: 12px; color: var(--danger); margin-top: 4px;">⚠️ Image URL failed to load. Ensure it points directly to an image file.</div>
-          </div>
-        </div>
-
-        <!-- 4. Video Snippet -->
-        <div class="form-group">
-          <label>4. Video Snippet URL <span class="opt-note">(Optional - Direct MP4 / Video Link)</span></label>
-          <input type="url" id="articleVideoUrl" placeholder="https://domain.com/video.mp4">
-        </div>
-
-        <!-- 5. Full Content English -->
-        <div class="form-group">
-          <label>5. Full Content (English)</label>
-          <textarea id="articleContent" rows="6" placeholder="Full comprehensive article text in English..." required></textarea>
-        </div>
-
-        <!-- ============================================== -->
-        <!-- PART 2: AF-SOOMAALI TRANSLATION                -->
-        <!-- ============================================== -->
-        <div class="section-divider somali">
-          <span class="section-tag-so">Af-Soomaali</span>
-          <span class="section-title">Tarjumada iyo Faahfaahinta Af-Soomaaliga</span>
-        </div>
-
-        <!-- 6. Headline Somali -->
-        <div class="form-group">
-          <label>6. Headline (Af-Soomaali)</label>
-          <input type="text" id="articleTitleSo" placeholder="Ciwaanka warbixinta oo Af-Soomaali sax ah" required>
-        </div>
-
-        <!-- 7. Summary Somali -->
-        <div class="form-group">
-          <label>7. Summary (Af-Soomaali)</label>
-          <textarea id="articleSummarySo" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah..." required></textarea>
-        </div>
-
-        <!-- 8. Full Content Somali -->
-        <div class="form-group">
-          <label>8. Full Content (Af-Soomaali)</label>
-          <textarea id="articleContentSo" rows="6" placeholder="Faahfaahinta maqaalka oo Af-Soomaali ah..." required></textarea>
-        </div>
-
-        <button type="submit" class="btn-primary" id="publishBtn">Commit & Publish to Vercel</button>
-      </form>
-    </section>
-
-    <!-- Live Wire Feed with Delete Control -->
-    <aside class="card">
-      <div class="card-header">
-        <h2>Live Stories in news.json</h2>
-        <p>Active articles in your feed. Click Delete to remove any story.</p>
-      </div>
-
-      <div id="storyCountText" class="brand-subtitle" style="margin-bottom: 8px;">Loading dispatches...</div>
-      <div id="storyList" class="story-list"></div>
-    </aside>
-
-  </main>
-
-  <script>
-    const MASTER_PIN = "sgn2026";
-    let fileSha = "";
-    let currentNews = { updatedAt: "", articles: [] };
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const savedPass = localStorage.getItem("sgn_admin_pin");
-      const savedOwner = localStorage.getItem("sgn_gh_owner") || "somaliglobal";
-      const savedRepo = localStorage.getItem("sgn_gh_repo") || "somaliglobalnews";
-      const savedToken = localStorage.getItem("sgn_gh_token");
-
-      if (document.getElementById("authOwner")) document.getElementById("authOwner").value = savedOwner;
-      if (document.getElementById("authRepo")) document.getElementById("authRepo").value = savedRepo;
-      if (savedToken && document.getElementById("authToken")) {
-        document.getElementById("authToken").value = savedToken;
-      }
-
-      if (savedPass === MASTER_PIN && savedToken) {
-        document.getElementById("authModal").classList.add("hidden");
-        fetchFeed();
-      } else {
-        document.getElementById("authModal").classList.remove("hidden");
-      }
-
-      // Attach image preview listener
-      setupImagePreview();
-    });
-
-    function setupImagePreview() {
-      const imgInput = document.getElementById("articleImageUrl");
-      const box = document.getElementById("imagePreviewBox");
-      const img = document.getElementById("liveImgPreview");
-      const errorMsg = document.getElementById("imageLoadError");
-
-      if (!imgInput || !box || !img) return;
-
-      imgInput.addEventListener("input", () => {
-        const url = imgInput.value.trim();
-        if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
-          errorMsg.style.display = "none";
-          img.style.display = "block";
-          img.src = url;
-          box.style.display = "block";
-        } else {
-          box.style.display = "none";
-          img.src = "";
+        // 1. Initialize data from news.json and localStorage
+        async function loadExistingArticles() {
+            try {
+                const local = localStorage.getItem('sgn_articles');
+                if (local) {
+                    articles = JSON.parse(local);
+                } else {
+                    let res = await fetch('public/data/news.json?t=' + Date.now());
+                    if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
+                    if (!res.ok) res = await fetch('news.json?t=' + Date.now());
+                    
+                    if (res.ok) {
+                        const data = await res.json();
+                        articles = data.articles || (Array.isArray(data) ? data : []);
+                        localStorage.setItem('sgn_articles', JSON.stringify(articles));
+                    }
+                }
+            } catch (err) {
+                console.warn("Notice: Fetching remote news.json failed, relying on localStorage.", err);
+            }
+            renderTable();
         }
-      });
 
-      img.addEventListener("error", () => {
-        img.style.display = "none";
-        errorMsg.style.display = "block";
-      });
+        // 2. Render Article Management Table
+        function renderTable() {
+            const tbody = document.getElementById('articles-list-body');
+            const countEl = document.getElementById('total-articles-count');
+            tbody.innerHTML = '';
+            countEl.innerText = `${articles.length} ${articles.length === 1 ? 'article' : 'articles'}`;
 
-      img.addEventListener("load", () => {
-        img.style.display = "block";
-        errorMsg.style.display = "none";
-      });
-    }
+            if (articles.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-gray-400 text-xs italic">No articles published yet.</td></tr>`;
+                return;
+            }
 
-    async function handleAuth(e) {
-      e.preventDefault();
-      const pin = document.getElementById("authPasscode").value.trim();
-      const owner = document.getElementById("authOwner").value.trim();
-      const repo = document.getElementById("authRepo").value.trim();
-      const token = document.getElementById("authToken").value.trim();
+            articles.forEach((art, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition";
+                const imgUrl = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80';
+                
+                tr.innerHTML = `
+                    <td class="py-3 px-4">
+                        <img src="${imgUrl}" class="w-12 h-10 object-cover rounded-lg border border-gray-200" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80'">
+                    </td>
+                    <td class="py-3 px-4 font-semibold text-gray-900 max-w-xs truncate">${escapeHtml(art.title || 'Untitled')}</td>
+                    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700">${escapeHtml(art.category || 'General')}</span></td>
+                    <td class="py-3 px-4 text-xs text-gray-400">${art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : (art.date || 'Recent')}</td>
+                    <td class="py-3 px-4 text-right space-x-2">
+                        <button onclick="editArticle('${art.id || index}')" class="text-xs font-semibold text-sky-600 hover:text-sky-800">Edit</button>
+                        <button onclick="deleteArticle('${art.id || index}')" class="text-xs font-semibold text-red-500 hover:text-red-700">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
 
-      if (pin !== MASTER_PIN) {
-        alert("Invalid portal passcode.");
-        return;
-      }
+        // 3. SMART IMAGE & CLIPBOARD PASTE CONTROLLER
+        const dropZone = document.getElementById('image-drop-zone');
+        const urlInput = document.getElementById('article-image-url');
+        const previewContainer = document.getElementById('image-preview-container');
+        const previewImg = document.getElementById('image-preview');
 
-      localStorage.setItem("sgn_admin_pin", pin);
-      localStorage.setItem("sgn_gh_owner", owner);
-      localStorage.setItem("sgn_gh_repo", repo);
-      localStorage.setItem("sgn_gh_token", token);
+        // Clipboard Paste Listener
+        [dropZone, urlInput].forEach(element => {
+            element.addEventListener('paste', (e) => {
+                const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
+                if (!items) return;
 
-      document.getElementById("authModal").classList.add("hidden");
-      fetchFeed();
-    }
-
-    function lockPortal() {
-      localStorage.removeItem("sgn_admin_pin");
-      location.reload();
-    }
-
-    async function fetchFeed() {
-      const owner = localStorage.getItem("sgn_gh_owner") || "somaliglobal";
-      const repo = localStorage.getItem("sgn_gh_repo") || "somaliglobalnews";
-      const token = localStorage.getItem("sgn_gh_token");
-      const statusEl = document.getElementById("wireStatus");
-
-      statusEl.innerHTML = `<span class="status-dot" style="background:#ff9500"></span> Connecting...`;
-
-      try {
-        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/public/data/news.json?t=${Date.now()}`, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Accept": "application/vnd.github.v3+json"
-          }
+                for (let item of items) {
+                    if (item.kind === 'file' && item.type.startsWith('image/')) {
+                        e.preventDefault();
+                        const file = item.getAsFile();
+                        compressAndSetImage(file);
+                        return;
+                    }
+                }
+            });
         });
 
-        if (!res.ok) {
-          const err = await res.json();
-          statusEl.innerHTML = `<span class="status-dot" style="background:#ff3b30"></span> Error (${res.status})`;
-          alert(`GitHub Error (${res.status}): ${err.message}`);
-          return;
+        // File compression for clipboard or local file uploads
+        function compressAndSetImage(file) {
+            showBanner("Processing and optimizing image...", "info");
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxDim = 1200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const base64 = canvas.toDataURL('image/jpeg', 0.82);
+                    urlInput.value = base64;
+                    showPreview(base64);
+                    showBanner("Image pasted and prepared successfully!", "success");
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
-        const data = await res.json();
-        fileSha = data.sha;
-
-        const cleanBase64 = data.content.replace(/\s/g, '');
-        const binaryString = atob(cleanBase64);
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-          bytes[i] = binaryString.charCodeAt(i);
-        }
-        const decodedText = new TextDecoder('utf-8').decode(bytes);
-
-        currentNews = JSON.parse(decodedText);
-        renderStories();
-        statusEl.innerHTML = `<span class="status-dot"></span> Connected`;
-      } catch (err) {
-        statusEl.innerHTML = `<span class="status-dot" style="background:#ff3b30"></span> Parse Error`;
-        alert("Decoding error: " + err.message);
-      }
-    }
-
-    function renderStories() {
-      const container = document.getElementById("storyList");
-      const countText = document.getElementById("storyCountText");
-      container.innerHTML = "";
-
-      const articles = currentNews.articles || [];
-      countText.innerText = `${articles.length} dispatches live in public feed`;
-
-      articles.forEach((item, index) => {
-        const el = document.createElement("div");
-        el.className = "story-item";
-        el.innerHTML = `
-          <div class="story-meta">
-            <span>${item.category || "General"}</span>
-            <span>${item.isManual ? "Manual Post" : "Automated Wire"}</span>
-          </div>
-          <div class="story-title">${escapeHtml(item.title || "Untitled")}</div>
-          <div class="story-title-so">${escapeHtml(item.title_so || "")}</div>
-          <div class="story-footer">
-            <span style="font-size: 11px; color: var(--text-secondary);">${new Date(item.publishedAt || Date.now()).toLocaleDateString()}</span>
-            <button class="btn-delete" onclick="deleteStory(${index})">Delete Dispatch</button>
-          </div>
-        `;
-        container.appendChild(el);
-      });
-    }
-
-    async function handlePublish(e) {
-      e.preventDefault();
-      const publishBtn = document.getElementById("publishBtn");
-      publishBtn.disabled = true;
-      publishBtn.innerText = "Committing to GitHub...";
-
-      const newArticle = {
-        id: `manual-${Date.now()}`,
-        isManual: true,
-        title: document.getElementById("articleTitle").value.trim(),
-        title_so: document.getElementById("articleTitleSo").value.trim(),
-        category: document.getElementById("articleCategory").value,
-        location: document.getElementById("articleLocation").value.trim() || "SomaliGlobalNews:NewsDesk",
-        summary: document.getElementById("articleSummary").value.trim(),
-        summary_so: document.getElementById("articleSummarySo").value.trim(),
-        imageUrl: document.getElementById("articleImageUrl").value.trim(),
-        videoUrl: document.getElementById("articleVideoUrl").value.trim() || null,
-        content: document.getElementById("articleContent").value.trim(),
-        content_so: document.getElementById("articleContentSo").value.trim(),
-        publishedAt: new Date().toISOString()
-      };
-
-      if (!currentNews.articles) currentNews.articles = [];
-      currentNews.articles.unshift(newArticle);
-      currentNews.updatedAt = new Date().toISOString();
-
-      await commitNewsPayload(`Publish dispatch: ${newArticle.title.substring(0, 48)}... [skip ci]`, () => {
-        document.getElementById("publishForm").reset();
-        document.getElementById("articleLocation").value = "SomaliGlobalNews:NewsDesk";
-        const box = document.getElementById("imagePreviewBox");
-        if (box) box.style.display = "none";
-        alert("Article published successfully. Vercel is now deploying your updated feed.");
-      }, () => {
-        currentNews.articles.shift();
-      });
-
-      publishBtn.disabled = false;
-      publishBtn.innerText = "Commit & Publish to Vercel";
-    }
-
-    async function deleteStory(index) {
-      const target = currentNews.articles[index];
-      if (!target) return;
-
-      const confirmDel = confirm(`Are you sure you want to permanently delete this article?\n\n"${target.title}"`);
-      if (!confirmDel) return;
-
-      const removed = currentNews.articles.splice(index, 1)[0];
-      currentNews.updatedAt = new Date().toISOString();
-
-      renderStories();
-
-      await commitNewsPayload(`Delete dispatch: ${target.title.substring(0, 48)}... [skip ci]`, () => {
-        alert("Article deleted successfully from public feed.");
-      }, () => {
-        currentNews.articles.splice(index, 0, removed);
-        renderStories();
-      });
-    }
-
-    async function commitNewsPayload(commitMessage, onSuccess, onError) {
-      const owner = localStorage.getItem("sgn_gh_owner") || "somaliglobal";
-      const repo = localStorage.getItem("sgn_gh_repo") || "somaliglobalnews";
-      const token = localStorage.getItem("sgn_gh_token");
-
-      const jsonString = JSON.stringify(currentNews, null, 2);
-      const utf8Bytes = new TextEncoder().encode(jsonString);
-      let binary = "";
-      for (let i = 0; i < utf8Bytes.length; i++) {
-        binary += String.fromCharCode(utf8Bytes[i]);
-      }
-      const encodedPayload = btoa(binary);
-
-      try {
-        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/public/data/news.json`, {
-          method: "PUT",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json",
-            "Accept": "application/vnd.github.v3+json"
-          },
-          body: JSON.stringify({
-            message: commitMessage,
-            content: encodedPayload,
-            sha: fileSha
-          })
-        });
-
-        if (!res.ok) {
-          const err = await res.json();
-          alert(`Commit rejected (${res.status}): ${err.message}`);
-          if (onError) onError();
-          return;
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) compressAndSetImage(file);
         }
 
-        const responseData = await res.json();
-        fileSha = responseData.content.sha;
-        renderStories();
-        if (onSuccess) onSuccess();
-      } catch (err) {
-        alert("Commit network error: " + err.message);
-        if (onError) onError();
-      }
-    }
+        // Live URL Preview with Anti-403 Proxy
+        function updateImagePreview(val) {
+            const cleanUrl = val.trim();
+            if (!cleanUrl) {
+                clearImage();
+                return;
+            }
 
-    function escapeHtml(text) {
-      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-      return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
-    }
-  </script>
+            // Route non-whitelisted external URLs through open image cache proxy
+            if ((cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) &&
+                !cleanUrl.includes('images.weserv.nl') && 
+                !cleanUrl.includes('unsplash.com')) {
+                const proxiedUrl = `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}&w=1200&output=jpg&q=80`;
+                urlInput.value = proxiedUrl;
+                showPreview(proxiedUrl);
+                return;
+            }
+
+            showPreview(cleanUrl);
+        }
+
+        function showPreview(src) {
+            previewImg.src = src;
+            previewImg.onerror = () => {
+                previewContainer.classList.add('hidden');
+            };
+            previewImg.onload = () => {
+                previewContainer.classList.remove('hidden');
+            };
+        }
+
+        function clearImage() {
+            urlInput.value = '';
+            previewImg.src = '';
+            previewContainer.classList.add('hidden');
+        }
+
+        // 4. Form Submission (Create or Update)
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const editId = document.getElementById('edit-article-id').value;
+            const title = document.getElementById('article-title').value.trim();
+            const title_so = document.getElementById('article-title-so').value.trim();
+            const category = document.getElementById('article-category').value;
+            const location = document.getElementById('article-location').value.trim();
+            const dateInput = document.getElementById('article-date').value.trim();
+            const imageUrl = document.getElementById('article-image-url').value.trim();
+            const videoUrl = document.getElementById('article-video-url').value.trim();
+            const summary = document.getElementById('article-summary').value.trim();
+            const summary_so = document.getElementById('article-summary-so').value.trim();
+            const content = document.getElementById('article-content').value.trim();
+            const content_so = document.getElementById('article-content-so').value.trim();
+
+            const articleObj = {
+                id: editId || `art-${Date.now()}`,
+                title: title,
+                title_so: title_so,
+                category: category,
+                location: location,
+                date: dateInput || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                publishedAt: new Date().toISOString(),
+                imageUrl: imageUrl,
+                videoUrl: videoUrl || null,
+                summary: summary,
+                summary_so: summary_so,
+                content: content,
+                content_so: content_so,
+                comments: []
+            };
+
+            if (editId) {
+                const idx = articles.findIndex(a => String(a.id) === String(editId));
+                if (idx !== -1) {
+                    articleObj.comments = articles[idx].comments || [];
+                    articles[idx] = articleObj;
+                    showBanner("Article updated successfully!", "success");
+                }
+            } else {
+                articles.unshift(articleObj);
+                showBanner("New article published successfully to local storage!", "success");
+            }
+
+            localStorage.setItem('sgn_articles', JSON.stringify(articles));
+            resetForm();
+            renderTable();
+        }
+
+        function editArticle(id) {
+            const art = articles.find((a, idx) => String(a.id || idx) === String(id));
+            if (!art) return;
+
+            document.getElementById('edit-article-id').value = art.id || id;
+            document.getElementById('form-heading').innerText = "Edit Dispatch";
+            document.getElementById('submit-btn').innerText = "Save & Update Dispatch";
+
+            document.getElementById('article-category').value = art.category || 'Somalia';
+            document.getElementById('article-location').value = art.location || '';
+            document.getElementById('article-date').value = art.date || '';
+            document.getElementById('article-image-url').value = art.imageUrl || art.image || '';
+            document.getElementById('article-video-url').value = art.videoUrl || '';
+            document.getElementById('article-title').value = art.title || '';
+            document.getElementById('article-title-so').value = art.title_so || '';
+            document.getElementById('article-summary').value = art.summary || '';
+            document.getElementById('article-summary-so').value = art.summary_so || '';
+            document.getElementById('article-content').value = art.content || '';
+            document.getElementById('article-content-so').value = art.content_so || '';
+
+            if (art.imageUrl || art.image) {
+                showPreview(art.imageUrl || art.image);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteArticle(id) {
+            if (!confirm("Are you sure you want to delete this article?")) return;
+            articles = articles.filter((a, idx) => String(a.id || idx) !== String(id));
+            localStorage.setItem('sgn_articles', JSON.stringify(articles));
+            renderTable();
+            showBanner("Article removed from portal.", "info");
+        }
+
+        function resetForm() {
+            document.getElementById('article-form').reset();
+            document.getElementById('edit-article-id').value = '';
+            document.getElementById('form-heading').innerText = "Create New Dispatch";
+            document.getElementById('submit-btn').innerText = "Publish Article to Portal";
+            clearImage();
+        }
+
+        function exportNewsJson() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ articles: articles }, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", "news.json");
+            dlAnchor.click();
+        }
+
+        function showBanner(msg, type = "info") {
+            const banner = document.getElementById('status-banner');
+            banner.className = type === "success" 
+                ? "p-4 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border-emerald-200 block"
+                : "p-4 rounded-xl text-xs font-semibold bg-sky-50 text-sky-800 border-sky-200 block";
+            banner.innerText = msg;
+            setTimeout(() => { banner.classList.add('hidden'); }, 4000);
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadExistingArticles);
+    </script>
 </body>
 </html>
