@@ -23,211 +23,430 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
-    <!-- Top Admin Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <!-- Option A Inline Emblem -->
-                <div class="sgn-glowing-badge w-10 h-10 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300">
-                    <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
-                        <svg class="w-7 h-7 text-sky-400" viewBox="0 0 100 100" fill="none">
-                            <circle cx="50" cy="50" r="46" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="3 3" opacity="0.6"/>
-                            <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
-                            <text x="50" y="54" fill="#ffffff" font-family="'Inter', sans-serif" font-size="15" font-weight="900" letter-spacing="0.8" text-anchor="middle" dominant-baseline="central">SGN</text>
-                        </svg>
-                    </div>
-                </div>
-                <div>
-                    <h1 class="text-lg font-extrabold text-[#0071e3] leading-none">SGN SomaliGlobalNews</h1>
-                    <p class="text-[11px] text-gray-500 font-semibold tracking-wide uppercase mt-1">Publisher &amp; Editorial Desk</p>
+    <!-- 1. LOCKED SIGN-IN GATE -->
+    <div id="auth-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 px-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-200 text-center space-y-5">
+            <div class="mx-auto w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300 sgn-glowing-badge">
+                <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
+                    <svg class="w-7 h-7 text-sky-400" viewBox="0 0 100 100" fill="none">
+                        <circle cx="50" cy="50" r="46" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="3 3" opacity="0.6"/>
+                        <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+                        <text x="50" y="54" fill="#ffffff" font-family="'Inter', sans-serif" font-size="15" font-weight="900" letter-spacing="0.8" text-anchor="middle" dominant-baseline="central">SGN</text>
+                    </svg>
                 </div>
             </div>
+            
+            <div>
+                <h2 class="text-lg font-extrabold text-slate-900">SGN Editorial Desk</h2>
+                <p id="auth-subtitle" class="text-xs text-slate-500 mt-1">Enter password to unlock publisher controls.</p>
+            </div>
 
-            <div class="flex items-center space-x-3">
-                <a href="index.html" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
-                    <span>&larr; View Live Site</span>
-                </a>
-                <button onclick="exportNewsJson()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    <span>Export news.json</span>
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-3.5 text-left">
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Desk Password</label>
+                    <input type="password" id="admin-pass-input" placeholder="Password" autofocus required
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-slate-50 focus:bg-white font-medium">
+                </div>
+
+                <!-- One-Time GitHub Key Field (Auto-hides once saved) -->
+                <div id="first-time-github-box" class="space-y-1">
+                    <div class="flex justify-between items-center">
+                        <label class="block text-[11px] font-semibold text-slate-600">GitHub Personal Token</label>
+                        <span class="text-[10px] text-sky-600 font-semibold uppercase">One-time Setup</span>
+                    </div>
+                    <input type="password" id="initial-gh-token" placeholder="ghp_xxxxxxxxxxxx"
+                           class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-slate-50 focus:bg-white font-mono text-xs">
+                    <p class="text-[10px] text-slate-400">Will be saved to this browser and never requested again.</p>
+                </div>
+
+                <p id="auth-error-msg" class="hidden text-xs font-semibold text-rose-600 text-center"></p>
+
+                <button type="submit" 
+                        class="w-full py-2.5 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
+                    Unlock Desk
+                </button>
+            </form>
+
+            <div id="reset-token-wrapper" class="pt-2 border-t border-slate-100 hidden">
+                <button type="button" onclick="showTokenReset()" class="text-[11px] text-slate-400 hover:text-slate-600 underline">
+                    Change or update saved GitHub token
                 </button>
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Container -->
-    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
-        
-        <!-- Status Notification Banner -->
-        <div id="status-banner" class="hidden p-4 rounded-xl text-sm font-medium border"></div>
+    <!-- 2. PUBLISHER DESK (HIDDEN BY DEFAULT) -->
+    <div id="admin-app" class="hidden min-h-screen flex-col flex">
 
-        <!-- Article Publishing Form -->
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-                <h2 class="text-base font-bold text-gray-900" id="form-heading">Create New Dispatch</h2>
-                <button type="button" onclick="resetForm()" class="text-xs text-gray-500 hover:text-gray-800 underline">Reset Form</button>
-            </div>
-
-            <form id="article-form" onsubmit="handleFormSubmit(event)" class="p-6 sm:p-8 space-y-6">
-                <input type="hidden" id="edit-article-id" value="">
-
-                <!-- Metadata Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Category *</label>
-                        <select id="article-category" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white">
-                            <option value="Somalia">Somalia</option>
-                            <option value="Horn of Africa">Horn of Africa</option>
-                            <option value="Middle East">Middle East</option>
-                            <option value="World">World</option>
-                            <option value="Editorial">Editorial</option>
-                        </select>
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="sgn-glowing-badge w-10 h-10 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300">
+                        <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
+                            <svg class="w-7 h-7 text-sky-400" viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="46" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="3 3" opacity="0.6"/>
+                                <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+                                <text x="50" y="54" fill="#ffffff" font-family="'Inter', sans-serif" font-size="15" font-weight="900" letter-spacing="0.8" text-anchor="middle" dominant-baseline="central">SGN</text>
+                            </svg>
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Location / Bureau Dateline</label>
-                        <input type="text" id="article-location" placeholder="e.g. MOGADISHU, ADEN, NAIROBI" 
-                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Publish Date (Auto or Custom)</label>
-                        <input type="text" id="article-date" placeholder="Leave empty for current time" 
-                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                        <h1 class="text-lg font-extrabold text-[#0071e3] leading-none">SGN SomaliGlobalNews</h1>
+                        <p class="text-[11px] text-gray-500 font-semibold tracking-wide uppercase mt-1">Publisher &amp; Editorial Desk</p>
                     </div>
                 </div>
 
-                <!-- SMART IMAGE INPUT & CLIPBOARD PASTE SYSTEM -->
-                <div class="bg-sky-50/40 rounded-2xl p-5 border border-sky-100 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <label class="block text-xs font-bold text-sky-900 uppercase tracking-wider">
-                            Smart Image Engine (Anti-403 &amp; Paste Enabled) *
-                        </label>
-                        <span class="text-[11px] text-gray-500">Supports direct URLs, file upload, or Ctrl+V</span>
-                    </div>
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <span id="gh-sync-indicator" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>GitHub Linked</span>
+                    </span>
+                    <a href="index.html" class="inline-flex items-center space-x-1 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
+                        <span>&larr; View Live Site</span>
+                    </a>
+                    <button onclick="exportNewsJson()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span>Export news.json</span>
+                    </button>
+                    <button onclick="logoutAdmin()" title="Lock Portal" class="inline-flex items-center px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 border border-rose-200 transition">
+                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        <span>Lock</span>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" 
-                               id="article-image-url" 
-                               required
-                               placeholder="Paste any image web URL, or use the paste zone below..." 
-                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white"
-                               oninput="updateImagePreview(this.value)">
-                        
-                        <div class="flex gap-2">
-                            <button type="button" 
-                                    onclick="document.getElementById('article-image-file').click()" 
-                                    class="px-4 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-xl text-xs font-semibold whitespace-nowrap shadow-sm transition">
-                                Browse File
-                            </button>
-                            <input type="file" id="article-image-file" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+        <!-- Main Workspace -->
+        <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
+            
+            <!-- Status Notification Banner -->
+            <div id="status-banner" class="hidden p-4 rounded-xl text-sm font-medium border"></div>
+
+            <!-- Article Form -->
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                    <h2 class="text-base font-bold text-gray-900" id="form-heading">Create New Dispatch</h2>
+                    <button type="button" onclick="resetForm()" class="text-xs text-gray-500 hover:text-gray-800 underline">Reset Form</button>
+                </div>
+
+                <form id="article-form" onsubmit="handleFormSubmit(event)" class="p-6 sm:p-8 space-y-6">
+                    <input type="hidden" id="edit-article-id" value="">
+
+                    <!-- Metadata Row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Category *</label>
+                            <select id="article-category" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white">
+                                <option value="Somalia">Somalia</option>
+                                <option value="Horn of Africa">Horn of Africa</option>
+                                <option value="Middle East">Middle East</option>
+                                <option value="World">World</option>
+                                <option value="Editorial">Editorial</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Location / Bureau Dateline</label>
+                            <input type="text" id="article-location" placeholder="e.g. MOGADISHU, ADEN, NAIROBI" 
+                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Publish Date (Auto or Custom)</label>
+                            <input type="text" id="article-date" placeholder="Leave empty for current time" 
+                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
                         </div>
                     </div>
 
-                    <!-- Paste & Drop Target Zone -->
-                    <div id="image-drop-zone" 
-                         tabindex="0"
-                         class="border-2 border-dashed border-sky-300 bg-white/70 rounded-xl p-4 text-center cursor-pointer hover:border-sky-500 hover:bg-sky-50 transition focus:outline-none focus:ring-2 focus:ring-sky-400">
-                        <p class="text-xs text-sky-800 font-medium pointer-events-none">
-                            📋 Click this box and press <kbd class="px-2 py-0.5 bg-white border border-sky-200 rounded text-xs font-mono font-semibold shadow-xs">Ctrl + V</kbd> to paste a copied image or screenshot
-                        </p>
+                    <!-- SMART IMAGE INPUT & CLIPBOARD PASTE SYSTEM -->
+                    <div class="bg-sky-50/40 rounded-2xl p-5 border border-sky-100 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold text-sky-900 uppercase tracking-wider">
+                                Smart Image Engine (Anti-403 &amp; Paste Enabled) *
+                            </label>
+                            <span class="text-[11px] text-gray-500">Supports direct URLs, file upload, or Ctrl+V</span>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <input type="text" 
+                                   id="article-image-url" 
+                                   required
+                                   placeholder="Paste any image web URL, or use the paste zone below..." 
+                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white"
+                                   oninput="updateImagePreview(this.value)">
+                            
+                            <div class="flex gap-2">
+                                <button type="button" 
+                                        onclick="document.getElementById('article-image-file').click()" 
+                                        class="px-4 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-xl text-xs font-semibold whitespace-nowrap shadow-sm transition">
+                                    Browse File
+                                </button>
+                                <input type="file" id="article-image-file" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+                            </div>
+                        </div>
+
+                        <!-- Paste & Drop Target Zone -->
+                        <div id="image-drop-zone" 
+                             tabindex="0"
+                             class="border-2 border-dashed border-sky-300 bg-white/70 rounded-xl p-4 text-center cursor-pointer hover:border-sky-500 hover:bg-sky-50 transition focus:outline-none focus:ring-2 focus:ring-sky-400">
+                            <p class="text-xs text-sky-800 font-medium pointer-events-none">
+                                📋 Click this box and press <kbd class="px-2 py-0.5 bg-white border border-sky-200 rounded text-xs font-mono font-semibold shadow-xs">Ctrl + V</kbd> to paste a copied image or screenshot
+                            </p>
+                        </div>
+
+                        <!-- Live Image Preview Box -->
+                        <div id="image-preview-container" class="hidden relative rounded-xl overflow-hidden border border-gray-200 bg-gray-900 h-48 w-full max-w-md mx-auto shadow-inner">
+                            <img id="image-preview" src="" alt="Preview" class="w-full h-full object-cover">
+                            <button type="button" 
+                                    onclick="clearImage()" 
+                                    title="Remove image"
+                                    class="absolute top-2 right-2 bg-black/70 hover:bg-black text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition">
+                                &times;
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Live Image Preview Box -->
-                    <div id="image-preview-container" class="hidden relative rounded-xl overflow-hidden border border-gray-200 bg-gray-900 h-48 w-full max-w-md mx-auto shadow-inner">
-                        <img id="image-preview" src="" alt="Preview" class="w-full h-full object-cover">
-                        <button type="button" 
-                                onclick="clearImage()" 
-                                title="Remove image"
-                                class="absolute top-2 right-2 bg-black/70 hover:bg-black text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition">
-                            &times;
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Video URL Field -->
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Optional Video Snippet URL (YouTube Embed / Direct Video)</label>
-                    <input type="text" id="article-video-url" placeholder="e.g. https://www.youtube.com/watch?v=... or leave empty" 
-                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                </div>
-
-                <!-- English Content Section -->
-                <div class="border-t border-gray-100 pt-5 space-y-4">
-                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">English Dispatch</h3>
+                    <!-- Video URL Field -->
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Headline (English) *</label>
-                        <input type="text" id="article-title" required placeholder="Enter primary news headline" 
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Optional Video Snippet URL (YouTube Embed / Direct Video)</label>
+                        <input type="text" id="article-video-url" placeholder="e.g. https://www.youtube.com/watch?v=... or leave empty" 
                                class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Summary / Lead Paragraph (English) *</label>
-                        <textarea id="article-summary" rows="2" required placeholder="Concise overview for cards and reader view..." 
-                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Full Article Body (English) *</label>
-                        <textarea id="article-content" rows="6" required placeholder="Write the full news report. Separate paragraphs with a blank line." 
-                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
-                    </div>
-                </div>
 
-                <!-- Af-Soomaali Content Section -->
-                <div class="border-t border-gray-100 pt-5 space-y-4">
-                    <h3 class="text-xs font-bold text-amber-700 uppercase tracking-wider">Faahfaahinta Af-Soomaaliga (Optional but Recommended)</h3>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Cinwaanka (Af-Soomaali)</label>
-                        <input type="text" id="article-title-so" placeholder="Geli cinwaanka warbixinta oo Af-Soomaali ah" 
-                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    <!-- English Content Section -->
+                    <div class="border-t border-gray-100 pt-5 space-y-4">
+                        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">English Dispatch</h3>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Headline (English) *</label>
+                            <input type="text" id="article-title" required placeholder="Enter primary news headline" 
+                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Summary / Lead Paragraph (English) *</label>
+                            <textarea id="article-summary" rows="2" required placeholder="Concise overview for cards and reader view..." 
+                                      class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Full Article Body (English) *</label>
+                            <textarea id="article-content" rows="6" required placeholder="Write the full news report. Separate paragraphs with a blank line." 
+                                      class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Soo-koobidda (Af-Soomaali)</label>
-                        <textarea id="article-summary-so" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah..." 
-                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Qoraalka Buuxa (Af-Soomaali)</label>
-                        <textarea id="article-content-so" rows="6" placeholder="Qoraalka oo faahfaahsan. Sadar bannaan u dhexeysii cutubyada." 
-                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
-                    </div>
-                </div>
 
-                <!-- Submit Button -->
-                <div class="pt-4 flex items-center justify-end space-x-3">
-                    <button type="submit" id="submit-btn" class="px-6 py-3 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
-                        Publish Article to Portal
-                    </button>
-                </div>
-            </form>
-        </div>
+                    <!-- Af-Soomaali Content Section -->
+                    <div class="border-t border-gray-100 pt-5 space-y-4">
+                        <h3 class="text-xs font-bold text-amber-700 uppercase tracking-wider">Faahfaahinta Af-Soomaaliga (Optional but Recommended)</h3>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Cinwaanka (Af-Soomaali)</label>
+                            <input type="text" id="article-title-so" placeholder="Geli cinwaanka warbixinta oo Af-Soomaali ah" 
+                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Soo-koobidda (Af-Soomaali)</label>
+                            <textarea id="article-summary-so" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah..." 
+                                      class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Qoraalka Buuxa (Af-Soomaali)</label>
+                            <textarea id="article-content-so" rows="6" placeholder="Qoraalka oo faahfaahsan. Sadar bannaan u dhexeysii cutubyada." 
+                                      class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                        </div>
+                    </div>
 
-        <!-- Manage Existing Articles -->
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-4">
-            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
-                <h3 class="text-base font-bold text-gray-900">Manage Published Articles</h3>
-                <span id="total-articles-count" class="text-xs text-gray-500 font-medium">0 articles</span>
+                    <!-- Submit Button -->
+                    <div class="pt-4 flex items-center justify-end space-x-3">
+                        <button type="submit" id="submit-btn" class="px-6 py-3 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
+                            <span id="submit-btn-text">Publish Article to Portal</span>
+                        </button>
+                    </div>
+                </form>
             </div>
-            
-            <div id="articles-table-container" class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-gray-600">
-                    <thead class="text-xs text-gray-400 uppercase bg-gray-50 border-b border-gray-100">
-                        <tr>
-                            <th class="py-3 px-4">Image</th>
-                            <th class="py-3 px-4">Headline</th>
-                            <th class="py-3 px-4">Category</th>
-                            <th class="py-3 px-4">Date</th>
-                            <th class="py-3 px-4 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="articles-list-body" class="divide-y divide-gray-100"></tbody>
-                </table>
+
+            <!-- Manage Existing Articles -->
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-4">
+                <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                    <h3 class="text-base font-bold text-gray-900">Manage Published Articles</h3>
+                    <span id="total-articles-count" class="text-xs text-gray-500 font-medium">0 articles</span>
+                </div>
+                
+                <div id="articles-table-container" class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-600">
+                        <thead class="text-xs text-gray-400 uppercase bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th class="py-3 px-4">Image</th>
+                                <th class="py-3 px-4">Headline</th>
+                                <th class="py-3 px-4">Category</th>
+                                <th class="py-3 px-4">Date</th>
+                                <th class="py-3 px-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="articles-list-body" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <!-- Unified Script -->
     <script>
+        const DESK_PASS = 'sgn2026';
+
+        // 1. DYNAMIC AUTHENTICATION FLOW
+        function checkLoginState() {
+            // Check if already authenticated this session
+            if (sessionStorage.getItem('sgn_auth') === 'true') {
+                showPortal();
+                return;
+            }
+
+            hidePortal();
+
+            // Check if GitHub token is already remembered from past logins
+            const savedGh = localStorage.getItem('sgn_gh_token');
+            const ghBox = document.getElementById('first-time-github-box');
+            const resetWrapper = document.getElementById('reset-token-wrapper');
+            const subTitle = document.getElementById('auth-subtitle');
+
+            if (savedGh) {
+                // Token already remembered: only ask for password
+                ghBox.classList.add('hidden');
+                document.getElementById('initial-gh-token').required = false;
+                resetWrapper.classList.remove('hidden');
+                subTitle.innerText = "Enter password to unlock publisher controls.";
+            } else {
+                // First-time setup: ask for password AND GitHub token
+                ghBox.classList.remove('hidden');
+                document.getElementById('initial-gh-token').required = true;
+                resetWrapper.classList.add('hidden');
+                subTitle.innerText = "One-time setup: Enter password & your GitHub token.";
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const pass = document.getElementById('admin-pass-input').value;
+            const tokenInput = document.getElementById('initial-gh-token').value.trim();
+            const errorEl = document.getElementById('auth-error-msg');
+
+            // 1. Verify desk password
+            if (pass !== DESK_PASS) {
+                errorEl.innerText = "Incorrect password. Access denied.";
+                errorEl.classList.remove('hidden');
+                document.getElementById('admin-pass-input').value = '';
+                document.getElementById('admin-pass-input').focus();
+                return;
+            }
+
+            // 2. If token field is present, store it permanently in localStorage
+            if (tokenInput) {
+                localStorage.setItem('sgn_gh_token', tokenInput);
+            }
+
+            // 3. Mark session as authenticated
+            sessionStorage.setItem('sgn_auth', 'true');
+            errorEl.classList.add('hidden');
+            showPortal();
+        }
+
+        function showTokenReset() {
+            localStorage.removeItem('sgn_gh_token');
+            checkLoginState();
+            document.getElementById('initial-gh-token').focus();
+        }
+
+        function showPortal() {
+            document.getElementById('auth-overlay').classList.add('hidden');
+            document.getElementById('admin-app').classList.remove('hidden');
+            
+            // Check indicator
+            const hasToken = Boolean(localStorage.getItem('sgn_gh_token'));
+            document.getElementById('gh-sync-indicator').style.display = hasToken ? 'inline-flex' : 'none';
+
+            loadExistingArticles();
+        }
+
+        function hidePortal() {
+            document.getElementById('auth-overlay').classList.remove('hidden');
+            document.getElementById('admin-app').classList.add('hidden');
+            document.getElementById('admin-pass-input').value = '';
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('sgn_auth');
+            checkLoginState();
+        }
+
+        // 2. BACKGROUND GITHUB COMMIT CONTROLLER
+        async function commitToGithub(updatedArticles) {
+            const token = localStorage.getItem('sgn_gh_token');
+            if (!token) return false;
+
+            const paths = ['public/data/news.json', 'data/news.json', 'news.json'];
+
+            // Discover repo dynamically from GitHub User API using the token
+            let owner = localStorage.getItem('sgn_gh_owner');
+            let repo = localStorage.getItem('sgn_gh_repo');
+
+            if (!owner || !repo) {
+                try {
+                    const userRes = await fetch('https://api.github.com/user', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (userRes.ok) {
+                        const userData = await userRes.json();
+                        owner = userData.login;
+                        repo = window.location.hostname.includes('github.io') 
+                               ? window.location.pathname.split('/')[1] 
+                               : 'somaliglobalnews';
+                        localStorage.setItem('sgn_gh_owner', owner);
+                        localStorage.setItem('sgn_gh_repo', repo);
+                    }
+                } catch (e) {
+                    console.warn("Could not auto-detect repo name", e);
+                }
+            }
+
+            for (let filePath of paths) {
+                try {
+                    const endpoint = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+                    const res = await fetch(endpoint, {
+                        headers: { 
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+
+                    if (res.ok) {
+                        const fileData = await res.json();
+                        const sha = fileData.sha;
+                        const utf8Bytes = new TextEncoder().encode(JSON.stringify({ articles: updatedArticles }, null, 2));
+                        const base64Content = btoa(String.fromCharCode(...utf8Bytes));
+
+                        const putRes = await fetch(endpoint, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Accept': 'application/vnd.github.v3+json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                message: `Editorial update: ${filePath} [skip ci]`,
+                                content: base64Content,
+                                sha: sha
+                            })
+                        });
+
+                        if (putRes.ok) return true;
+                    }
+                } catch (err) {
+                    console.error("Path attempt failed:", filePath, err);
+                }
+            }
+            return false;
+        }
+
+        // 3. ARTICLES DATA LAYER
         let articles = [];
 
-        // 1. Initialize data from news.json and localStorage
         async function loadExistingArticles() {
             try {
                 const local = localStorage.getItem('sgn_articles');
@@ -250,7 +469,6 @@
             renderTable();
         }
 
-        // 2. Render Article Management Table
         function renderTable() {
             const tbody = document.getElementById('articles-list-body');
             const countEl = document.getElementById('total-articles-count');
@@ -283,13 +501,12 @@
             });
         }
 
-        // 3. SMART IMAGE & CLIPBOARD PASTE CONTROLLER
+        // 4. SMART IMAGE CONTROLLER
         const dropZone = document.getElementById('image-drop-zone');
         const urlInput = document.getElementById('article-image-url');
         const previewContainer = document.getElementById('image-preview-container');
         const previewImg = document.getElementById('image-preview');
 
-        // Clipboard Paste Listener
         [dropZone, urlInput].forEach(element => {
             element.addEventListener('paste', (e) => {
                 const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
@@ -306,7 +523,6 @@
             });
         });
 
-        // File compression for clipboard or local file uploads
         function compressAndSetImage(file) {
             showBanner("Processing and optimizing image...", "info");
             const reader = new FileReader();
@@ -348,7 +564,6 @@
             if (file) compressAndSetImage(file);
         }
 
-        // Live URL Preview with Anti-403 Proxy
         function updateImagePreview(val) {
             const cleanUrl = val.trim();
             if (!cleanUrl) {
@@ -356,7 +571,6 @@
                 return;
             }
 
-            // Route non-whitelisted external URLs through open image cache proxy
             if ((cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) &&
                 !cleanUrl.includes('images.weserv.nl') && 
                 !cleanUrl.includes('unsplash.com')) {
@@ -385,8 +599,8 @@
             previewContainer.classList.add('hidden');
         }
 
-        // 4. Form Submission (Create or Update)
-        function handleFormSubmit(e) {
+        // 5. SUBMISSIONS & SYNC
+        async function handleFormSubmit(e) {
             e.preventDefault();
 
             const editId = document.getElementById('edit-article-id').value;
@@ -401,6 +615,11 @@
             const summary_so = document.getElementById('article-summary-so').value.trim();
             const content = document.getElementById('article-content').value.trim();
             const content_so = document.getElementById('article-content-so').value.trim();
+
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-btn-text');
+            submitBtn.disabled = true;
+            submitText.innerText = "Publishing...";
 
             const articleObj = {
                 id: editId || `art-${Date.now()}`,
@@ -424,16 +643,24 @@
                 if (idx !== -1) {
                     articleObj.comments = articles[idx].comments || [];
                     articles[idx] = articleObj;
-                    showBanner("Article updated successfully!", "success");
                 }
             } else {
                 articles.unshift(articleObj);
-                showBanner("New article published successfully to local storage!", "success");
             }
 
             localStorage.setItem('sgn_articles', JSON.stringify(articles));
+
+            // Sync with GitHub automatically using the remembered token
+            const committed = await commitToGithub(articles);
+            if (committed) {
+                showBanner(editId ? "Article updated and committed directly to GitHub!" : "New article published and committed live to GitHub!", "success");
+            } else {
+                showBanner(editId ? "Article updated locally." : "Article saved to local browser storage.", "info");
+            }
+
             resetForm();
             renderTable();
+            submitBtn.disabled = false;
         }
 
         function editArticle(id) {
@@ -442,7 +669,7 @@
 
             document.getElementById('edit-article-id').value = art.id || id;
             document.getElementById('form-heading').innerText = "Edit Dispatch";
-            document.getElementById('submit-btn').innerText = "Save & Update Dispatch";
+            document.getElementById('submit-btn-text').innerText = "Save & Update Dispatch";
 
             document.getElementById('article-category').value = art.category || 'Somalia';
             document.getElementById('article-location').value = art.location || '';
@@ -463,19 +690,25 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function deleteArticle(id) {
+        async function deleteArticle(id) {
             if (!confirm("Are you sure you want to delete this article?")) return;
             articles = articles.filter((a, idx) => String(a.id || idx) !== String(id));
             localStorage.setItem('sgn_articles', JSON.stringify(articles));
+            
+            const committed = await commitToGithub(articles);
+            if (committed) {
+                showBanner("Article deleted and updated on GitHub.", "info");
+            } else {
+                showBanner("Article removed from local storage.", "info");
+            }
             renderTable();
-            showBanner("Article removed from portal.", "info");
         }
 
         function resetForm() {
             document.getElementById('article-form').reset();
             document.getElementById('edit-article-id').value = '';
             document.getElementById('form-heading').innerText = "Create New Dispatch";
-            document.getElementById('submit-btn').innerText = "Publish Article to Portal";
+            document.getElementById('submit-btn-text').innerText = "Publish Article to Portal";
             clearImage();
         }
 
@@ -493,7 +726,7 @@
                 ? "p-4 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border-emerald-200 block"
                 : "p-4 rounded-xl text-xs font-semibold bg-sky-50 text-sky-800 border-sky-200 block";
             banner.innerText = msg;
-            setTimeout(() => { banner.classList.add('hidden'); }, 4000);
+            setTimeout(() => { banner.classList.add('hidden'); }, 4500);
         }
 
         function escapeHtml(text) {
@@ -501,7 +734,8 @@
             return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
-        document.addEventListener('DOMContentLoaded', loadExistingArticles);
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', checkLoginState);
     </script>
 </body>
 </html>
