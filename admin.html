@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <!-- TOP RIGHT ACTIONS: Live Site, Commit to GitHub, Lock -->
+            <!-- Header Actions -->
             <div class="flex items-center space-x-2.5">
                 <a href="index.html" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
                     <span>&larr; View Live Site</span>
@@ -130,41 +130,17 @@
                     </div>
                 </div>
 
-                <!-- SMART IMAGE INPUT & CLIPBOARD PASTE SYSTEM -->
+                <!-- Clean Image Input Section -->
                 <div class="bg-sky-50/40 rounded-2xl p-5 border border-sky-100 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <label class="block text-xs font-bold text-sky-900 uppercase tracking-wider">
-                            Smart Image Engine (Anti-403 &amp; Paste Enabled) *
-                        </label>
-                        <span class="text-[11px] text-gray-500">Supports direct URLs, file upload, or Ctrl+V</span>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" 
-                               id="article-image-url" 
-                               required
-                               placeholder="Paste any image web URL, or use the paste zone below..." 
-                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white"
-                               oninput="updateImagePreview(this.value)">
-                        
-                        <div class="flex gap-2">
-                            <button type="button" 
-                                    onclick="document.getElementById('article-image-file').click()" 
-                                    class="px-4 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-xl text-xs font-semibold whitespace-nowrap shadow-sm transition">
-                                Browse File
-                            </button>
-                            <input type="file" id="article-image-file" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
-                        </div>
-                    </div>
-
-                    <!-- Paste & Drop Target Zone -->
-                    <div id="image-drop-zone" 
-                         tabindex="0"
-                         class="border-2 border-dashed border-sky-300 bg-white/70 rounded-xl p-4 text-center cursor-pointer hover:border-sky-500 hover:bg-sky-50 transition focus:outline-none focus:ring-2 focus:ring-sky-400">
-                        <p class="text-xs text-sky-800 font-medium pointer-events-none">
-                            📋 Click this box and press <kbd class="px-2 py-0.5 bg-white border border-sky-200 rounded text-xs font-mono font-semibold shadow-xs">Ctrl + V</kbd> to paste a copied image or screenshot
-                        </p>
-                    </div>
+                    <label class="block text-xs font-bold text-sky-900 uppercase tracking-wider">
+                        Image Web URL *
+                    </label>
+                    <input type="text" 
+                           id="article-image-url" 
+                           required
+                           placeholder="Paste direct image URL (https://...)" 
+                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white"
+                           oninput="updateImagePreview(this.value)">
 
                     <!-- Live Image Preview Box -->
                     <div id="image-preview-container" class="hidden relative rounded-xl overflow-hidden border border-gray-200 bg-gray-900 h-48 w-full max-w-md mx-auto shadow-inner">
@@ -264,7 +240,7 @@
         const GH_OWNER = 'somaliglobal';
         const GH_REPO = 'somaliglobalnews.com';
 
-        // --- AUTH & LOCK CONTROLLER ---
+        // 1. AUTH & LOCK CONTROLLER
         function checkGate() {
             if (sessionStorage.getItem('sgn_auth') === 'true') {
                 document.getElementById('auth-gate-modal').classList.add('hidden');
@@ -301,39 +277,67 @@
 
         checkGate();
 
-        // --- GITHUB DIRECT SYNC ENGINE ---
+        // 2. SAFE BASE64 ENCODER (Prevents call stack crashes with large article lists)
+        function safeBase64Encode(str) {
+            const bytes = new TextEncoder().encode(str);
+            let binary = '';
+            const chunkSize = 8192;
+            for (let i = 0; i < bytes.length; i += chunkSize) {
+                const chunk = bytes.subarray(i, i + chunkSize);
+                binary += String.fromCharCode.apply(null, chunk);
+            }
+            return btoa(binary);
+        }
+
+        // 3. GITHUB DIRECT SYNC ENGINE
         async function syncToGitHub(articlesArray) {
             const token = localStorage.getItem('sgn_gh_token');
-            if (!token) throw new Error("GitHub token not found. Please log in with token.");
+            if (!token) throw new Error("GitHub token not found. Please log in with your token.");
 
             const paths = ['news.json', 'data/news.json', 'public/data/news.json'];
+            let lastError = null;
+
             for (let path of paths) {
                 try {
                     const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
-                    const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const res = await fetch(url, { 
+                        headers: { 
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        } 
+                    });
+
                     if (res.ok) {
                         const fileData = await res.json();
-                        const utf8Bytes = new TextEncoder().encode(JSON.stringify({ articles: articlesArray }, null, 2));
-                        const base64 = btoa(String.fromCharCode(...utf8Bytes));
+                        const jsonString = JSON.stringify({ articles: articlesArray }, null, 2);
+                        const base64Content = safeBase64Encode(jsonString);
 
                         const putRes = await fetch(url, {
                             method: 'PUT',
                             headers: {
                                 'Authorization': `Bearer ${token}`,
+                                'Accept': 'application/vnd.github.v3+json',
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({
-                                message: `SGN Dispatch: update ${path}`,
-                                content: base64,
+                                message: `SGN Dispatch: update ${path} [skip ci]`,
+                                content: base64Content,
                                 sha: fileData.sha
                             })
                         });
 
-                        if (putRes.ok) return path;
+                        if (putRes.ok) {
+                            return path;
+                        } else {
+                            const errJson = await putRes.json().catch(() => ({}));
+                            lastError = errJson.message || `GitHub rejected commit (Status ${putRes.status})`;
+                        }
                     }
-                } catch(e) {}
+                } catch(e) {
+                    lastError = e.message;
+                }
             }
-            throw new Error("Could not write to news.json on GitHub.");
+            throw new Error(lastError || "Could not write to news.json on GitHub.");
         }
 
         // Dedicated Header Commit Button Action
@@ -345,7 +349,7 @@
 
             try {
                 const target = await syncToGitHub(articles);
-                showBanner(`Success! Committed news archive directly to GitHub (${target}).`, "success");
+                showBanner(`Success! Committed all articles directly to GitHub (${target}).`, "success");
             } catch (err) {
                 showBanner(`GitHub commit failed: ${err.message}`, "error");
             } finally {
@@ -356,8 +360,16 @@
 
         let articles = [];
 
-        // 1. Initialize data from news.json directly
+        // 4. LOAD ARTICLES (Restores portal table from local storage immediately, then updates from remote)
         async function loadExistingArticles() {
+            const local = localStorage.getItem('sgn_articles');
+            if (local) {
+                try {
+                    articles = JSON.parse(local);
+                    renderTable();
+                } catch (e) {}
+            }
+
             try {
                 let res = await fetch('news.json?t=' + Date.now());
                 if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
@@ -365,20 +377,25 @@
                 
                 if (res.ok) {
                     const data = await res.json();
-                    articles = data.articles || (Array.isArray(data) ? data : []);
+                    const remoteArticles = data.articles || (Array.isArray(data) ? data : []);
+                    if (remoteArticles.length > 0) {
+                        articles = remoteArticles;
+                        localStorage.setItem('sgn_articles', JSON.stringify(articles));
+                        renderTable();
+                    }
                 }
             } catch (err) {
-                console.warn("Notice: Fetching remote news.json failed.", err);
+                console.warn("Notice: Fetching remote news.json failed, using portal storage.", err);
             }
-            renderTable();
         }
 
-        // 2. Render Article Management Table
+        // 5. RENDER PORTAL ARTICLE TABLE
         function renderTable() {
             const tbody = document.getElementById('articles-list-body');
             const countEl = document.getElementById('total-articles-count');
+            if (!tbody) return;
             tbody.innerHTML = '';
-            countEl.innerText = `${articles.length} ${articles.length === 1 ? 'article' : 'articles'}`;
+            if (countEl) countEl.innerText = `${articles.length} ${articles.length === 1 ? 'article' : 'articles'}`;
 
             if (articles.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-gray-400 text-xs italic">No articles published yet.</td></tr>`;
@@ -406,68 +423,10 @@
             });
         }
 
-        // 3. SMART IMAGE & CLIPBOARD PASTE CONTROLLER
-        const dropZone = document.getElementById('image-drop-zone');
+        // 6. IMAGE PREVIEW (Direct Clean Web URLs)
         const urlInput = document.getElementById('article-image-url');
         const previewContainer = document.getElementById('image-preview-container');
         const previewImg = document.getElementById('image-preview');
-
-        [dropZone, urlInput].forEach(element => {
-            element.addEventListener('paste', (e) => {
-                const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
-                if (!items) return;
-
-                for (let item of items) {
-                    if (item.kind === 'file' && item.type.startsWith('image/')) {
-                        e.preventDefault();
-                        const file = item.getAsFile();
-                        compressAndSetImage(file);
-                        return;
-                    }
-                }
-            });
-        });
-
-        function compressAndSetImage(file) {
-            showBanner("Processing and optimizing image...", "info");
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const maxDim = 1200;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > maxDim || height > maxDim) {
-                        if (width > height) {
-                            height = Math.round((height * maxDim) / width);
-                            width = maxDim;
-                        } else {
-                            width = Math.round((width * maxDim) / height);
-                            height = maxDim;
-                        }
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const base64 = canvas.toDataURL('image/jpeg', 0.82);
-                    urlInput.value = base64;
-                    showPreview(base64);
-                    showBanner("Image pasted and prepared successfully!", "success");
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) compressAndSetImage(file);
-        }
 
         function updateImagePreview(val) {
             const cleanUrl = val.trim();
@@ -475,20 +434,11 @@
                 clearImage();
                 return;
             }
-
-            if ((cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) &&
-                !cleanUrl.includes('images.weserv.nl') && 
-                !cleanUrl.includes('unsplash.com')) {
-                const proxiedUrl = `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}&w=1200&output=jpg&q=80`;
-                urlInput.value = proxiedUrl;
-                showPreview(proxiedUrl);
-                return;
-            }
-
             showPreview(cleanUrl);
         }
 
         function showPreview(src) {
+            if (!previewImg || !previewContainer) return;
             previewImg.src = src;
             previewImg.onerror = () => {
                 previewContainer.classList.add('hidden');
@@ -499,18 +449,18 @@
         }
 
         function clearImage() {
-            urlInput.value = '';
-            previewImg.src = '';
-            previewContainer.classList.add('hidden');
+            if (urlInput) urlInput.value = '';
+            if (previewImg) previewImg.src = '';
+            if (previewContainer) previewContainer.classList.add('hidden');
         }
 
-        // 4. Form Submission (Direct Commit to GitHub)
+        // 7. PUBLISH DISPATCH (Updates Portal Table AND Commits to GitHub)
         async function handleFormSubmit(e) {
             e.preventDefault();
 
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = true;
-            submitBtn.innerText = "Publishing to GitHub...";
+            submitBtn.innerText = "Publishing to Portal & Live Site...";
 
             const editId = document.getElementById('edit-article-id').value;
             const articleObj = {
@@ -540,13 +490,17 @@
                 articles.unshift(articleObj);
             }
 
+            // Immediately update the portal table
+            localStorage.setItem('sgn_articles', JSON.stringify(articles));
+            renderTable();
+
+            // Commit directly to GitHub
             try {
                 await syncToGitHub(articles);
-                showBanner("Article published directly to GitHub live site!", "success");
+                showBanner("Article published to portal and pushed live to GitHub!", "success");
                 resetForm();
-                renderTable();
             } catch(err) {
-                showBanner(`Publish failed: ${err.message}`, "error");
+                showBanner(`Saved in portal, but live sync failed: ${err.message}`, "error");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Publish Article to Portal";
@@ -580,15 +534,19 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // 8. DELETE ARTICLE (Removes from Portal Table AND Removes from GitHub)
         async function deleteArticle(id) {
             if (!confirm("Are you sure you want to delete this article?")) return;
+
             articles = articles.filter((a, idx) => String(a.id || idx) !== String(id));
+            localStorage.setItem('sgn_articles', JSON.stringify(articles));
+            renderTable();
+
             try {
                 await syncToGitHub(articles);
-                renderTable();
-                showBanner("Article removed and synced with GitHub.", "info");
+                showBanner("Article deleted from portal and live site.", "info");
             } catch(err) {
-                showBanner(`Delete failed on GitHub: ${err.message}`, "error");
+                showBanner(`Removed from portal, but GitHub sync failed: ${err.message}`, "error");
             }
         }
 
