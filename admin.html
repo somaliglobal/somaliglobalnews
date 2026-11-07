@@ -311,63 +311,78 @@
             return btoa(binary);
         }
 
-        // 3. GITHUB DIRECT SYNC ENGINE (Writes directly to public/data/news.json)
-        async function syncToGitHub(articlesArray) {
-            const token = localStorage.getItem('sgn_gh_token');
-            if (!token) {
-                logoutAdmin();
-                throw new Error("GitHub Key missing. Please enter your GitHub key on the unlock screen.");
-            }
+        // 3. GITHUB DIRECT SYNC ENGINE (Auto-locates or creates the file)
+async function syncToGitHub(articlesArray) {
+    const token = localStorage.getItem('sgn_gh_token');
+    if (!token) {
+        logoutAdmin();
+        throw new Error("GitHub Key missing. Please enter your GitHub key on the unlock screen.");
+    }
 
-            const path = 'public/data/news.json';
-            const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=main&t=${Date.now()}`;
+    const payload = {
+        updatedAt: new Date().toISOString(),
+        articles: articlesArray
+    };
+    const jsonString = JSON.stringify(payload, null, 2);
+    const base64Content = safeBase64Encode(jsonString);
 
-            // Fetch current SHA from GitHub
-            const getRes = await fetch(apiUrl, {
+    // Candidates in order of priority
+    const candidates = ['public/data/news.json', 'data/news.json', 'news.json'];
+    let targetPath = null;
+    let targetSha = null;
+
+    // 1. Scan for the existing file and its SHA (omitting ref so it uses default branch)
+    for (const p of candidates) {
+        try {
+            const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${p}?t=${Date.now()}`;
+            const res = await fetch(url, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Accept': 'application/vnd.github.v3+json'
                 }
             });
-
-            if (!getRes.ok) {
-                const getErr = await getRes.json().catch(() => ({}));
-                throw new Error(`Cannot access ${path} (${getRes.status}: ${getErr.message || 'Check key permissions'})`);
+            if (res.ok) {
+                const data = await res.json();
+                targetPath = p;
+                targetSha = data.sha;
+                break;
             }
+        } catch (e) {}
+    }
 
-            const fileData = await getRes.json();
-            const currentSha = fileData.sha;
+    // 2. If the file does not exist anywhere yet, create it as a new file at public/data/news.json
+    if (!targetPath) {
+        targetPath = 'public/data/news.json';
+        targetSha = null; // New file: no SHA required
+    }
 
-            // Prepare safe payload
-            const payload = {
-                updatedAt: new Date().toISOString(),
-                articles: articlesArray
-            };
-            const jsonString = JSON.stringify(payload, null, 2);
-            const base64Content = safeBase64Encode(jsonString);
+    // 3. Build commit payload
+    const commitBody = {
+        message: `SGN Dispatch: update ${targetPath}`,
+        content: base64Content
+    };
+    if (targetSha) {
+        commitBody.sha = targetSha;
+    }
 
-            // Commit PUT directly to main branch
-            const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: `SGN Dispatch: update ${path}`,
-                    content: base64Content,
-                    sha: currentSha,
-                    branch: "main"
-                })
-            });
+    // 4. Commit PUT request directly to GitHub
+    const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${targetPath}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(commitBody)
+    });
 
-            if (!putRes.ok) {
-                const errJson = await putRes.json().catch(() => ({}));
-                throw new Error(`GitHub rejected commit (${putRes.status}: ${errJson.message || 'Write failed'})`);
-            }
+    if (!putRes.ok) {
+        const errJson = await putRes.json().catch(() => ({}));
+        throw new Error(`GitHub rejected commit (${putRes.status}: ${errJson.message || 'Write failed'})`);
+    }
 
-            return path;
+    return targetPath;
+}
         }
 
         // Manual Commit Header Button
