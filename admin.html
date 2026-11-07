@@ -23,11 +23,11 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
-    <!-- FLOATING ALERT BANNER (Always visible anywhere on the page) -->
-    <div id="status-banner" class="hidden fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md transition-all duration-300"></div>
+    <!-- FLOATING ALERT BANNER -->
+    <div id="status-banner" style="display: none;" class="fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md transition-all duration-300"></div>
 
-    <!-- UNLOCK GATE (Password & One-Time GitHub Key) -->
-    <div id="auth-gate-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 px-4">
+    <!-- CLEAN SIGN-IN GATE -->
+    <div id="auth-gate-modal" class="fixed inset-0 z-50 items-center justify-center bg-slate-950 px-4" style="display: flex;">
         <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-slate-200 text-center space-y-4">
             <div class="mx-auto w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300 sgn-glowing-badge">
                 <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
@@ -38,31 +38,31 @@
                 </div>
             </div>
             <h2 class="text-lg font-extrabold text-slate-900">SGN Editorial Desk</h2>
-            <p class="text-xs text-gray-500">Enter password and GitHub token to publish dispatches.</p>
+            <p class="text-xs text-gray-500">Sign in to manage news dispatches.</p>
             
-            <form onsubmit="handleAuthSubmit(event)" class="space-y-3.5 text-left">
+            <div class="space-y-3.5 text-left">
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
-                    <input type="password" id="auth-gate-pass" placeholder="Enter password" required autofocus
+                    <input type="password" id="auth-gate-pass" placeholder="Enter password" autofocus
                            class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
                 </div>
 
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <label class="block text-xs font-semibold text-gray-700">GitHub Key (PAT Token)</label>
-                        <span id="token-status-indicator" class="text-[10px] font-semibold"></span>
+                        <label class="block text-xs font-semibold text-gray-700">GitHub Token</label>
+                        <span id="token-status-indicator" class="text-[10px] font-semibold text-amber-600">Required</span>
                     </div>
                     <input type="password" id="auth-gate-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
                            class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs font-mono focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                    <p class="text-[11px] text-gray-400 mt-1">Paste your key once. It stays saved in your browser.</p>
+                    <p class="text-[11px] text-gray-400 mt-1">Saved privately in your browser.</p>
                 </div>
 
-                <p id="auth-gate-error" class="hidden text-xs font-semibold text-red-600 text-center"></p>
+                <p id="auth-gate-error" style="display: none;" class="text-xs font-semibold text-red-600 text-center"></p>
                 
-                <button type="submit" class="w-full py-2.5 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
+                <button type="button" onclick="unlockPortal()" class="w-full py-2.5 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
                     Unlock Desk
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -86,15 +86,15 @@
             </div>
 
             <!-- Top Header Actions -->
-            <div class="flex items-center space-x-2.5">
-                <a href="index.html" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
-                    <span>&larr; View Live Site</span>
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="inline-flex items-center space-x-1 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
+                    <span>&larr; Live Site</span>
                 </a>
                 <button id="header-commit-btn" onclick="commitAllToGitHub()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                     <span id="header-commit-text">Commit</span>
                 </button>
-                <button onclick="logoutAdmin()" title="Lock Portal" class="inline-flex items-center space-x-1 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
+                <button onclick="logoutAdmin()" title="Lock Portal" class="inline-flex items-center space-x-1 px-2.5 py-2 rounded-xl text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                     <span>Lock</span>
                 </button>
@@ -151,8 +151,7 @@
                            class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white"
                            oninput="updateImagePreview(this.value)">
 
-                    <!-- Live Image Preview Box -->
-                    <div id="image-preview-container" class="hidden relative rounded-xl overflow-hidden border border-gray-200 bg-gray-900 h-48 w-full max-w-md mx-auto shadow-inner">
+                    <div id="image-preview-container" style="display: none;" class="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-900 h-48 w-full max-w-md mx-auto shadow-inner">
                         <img id="image-preview" src="" alt="Preview" class="w-full h-full object-cover">
                         <button type="button" 
                                 onclick="clearImage()" 
@@ -243,51 +242,51 @@
         </div>
     </main>
 
-    <!-- Unified Script -->
+    <!-- CLEAN JAVASCRIPT -->
     <script>
-        const SGN_PASS = 'sgn2026';
-        const GH_OWNER = 'somaliglobal';
-        const GH_REPO = 'somaliglobalnews.com';
-// 1. GATE CONTROLLER: Direct style toggle (Bypasses Tailwind flex/hidden conflict)
+        var SGN_PASS = 'sgn2026';
+        var GH_OWNER = 'somaliglobal';
+        var GH_REPO = 'somaliglobalnews.com';
+        var articles = [];
+
+        // 1. GATE UNLOCK LOGIC (Clean, direct DOM toggle)
         function checkGate() {
-            const modal = document.getElementById('auth-gate-modal');
+            var modal = document.getElementById('auth-gate-modal');
             if (!modal) return;
 
             if (sessionStorage.getItem('sgn_auth') === 'true') {
-                modal.style.display = 'none';
+                modal.style.setProperty('display', 'none', 'important');
                 return;
             }
-            
-            modal.style.display = 'flex';
 
-            const saved = localStorage.getItem('sgn_gh_token') || '';
-            const tokenInput = document.getElementById('auth-gate-token');
-            const ind = document.getElementById('token-status-indicator');
+            modal.style.setProperty('display', 'flex', 'important');
+            var saved = localStorage.getItem('sgn_gh_token') || '';
+            var tokenInput = document.getElementById('auth-gate-token');
+            var ind = document.getElementById('token-status-indicator');
 
-            if (tokenInput && saved) {
+            if (saved && tokenInput) {
                 tokenInput.value = saved;
             }
             if (ind) {
                 if (saved) {
-                    ind.textContent = "✓ Key saved in memory";
+                    ind.textContent = "✓ Key Saved";
                     ind.className = "text-[10px] text-emerald-600 font-semibold";
                 } else {
-                    ind.textContent = "Required for publishing";
+                    ind.textContent = "Required";
                     ind.className = "text-[10px] text-amber-600 font-semibold";
                 }
             }
         }
 
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const pass = document.getElementById('auth-gate-pass').value.trim();
-            const token = document.getElementById('auth-gate-token').value.trim();
-            const err = document.getElementById('auth-gate-error');
-            const modal = document.getElementById('auth-gate-modal');
+        function unlockPortal() {
+            var pass = document.getElementById('auth-gate-pass').value.trim();
+            var token = document.getElementById('auth-gate-token').value.trim();
+            var err = document.getElementById('auth-gate-error');
+            var modal = document.getElementById('auth-gate-modal');
 
             if (pass !== SGN_PASS) {
                 err.textContent = "Incorrect password.";
-                err.classList.remove('hidden');
+                err.style.display = 'block';
                 return;
             }
 
@@ -295,130 +294,107 @@
                 localStorage.setItem('sgn_gh_token', token);
             }
 
-            err.classList.add('hidden');
+            err.style.display = 'none';
             sessionStorage.setItem('sgn_auth', 'true');
-            
-            // Force modal to disappear completely
-            modal.style.display = 'none';
+            modal.style.setProperty('display', 'none', 'important');
+            showBanner("Welcome to SGN Editorial Desk", "success");
         }
 
         function logoutAdmin() {
             sessionStorage.removeItem('sgn_auth');
-            const passInput = document.getElementById('auth-gate-pass');
-            if (passInput) passInput.value = '';
-            const modal = document.getElementById('auth-gate-modal');
-            if (modal) modal.style.display = 'flex';
+            var passField = document.getElementById('auth-gate-pass');
+            if (passField) passField.value = '';
             checkGate();
         }
 
-        // 2. CHUNK-SAFE BASE64 (Zero stack limit, handles unlimited articles)
+        // 2. SAFE BASE64 ENCODING
         function safeBase64Encode(str) {
-            const bytes = new TextEncoder().encode(str);
-            let binary = '';
-            const len = bytes.byteLength;
-            for (let i = 0; i < len; i++) {
+            var bytes = new TextEncoder().encode(str);
+            var binary = '';
+            for (var i = 0; i < bytes.byteLength; i++) {
                 binary += String.fromCharCode(bytes[i]);
             }
             return btoa(binary);
         }
 
-        // 3. GITHUB DIRECT SYNC ENGINE (Auto-locates or creates the file)
-async function syncToGitHub(articlesArray) {
-    const token = localStorage.getItem('sgn_gh_token');
-    if (!token) {
-        logoutAdmin();
-        throw new Error("GitHub Key missing. Please enter your GitHub key on the unlock screen.");
-    }
+        // 3. GITHUB DIRECT SYNC ENGINE
+        async function syncToGitHub(articlesArray) {
+            var token = localStorage.getItem('sgn_gh_token');
+            if (!token) {
+                logoutAdmin();
+                throw new Error("GitHub Key missing. Please unlock and enter your token.");
+            }
 
-    const payload = {
-        updatedAt: new Date().toISOString(),
-        articles: articlesArray
-    };
-    const jsonString = JSON.stringify(payload, null, 2);
-    const base64Content = safeBase64Encode(jsonString);
+            var payload = {
+                updatedAt: new Date().toISOString(),
+                articles: articlesArray
+            };
+            var jsonString = JSON.stringify(payload, null, 2);
+            var base64Content = safeBase64Encode(jsonString);
 
-    // Candidates in order of priority
-    const candidates = ['public/data/news.json', 'data/news.json', 'news.json'];
-    let targetPath = null;
-    let targetSha = null;
+            var path = 'public/data/news.json';
+            var checkUrl = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + path + "?t=" + Date.now();
 
-    // 1. Scan for the existing file and its SHA (omitting ref so it uses default branch)
-    for (const p of candidates) {
-        try {
-            const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${p}?t=${Date.now()}`;
-            const res = await fetch(url, {
+            var checkRes = await fetch(checkUrl, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': 'Bearer ' + token,
                     'Accept': 'application/vnd.github.v3+json'
                 }
             });
-            if (res.ok) {
-                const data = await res.json();
-                targetPath = p;
-                targetSha = data.sha;
-                break;
+
+            var targetSha = null;
+            if (checkRes.ok) {
+                var fileData = await checkRes.json();
+                targetSha = fileData.sha;
             }
-        } catch (e) {}
-    }
 
-    // 2. If the file does not exist anywhere yet, create it as a new file at public/data/news.json
-    if (!targetPath) {
-        targetPath = 'public/data/news.json';
-        targetSha = null; // New file: no SHA required
-    }
+            var commitBody = {
+                message: "SGN Dispatch: update " + path,
+                content: base64Content
+            };
+            if (targetSha) {
+                commitBody.sha = targetSha;
+            }
 
-    // 3. Build commit payload
-    const commitBody = {
-        message: `SGN Dispatch: update ${targetPath}`,
-        content: base64Content
-    };
-    if (targetSha) {
-        commitBody.sha = targetSha;
-    }
+            var putUrl = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + path;
+            var putRes = await fetch(putUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(commitBody)
+            });
 
-    // 4. Commit PUT request directly to GitHub
-    const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${targetPath}`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(commitBody)
-    });
+            if (!putRes.ok) {
+                var errJson = await putRes.json().catch(function() { return {}; });
+                throw new Error("GitHub rejected (" + putRes.status + "): " + (errJson.message || "Write failed"));
+            }
 
-    if (!putRes.ok) {
-        const errJson = await putRes.json().catch(() => ({}));
-        throw new Error(`GitHub rejected commit (${putRes.status}: ${errJson.message || 'Write failed'})`);
-    }
-
-    return targetPath;
-}
+            return path;
         }
 
-        // Manual Commit Header Button
         async function commitAllToGitHub() {
-            const btn = document.getElementById('header-commit-btn');
-            const txt = document.getElementById('header-commit-text');
+            var btn = document.getElementById('header-commit-btn');
+            var txt = document.getElementById('header-commit-text');
             if (btn) btn.disabled = true;
             if (txt) txt.innerText = "Committing...";
 
             try {
-                const target = await syncToGitHub(articles);
-                showBanner(`Success! Committed all articles live to ${target}.`, "success");
+                var target = await syncToGitHub(articles);
+                showBanner("Success! Articles live on " + target, "success");
             } catch (err) {
-                showBanner(`GitHub commit failed: ${err.message}`, "error");
+                showBanner("Commit failed: " + err.message, "error");
             } finally {
                 if (btn) btn.disabled = false;
                 if (txt) txt.innerText = "Commit";
             }
         }
 
-        let articles = [];
-
-        // 4. LOAD ARTICLES (Loads from public/data/news.json)
+        // 4. LOAD EXISTING ARTICLES
         async function loadExistingArticles() {
-            const local = localStorage.getItem('sgn_articles');
+            var local = localStorage.getItem('sgn_articles');
             if (local) {
                 try {
                     articles = JSON.parse(local);
@@ -427,96 +403,87 @@ async function syncToGitHub(articlesArray) {
             }
 
             try {
-                let res = await fetch('public/data/news.json?t=' + Date.now());
-                if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
-                if (!res.ok) res = await fetch('news.json?t=' + Date.now());
-                
+                var res = await fetch('public/data/news.json?t=' + Date.now());
                 if (res.ok) {
-                    const data = await res.json();
-                    const remoteArticles = data.articles || (Array.isArray(data) ? data : []);
+                    var data = await res.json();
+                    var remoteArticles = data.articles || (Array.isArray(data) ? data : []);
                     if (remoteArticles.length > 0) {
                         articles = remoteArticles;
                         localStorage.setItem('sgn_articles', JSON.stringify(articles));
                         renderTable();
                     }
                 }
-            } catch (err) {
-                console.warn("Notice: Fetching remote news.json failed, relying on portal memory.", err);
-            }
+            } catch (err) {}
         }
 
-        // 5. RENDER PORTAL ARTICLE TABLE
+        // 5. RENDER PORTAL TABLE
         function renderTable() {
-            const tbody = document.getElementById('articles-list-body');
-            const countEl = document.getElementById('total-articles-count');
+            var tbody = document.getElementById('articles-list-body');
+            var countEl = document.getElementById('total-articles-count');
             if (!tbody) return;
             tbody.innerHTML = '';
-            if (countEl) countEl.innerText = `${articles.length} ${articles.length === 1 ? 'article' : 'articles'}`;
+            if (countEl) countEl.innerText = articles.length + (articles.length === 1 ? ' article' : ' articles');
 
             if (articles.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-gray-400 text-xs italic">No articles published yet.</td></tr>`;
+                tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-gray-400 text-xs italic">No articles published yet.</td></tr>';
                 return;
             }
 
-            articles.forEach((art, index) => {
-                const tr = document.createElement('tr');
+            for (var i = 0; i < articles.length; i++) {
+                var art = articles[i];
+                var tr = document.createElement('tr');
                 tr.className = "hover:bg-gray-50 transition";
-                const imgUrl = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80';
-                
-                tr.innerHTML = `
-                    <td class="py-3 px-4">
-                        <img src="${imgUrl}" class="w-12 h-10 object-cover rounded-lg border border-gray-200" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80'">
-                    </td>
-                    <td class="py-3 px-4 font-semibold text-gray-900 max-w-xs truncate">${escapeHtml(art.title || 'Untitled')}</td>
-                    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700">${escapeHtml(art.category || 'General')}</span></td>
-                    <td class="py-3 px-4 text-xs text-gray-400">${art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : (art.date || 'Recent')}</td>
-                    <td class="py-3 px-4 text-right space-x-2">
-                        <button onclick="editArticle('${art.id || index}')" class="text-xs font-semibold text-sky-600 hover:text-sky-800">Edit</button>
-                        <button onclick="deleteArticle('${art.id || index}')" class="text-xs font-semibold text-red-500 hover:text-red-700">Delete</button>
-                    </td>
-                `;
+                var imgUrl = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80';
+                var safeId = art.id || String(i);
+
+                tr.innerHTML = 
+                    '<td class="py-3 px-4"><img src="' + imgUrl + '" class="w-12 h-10 object-cover rounded-lg border border-gray-200"></td>' +
+                    '<td class="py-3 px-4 font-semibold text-gray-900 max-w-xs truncate">' + escapeHtml(art.title || 'Untitled') + '</td>' +
+                    '<td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700">' + escapeHtml(art.category || 'General') + '</span></td>' +
+                    '<td class="py-3 px-4 text-xs text-gray-400">' + (art.date || 'Recent') + '</td>' +
+                    '<td class="py-3 px-4 text-right space-x-2">' +
+                        '<button onclick="editArticle(\'' + safeId + '\')" class="text-xs font-semibold text-sky-600 hover:text-sky-800">Edit</button>' +
+                        '<button onclick="deleteArticle(\'' + safeId + '\')" class="text-xs font-semibold text-red-500 hover:text-red-700">Delete</button>' +
+                    '</td>';
                 tbody.appendChild(tr);
-            });
+            }
         }
 
         // 6. IMAGE PREVIEW
-        const urlInput = document.getElementById('article-image-url');
-        const previewContainer = document.getElementById('image-preview-container');
-        const previewImg = document.getElementById('image-preview');
-
         function updateImagePreview(val) {
-            const cleanUrl = val.trim();
+            var previewContainer = document.getElementById('image-preview-container');
+            var previewImg = document.getElementById('image-preview');
+            var cleanUrl = val.trim();
+
             if (!cleanUrl) {
                 clearImage();
                 return;
             }
-            showPreview(cleanUrl);
-        }
-
-        function showPreview(src) {
-            if (!previewImg || !previewContainer) return;
-            previewImg.src = src;
-            previewImg.onerror = () => { previewContainer.classList.add('hidden'); };
-            previewImg.onload = () => { previewContainer.classList.remove('hidden'); };
+            previewImg.src = cleanUrl;
+            previewContainer.style.display = 'block';
         }
 
         function clearImage() {
+            var urlInput = document.getElementById('article-image-url');
+            var previewContainer = document.getElementById('image-preview-container');
+            var previewImg = document.getElementById('image-preview');
+
             if (urlInput) urlInput.value = '';
             if (previewImg) previewImg.src = '';
-            if (previewContainer) previewContainer.classList.add('hidden');
+            if (previewContainer) previewContainer.style.display = 'none';
         }
 
-        // 7. FORM SUBMIT: Updates Portal Table & Commits Live in One Step
+        // 7. FORM SUBMIT
         async function handleFormSubmit(e) {
             e.preventDefault();
 
-            const submitBtn = document.getElementById('submit-btn');
+            var submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = true;
             submitBtn.innerText = "Publishing & Committing...";
 
-            const editId = document.getElementById('edit-article-id').value;
-            const articleObj = {
-                id: editId || `art-${Date.now()}`,
+            var editId = document.getElementById('edit-article-id').value;
+            var articleObj = {
+                id: editId || ("art-" + Date.now()),
                 title: document.getElementById('article-title').value.trim(),
                 title_so: document.getElementById('article-title-so').value.trim(),
                 category: document.getElementById('article-category').value,
@@ -533,11 +500,16 @@ async function syncToGitHub(articlesArray) {
             };
 
             if (editId) {
-                const idx = articles.findIndex(a => String(a.id) === String(editId));
-                if (idx !== -1) {
-                    articleObj.comments = articles[idx].comments || [];
-                    articles[idx] = articleObj;
+                var found = false;
+                for (var i = 0; i < articles.length; i++) {
+                    if (String(articles[i].id) === String(editId)) {
+                        articleObj.comments = articles[i].comments || [];
+                        articles[i] = articleObj;
+                        found = true;
+                        break;
+                    }
                 }
+                if (!found) articles.unshift(articleObj);
             } else {
                 articles.unshift(articleObj);
             }
@@ -546,11 +518,11 @@ async function syncToGitHub(articlesArray) {
             renderTable();
 
             try {
-                const target = await syncToGitHub(articles);
-                showBanner(`Success! Published and committed live to ${target}.`, "success");
+                var target = await syncToGitHub(articles);
+                showBanner("Success! Published and committed live to " + target, "success");
                 resetForm();
             } catch(err) {
-                showBanner(`Saved in portal, but GitHub sync failed: ${err.message}`, "error");
+                showBanner("Saved locally, but GitHub sync failed: " + err.message, "error");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Publish & Commit Article";
@@ -558,7 +530,13 @@ async function syncToGitHub(articlesArray) {
         }
 
         function editArticle(id) {
-            const art = articles.find((a, idx) => String(a.id || idx) === String(id));
+            var art = null;
+            for (var i = 0; i < articles.length; i++) {
+                if (String(articles[i].id) === String(id) || String(i) === String(id)) {
+                    art = articles[i];
+                    break;
+                }
+            }
             if (!art) return;
 
             document.getElementById('edit-article-id').value = art.id || id;
@@ -578,25 +556,30 @@ async function syncToGitHub(articlesArray) {
             document.getElementById('article-content-so').value = art.content_so || '';
 
             if (art.imageUrl || art.image) {
-                showPreview(art.imageUrl || art.image);
+                updateImagePreview(art.imageUrl || art.image);
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 8. DELETE ARTICLE
         async function deleteArticle(id) {
             if (!confirm("Are you sure you want to delete this article?")) return;
 
-            articles = articles.filter((a, idx) => String(a.id || idx) !== String(id));
+            var filtered = [];
+            for (var i = 0; i < articles.length; i++) {
+                if (String(articles[i].id) !== String(id) && String(i) !== String(id)) {
+                    filtered.push(articles[i]);
+                }
+            }
+            articles = filtered;
             localStorage.setItem('sgn_articles', JSON.stringify(articles));
             renderTable();
 
             try {
                 await syncToGitHub(articles);
-                showBanner("Article removed from portal and committed live to GitHub.", "info");
+                showBanner("Article removed and committed to GitHub.", "info");
             } catch(err) {
-                showBanner(`Removed from portal, but GitHub sync failed: ${err.message}`, "error");
+                showBanner("Removed locally, but GitHub sync failed: " + err.message, "error");
             }
         }
 
@@ -608,25 +591,29 @@ async function syncToGitHub(articlesArray) {
             clearImage();
         }
 
-        // 9. FLOATING BANNER
-        function showBanner(msg, type = "info") {
-            const banner = document.getElementById('status-banner');
+        function showBanner(msg, type) {
+            var banner = document.getElementById('status-banner');
             if (!banner) return;
-            let colorClasses = "bg-sky-50 text-sky-800 border-sky-300";
+            var colorClasses = "bg-sky-50 text-sky-800 border-sky-300";
             if (type === "success") colorClasses = "bg-emerald-50 text-emerald-800 border-emerald-300";
             if (type === "error") colorClasses = "bg-rose-50 text-rose-800 border-rose-300";
 
-            banner.className = `fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md block ${colorClasses}`;
+            banner.className = "fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md " + colorClasses;
+            banner.style.display = 'block';
             banner.innerText = msg;
-            setTimeout(() => { banner.classList.add('hidden'); }, 7000);
+            setTimeout(function() { banner.style.display = 'none'; }, 7000);
         }
 
         function escapeHtml(text) {
-            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-            return String(text).replace(/[&<>"']/g, m => map[m]);
+            if (!text) return '';
+            var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
-        document.addEventListener('DOMContentLoaded', loadExistingArticles);
+        window.onload = function() {
+            checkGate();
+            loadExistingArticles();
+        };
     </script>
 </body>
 </html>
