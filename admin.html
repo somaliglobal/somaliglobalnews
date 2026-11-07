@@ -248,34 +248,42 @@
         const SGN_PASS = 'sgn2026';
         const GH_OWNER = 'somaliglobal';
         const GH_REPO = 'somaliglobalnews.com';
-
-        // 1. GATE CONTROLLER: Displays Password & Saved Token Status
+// 1. GATE CONTROLLER: Direct style toggle (Bypasses Tailwind flex/hidden conflict)
         function checkGate() {
+            const modal = document.getElementById('auth-gate-modal');
+            if (!modal) return;
+
             if (sessionStorage.getItem('sgn_auth') === 'true') {
-                document.getElementById('auth-gate-modal').classList.add('hidden');
+                modal.style.display = 'none';
                 return;
             }
-            document.getElementById('auth-gate-modal').classList.remove('hidden');
+            
+            modal.style.display = 'flex';
 
             const saved = localStorage.getItem('sgn_gh_token') || '';
             const tokenInput = document.getElementById('auth-gate-token');
             const ind = document.getElementById('token-status-indicator');
 
-            if (saved) {
+            if (tokenInput && saved) {
                 tokenInput.value = saved;
-                ind.textContent = "✓ Key saved in memory";
-                ind.className = "text-[10px] text-emerald-600 font-semibold";
-            } else {
-                ind.textContent = "Required for publishing";
-                ind.className = "text-[10px] text-amber-600 font-semibold";
+            }
+            if (ind) {
+                if (saved) {
+                    ind.textContent = "✓ Key saved in memory";
+                    ind.className = "text-[10px] text-emerald-600 font-semibold";
+                } else {
+                    ind.textContent = "Required for publishing";
+                    ind.className = "text-[10px] text-amber-600 font-semibold";
+                }
             }
         }
 
         function handleAuthSubmit(e) {
             e.preventDefault();
-            const pass = document.getElementById('auth-gate-pass').value;
+            const pass = document.getElementById('auth-gate-pass').value.trim();
             const token = document.getElementById('auth-gate-token').value.trim();
             const err = document.getElementById('auth-gate-error');
+            const modal = document.getElementById('auth-gate-modal');
 
             if (pass !== SGN_PASS) {
                 err.textContent = "Incorrect password.";
@@ -289,16 +297,19 @@
 
             err.classList.add('hidden');
             sessionStorage.setItem('sgn_auth', 'true');
-            document.getElementById('auth-gate-modal').classList.add('hidden');
+            
+            // Force modal to disappear completely
+            modal.style.display = 'none';
         }
 
         function logoutAdmin() {
             sessionStorage.removeItem('sgn_auth');
-            document.getElementById('auth-gate-pass').value = '';
+            const passInput = document.getElementById('auth-gate-pass');
+            if (passInput) passInput.value = '';
+            const modal = document.getElementById('auth-gate-modal');
+            if (modal) modal.style.display = 'flex';
             checkGate();
         }
-
-        checkGate();
 
         // 2. CHUNK-SAFE BASE64 (Zero stack limit, handles unlimited articles)
         function safeBase64Encode(str) {
