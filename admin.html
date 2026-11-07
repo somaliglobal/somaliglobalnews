@@ -23,9 +23,17 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
-    <!-- PASSWORD & ONE-TIME GITHUB GATE (NEW) -->
+    <!-- PASSWORD & ONE-TIME GITHUB GATE -->
     <div id="auth-gate-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 px-4">
         <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-slate-200 text-center space-y-4">
+            <div class="mx-auto w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300 sgn-glowing-badge">
+                <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
+                    <svg class="w-6 h-6 text-sky-400" viewBox="0 0 100 100" fill="none">
+                        <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+                        <text x="50" y="54" fill="#ffffff" font-family="'Inter', sans-serif" font-size="14" font-weight="900" text-anchor="middle" dominant-baseline="central">SGN</text>
+                    </svg>
+                </div>
+            </div>
             <h2 class="text-lg font-extrabold text-slate-900">SGN Editorial Desk</h2>
             <form onsubmit="handleAuthSubmit(event)" class="space-y-3 text-left">
                 <div>
@@ -36,7 +44,7 @@
                 <div id="auth-token-group">
                     <label class="block text-xs font-semibold text-gray-700 mb-1">GitHub Token (One-time)</label>
                     <input type="password" id="auth-gate-token" placeholder="ghp_xxxxxxxxxxxx"
-                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none font-mono text-xs">
                 </div>
                 <p id="auth-gate-error" class="hidden text-xs font-semibold text-red-600 text-center">Incorrect password.</p>
                 <button type="submit" class="w-full py-2.5 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
@@ -50,7 +58,6 @@
     <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <!-- Option A Inline Emblem -->
                 <div class="sgn-glowing-badge w-10 h-10 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300">
                     <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
                         <svg class="w-7 h-7 text-sky-400" viewBox="0 0 100 100" fill="none">
@@ -66,13 +73,18 @@
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3">
+            <!-- TOP RIGHT ACTIONS: Live Site, Commit to GitHub, Lock -->
+            <div class="flex items-center space-x-2.5">
                 <a href="index.html" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
                     <span>&larr; View Live Site</span>
                 </a>
-                <button onclick="exportNewsJson()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    <span>Export news.json</span>
+                <button id="header-commit-btn" onclick="commitAllToGitHub()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    <span id="header-commit-text">Commit to GitHub</span>
+                </button>
+                <button onclick="logoutAdmin()" title="Lock Portal" class="inline-flex items-center space-x-1 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <span>Lock</span>
                 </button>
             </div>
         </div>
@@ -248,11 +260,11 @@
 
     <!-- Unified Script -->
     <script>
-        // --- AUTH & GITHUB GATE CONFIG (NEW) ---
         const SGN_PASS = 'sgn2026';
         const GH_OWNER = 'somaliglobal';
         const GH_REPO = 'somaliglobalnews.com';
 
+        // --- AUTH & LOCK CONTROLLER ---
         function checkGate() {
             if (sessionStorage.getItem('sgn_auth') === 'true') {
                 document.getElementById('auth-gate-modal').classList.add('hidden');
@@ -280,9 +292,19 @@
             document.getElementById('auth-gate-modal').classList.add('hidden');
         }
 
+        function logoutAdmin() {
+            sessionStorage.removeItem('sgn_auth');
+            document.getElementById('auth-gate-modal').classList.remove('hidden');
+            document.getElementById('auth-gate-pass').value = '';
+            checkGate();
+        }
+
+        checkGate();
+
+        // --- GITHUB DIRECT SYNC ENGINE ---
         async function syncToGitHub(articlesArray) {
             const token = localStorage.getItem('sgn_gh_token');
-            if (!token) return;
+            if (!token) throw new Error("GitHub token not found. Please log in with token.");
 
             const paths = ['news.json', 'data/news.json', 'public/data/news.json'];
             for (let path of paths) {
@@ -294,7 +316,7 @@
                         const utf8Bytes = new TextEncoder().encode(JSON.stringify({ articles: articlesArray }, null, 2));
                         const base64 = btoa(String.fromCharCode(...utf8Bytes));
 
-                        await fetch(url, {
+                        const putRes = await fetch(url, {
                             method: 'PUT',
                             headers: {
                                 'Authorization': `Bearer ${token}`,
@@ -306,35 +328,47 @@
                                 sha: fileData.sha
                             })
                         });
-                        break;
+
+                        if (putRes.ok) return path;
                     }
                 } catch(e) {}
             }
+            throw new Error("Could not write to news.json on GitHub.");
         }
-        checkGate();
-        // --- END AUTH CONFIG ---
+
+        // Dedicated Header Commit Button Action
+        async function commitAllToGitHub() {
+            const btn = document.getElementById('header-commit-btn');
+            const txt = document.getElementById('header-commit-text');
+            btn.disabled = true;
+            txt.innerText = "Committing...";
+
+            try {
+                const target = await syncToGitHub(articles);
+                showBanner(`Success! Committed news archive directly to GitHub (${target}).`, "success");
+            } catch (err) {
+                showBanner(`GitHub commit failed: ${err.message}`, "error");
+            } finally {
+                btn.disabled = false;
+                txt.innerText = "Commit to GitHub";
+            }
+        }
 
         let articles = [];
 
-        // 1. Initialize data from news.json and localStorage
+        // 1. Initialize data from news.json directly
         async function loadExistingArticles() {
             try {
-                const local = localStorage.getItem('sgn_articles');
-                if (local) {
-                    articles = JSON.parse(local);
-                } else {
-                    let res = await fetch('public/data/news.json?t=' + Date.now());
-                    if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
-                    if (!res.ok) res = await fetch('news.json?t=' + Date.now());
-                    
-                    if (res.ok) {
-                        const data = await res.json();
-                        articles = data.articles || (Array.isArray(data) ? data : []);
-                        localStorage.setItem('sgn_articles', JSON.stringify(articles));
-                    }
+                let res = await fetch('news.json?t=' + Date.now());
+                if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
+                if (!res.ok) res = await fetch('public/data/news.json?t=' + Date.now());
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    articles = data.articles || (Array.isArray(data) ? data : []);
                 }
             } catch (err) {
-                console.warn("Notice: Fetching remote news.json failed, relying on localStorage.", err);
+                console.warn("Notice: Fetching remote news.json failed.", err);
             }
             renderTable();
         }
@@ -378,7 +412,6 @@
         const previewContainer = document.getElementById('image-preview-container');
         const previewImg = document.getElementById('image-preview');
 
-        // Clipboard Paste Listener
         [dropZone, urlInput].forEach(element => {
             element.addEventListener('paste', (e) => {
                 const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
@@ -395,7 +428,6 @@
             });
         });
 
-        // File compression for clipboard or local file uploads
         function compressAndSetImage(file) {
             showBanner("Processing and optimizing image...", "info");
             const reader = new FileReader();
@@ -437,7 +469,6 @@
             if (file) compressAndSetImage(file);
         }
 
-        // Live URL Preview with Anti-403 Proxy
         function updateImagePreview(val) {
             const cleanUrl = val.trim();
             if (!cleanUrl) {
@@ -445,7 +476,6 @@
                 return;
             }
 
-            // Route non-whitelisted external URLs through open image cache proxy
             if ((cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) &&
                 !cleanUrl.includes('images.weserv.nl') && 
                 !cleanUrl.includes('unsplash.com')) {
@@ -474,37 +504,29 @@
             previewContainer.classList.add('hidden');
         }
 
-        // 4. Form Submission (Create or Update)
+        // 4. Form Submission (Direct Commit to GitHub)
         async function handleFormSubmit(e) {
             e.preventDefault();
 
-            const editId = document.getElementById('edit-article-id').value;
-            const title = document.getElementById('article-title').value.trim();
-            const title_so = document.getElementById('article-title-so').value.trim();
-            const category = document.getElementById('article-category').value;
-            const location = document.getElementById('article-location').value.trim();
-            const dateInput = document.getElementById('article-date').value.trim();
-            const imageUrl = document.getElementById('article-image-url').value.trim();
-            const videoUrl = document.getElementById('article-video-url').value.trim();
-            const summary = document.getElementById('article-summary').value.trim();
-            const summary_so = document.getElementById('article-summary-so').value.trim();
-            const content = document.getElementById('article-content').value.trim();
-            const content_so = document.getElementById('article-content-so').value.trim();
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Publishing to GitHub...";
 
+            const editId = document.getElementById('edit-article-id').value;
             const articleObj = {
                 id: editId || `art-${Date.now()}`,
-                title: title,
-                title_so: title_so,
-                category: category,
-                location: location,
-                date: dateInput || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                title: document.getElementById('article-title').value.trim(),
+                title_so: document.getElementById('article-title-so').value.trim(),
+                category: document.getElementById('article-category').value,
+                location: document.getElementById('article-location').value.trim(),
+                date: document.getElementById('article-date').value.trim() || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
                 publishedAt: new Date().toISOString(),
-                imageUrl: imageUrl,
-                videoUrl: videoUrl || null,
-                summary: summary,
-                summary_so: summary_so,
-                content: content,
-                content_so: content_so,
+                imageUrl: document.getElementById('article-image-url').value.trim(),
+                videoUrl: document.getElementById('article-video-url').value.trim(),
+                summary: document.getElementById('article-summary').value.trim(),
+                summary_so: document.getElementById('article-summary-so').value.trim(),
+                content: document.getElementById('article-content').value.trim(),
+                content_so: document.getElementById('article-content-so').value.trim(),
                 comments: []
             };
 
@@ -513,17 +535,22 @@
                 if (idx !== -1) {
                     articleObj.comments = articles[idx].comments || [];
                     articles[idx] = articleObj;
-                    showBanner("Article updated successfully!", "success");
                 }
             } else {
                 articles.unshift(articleObj);
-                showBanner("New article published successfully to local storage & live site!", "success");
             }
 
-            localStorage.setItem('sgn_articles', JSON.stringify(articles));
-            syncToGitHub(articles); // Pushes update directly to GitHub repository
-            resetForm();
-            renderTable();
+            try {
+                await syncToGitHub(articles);
+                showBanner("Article published directly to GitHub live site!", "success");
+                resetForm();
+                renderTable();
+            } catch(err) {
+                showBanner(`Publish failed: ${err.message}`, "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Publish Article to Portal";
+            }
         }
 
         function editArticle(id) {
@@ -553,13 +580,16 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function deleteArticle(id) {
+        async function deleteArticle(id) {
             if (!confirm("Are you sure you want to delete this article?")) return;
             articles = articles.filter((a, idx) => String(a.id || idx) !== String(id));
-            localStorage.setItem('sgn_articles', JSON.stringify(articles));
-            syncToGitHub(articles);
-            renderTable();
-            showBanner("Article removed from portal.", "info");
+            try {
+                await syncToGitHub(articles);
+                renderTable();
+                showBanner("Article removed and synced with GitHub.", "info");
+            } catch(err) {
+                showBanner(`Delete failed on GitHub: ${err.message}`, "error");
+            }
         }
 
         function resetForm() {
@@ -570,21 +600,15 @@
             clearImage();
         }
 
-        function exportNewsJson() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ articles: articles }, null, 2));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", "news.json");
-            dlAnchor.click();
-        }
-
         function showBanner(msg, type = "info") {
             const banner = document.getElementById('status-banner');
-            banner.className = type === "success" 
-                ? "p-4 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border-emerald-200 block"
-                : "p-4 rounded-xl text-xs font-semibold bg-sky-50 text-sky-800 border-sky-200 block";
+            let colorClasses = "bg-sky-50 text-sky-800 border-sky-200";
+            if (type === "success") colorClasses = "bg-emerald-50 text-emerald-800 border-emerald-200";
+            if (type === "error") colorClasses = "bg-rose-50 text-rose-800 border-rose-200";
+
+            banner.className = `p-4 rounded-xl text-xs font-semibold border block ${colorClasses}`;
             banner.innerText = msg;
-            setTimeout(() => { banner.classList.add('hidden'); }, 4000);
+            setTimeout(() => { banner.classList.add('hidden'); }, 5000);
         }
 
         function escapeHtml(text) {
