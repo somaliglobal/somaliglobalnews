@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publisher Portal | SGN SomaliGlobalNews</title>
+    <title>SGN SomaliGlobalNews | Trusted Horn of Africa & Global News</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,7 +14,7 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #f8fafc;
-            color: #1e293b;
+            color: #0f172a;
         }
         .sgn-glowing-badge {
             box-shadow: 0 0 14px rgba(56, 189, 248, 0.45), 0 0 4px rgba(14, 165, 233, 0.6);
@@ -23,56 +23,13 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
-    <!-- FLOATING ALERT BANNER (Always visible anywhere on the page) -->
-    <div id="status-banner" class="hidden fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md transition-all duration-300"></div>
-
-    <!-- UNLOCK GATE (Password & One-Time GitHub Key) -->
-    <div id="auth-gate-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 px-4">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-slate-200 text-center space-y-4">
-            <div class="mx-auto w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300 sgn-glowing-badge">
-                <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
-                    <svg class="w-6 h-6 text-sky-400" viewBox="0 0 100 100" fill="none">
-                        <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
-                        <text x="50" y="54" fill="#ffffff" font-family="'Inter', sans-serif" font-size="14" font-weight="900" text-anchor="middle" dominant-baseline="central">SGN</text>
-                    </svg>
-                </div>
-            </div>
-            <h2 class="text-lg font-extrabold text-slate-900">SGN Editorial Desk</h2>
-            <p class="text-xs text-gray-500">Enter password and GitHub token to publish dispatches.</p>
-            
-            <form onsubmit="handleAuthSubmit(event)" class="space-y-3.5 text-left">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
-                    <input type="password" id="auth-gate-pass" placeholder="Enter password (sgn2026)" required autofocus
-                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                </div>
-
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="block text-xs font-semibold text-gray-700">GitHub Key (PAT Token)</label>
-                        <span id="token-status-indicator" class="text-[10px] font-semibold"></span>
-                    </div>
-                    <input type="password" id="auth-gate-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs font-mono focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                    <p class="text-[11px] text-gray-400 mt-1">Paste your key once. It stays saved in your browser.</p>
-                </div>
-
-                <p id="auth-gate-error" class="hidden text-xs font-semibold text-red-600 text-center"></p>
-                
-                <button type="submit" class="w-full py-2.5 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
-                    Unlock Desk
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Top Admin Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="sgn-glowing-badge w-10 h-10 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300">
+    <!-- Top Navigation Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3.5">
+                <div class="sgn-glowing-badge w-11 h-11 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300">
                     <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
-                        <svg class="w-7 h-7 text-sky-400" viewBox="0 0 100 100" fill="none">
+                        <svg class="w-8 h-8 text-sky-400" viewBox="0 0 100 100" fill="none">
                             <circle cx="50" cy="50" r="46" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="3 3" opacity="0.6"/>
                             <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
                             <text x="50" y="54" fill="#ffffff" font-family="'Inter', sans-serif" font-size="15" font-weight="900" letter-spacing="0.8" text-anchor="middle" dominant-baseline="central">SGN</text>
@@ -80,519 +37,208 @@
                     </div>
                 </div>
                 <div>
-                    <h1 class="text-lg font-extrabold text-[#0071e3] leading-none">SGN SomaliGlobalNews</h1>
-                    <p class="text-[11px] text-gray-500 font-semibold tracking-wide uppercase mt-1">Publisher &amp; Editorial Desk</p>
+                    <a href="index.html" class="text-xl font-black text-[#0071e3] tracking-tight hover:opacity-90 transition">SGN SomaliGlobalNews</a>
+                    <p class="text-[11px] text-gray-500 font-semibold tracking-wider uppercase">Horn of Africa &amp; International News</p>
                 </div>
             </div>
 
-            <!-- Top Header Actions -->
-            <div class="flex items-center space-x-2.5">
-                <a href="index.html" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
-                    <span>&larr; View Live Site</span>
+            <!-- Language Toggle & Admin Link -->
+            <div class="flex items-center space-x-3">
+                <div class="inline-flex rounded-xl bg-gray-100 p-1 border border-gray-200 text-xs font-semibold">
+                    <button id="lang-en" onclick="setLanguage('en')" class="px-3 py-1.5 rounded-lg bg-white shadow-xs text-blue-700 transition">English</button>
+                    <button id="lang-so" onclick="setLanguage('so')" class="px-3 py-1.5 rounded-lg text-gray-600 hover:text-gray-900 transition">Af-Soomaali</button>
+                </div>
+                <a href="admin.html" title="Editorial Desk" class="p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                 </a>
-                <button id="header-commit-btn" onclick="commitAllToGitHub()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                    <span id="header-commit-text">Commit</span>
-                </button>
-                <button onclick="logoutAdmin()" title="Lock Portal" class="inline-flex items-center space-x-1 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    <span>Lock</span>
-                </button>
+            </div>
+        </div>
+
+        <!-- Category Bar -->
+        <div class="border-t border-gray-100 bg-gray-50/70 overflow-x-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex space-x-2 text-xs font-semibold whitespace-nowrap">
+                <button onclick="filterCategory('All')" class="cat-btn px-3.5 py-1.5 rounded-lg bg-[#0071e3] text-white transition shadow-2xs">All News</button>
+                <button onclick="filterCategory('Somalia')" class="cat-btn px-3.5 py-1.5 rounded-lg text-gray-600 hover:bg-white hover:text-gray-900 transition">Somalia</button>
+                <button onclick="filterCategory('Horn of Africa')" class="cat-btn px-3.5 py-1.5 rounded-lg text-gray-600 hover:bg-white hover:text-gray-900 transition">Horn of Africa</button>
+                <button onclick="filterCategory('Middle East')" class="cat-btn px-3.5 py-1.5 rounded-lg text-gray-600 hover:bg-white hover:text-gray-900 transition">Middle East</button>
+                <button onclick="filterCategory('World')" class="cat-btn px-3.5 py-1.5 rounded-lg text-gray-600 hover:bg-white hover:text-gray-900 transition">World</button>
+                <button onclick="filterCategory('Editorial')" class="cat-btn px-3.5 py-1.5 rounded-lg text-gray-600 hover:bg-white hover:text-gray-900 transition">Editorial</button>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
-
-        <!-- Article Publishing Form -->
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-                <h2 class="text-base font-bold text-gray-900" id="form-heading">Create New Dispatch</h2>
-                <button type="button" onclick="resetForm()" class="text-xs text-gray-500 hover:text-gray-800 underline">Reset Form</button>
-            </div>
-
-            <form id="article-form" onsubmit="handleFormSubmit(event)" class="p-6 sm:p-8 space-y-6">
-                <input type="hidden" id="edit-article-id" value="">
-
-                <!-- Metadata Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Category *</label>
-                        <select id="article-category" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white">
-                            <option value="Somalia">Somalia</option>
-                            <option value="Horn of Africa">Horn of Africa</option>
-                            <option value="Middle East">Middle East</option>
-                            <option value="World">World</option>
-                            <option value="Editorial">Editorial</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Location / Bureau Dateline</label>
-                        <input type="text" id="article-location" placeholder="e.g. MOGADISHU, ADEN, NAIROBI" 
-                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Publish Date (Auto or Custom)</label>
-                        <input type="text" id="article-date" placeholder="Leave empty for current time" 
-                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                    </div>
-                </div>
-
-                <!-- Clean Image Web URL Section -->
-                <div class="bg-sky-50/40 rounded-2xl p-5 border border-sky-100 space-y-3">
-                    <label class="block text-xs font-bold text-sky-900 uppercase tracking-wider">
-                        Image Web URL *
-                    </label>
-                    <input type="text" 
-                           id="article-image-url" 
-                           required
-                           placeholder="Paste direct image web link (https://...)" 
-                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white"
-                           oninput="updateImagePreview(this.value)">
-
-                    <!-- Live Image Preview Box -->
-                    <div id="image-preview-container" class="hidden relative rounded-xl overflow-hidden border border-gray-200 bg-gray-900 h-48 w-full max-w-md mx-auto shadow-inner">
-                        <img id="image-preview" src="" alt="Preview" class="w-full h-full object-cover">
-                        <button type="button" 
-                                onclick="clearImage()" 
-                                title="Remove image"
-                                class="absolute top-2 right-2 bg-black/70 hover:bg-black text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition">
-                            &times;
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Video URL Field -->
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Optional Video Snippet URL (YouTube / Direct Video)</label>
-                    <input type="text" id="article-video-url" placeholder="e.g. https://www.youtube.com/watch?v=... or leave empty" 
-                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                </div>
-
-                <!-- English Content Section -->
-                <div class="border-t border-gray-100 pt-5 space-y-4">
-                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">English Dispatch</h3>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Headline (English) *</label>
-                        <input type="text" id="article-title" required placeholder="Enter primary news headline" 
-                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Summary / Lead Paragraph (English) *</label>
-                        <textarea id="article-summary" rows="2" required placeholder="Concise overview for cards and reader view..." 
-                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Full Article Body (English) *</label>
-                        <textarea id="article-content" rows="6" required placeholder="Write the full news report. Separate paragraphs with a blank line." 
-                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
-                    </div>
-                </div>
-
-                <!-- Af-Soomaali Content Section -->
-                <div class="border-t border-gray-100 pt-5 space-y-4">
-                    <h3 class="text-xs font-bold text-amber-700 uppercase tracking-wider">Faahfaahinta Af-Soomaaliga (Optional but Recommended)</h3>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Cinwaanka (Af-Soomaali)</label>
-                        <input type="text" id="article-title-so" placeholder="Geli cinwaanka warbixinta oo Af-Soomaali ah" 
-                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Soo-koobidda (Af-Soomaali)</label>
-                        <textarea id="article-summary-so" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah..." 
-                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Qoraalka Buuxa (Af-Soomaali)</label>
-                        <textarea id="article-content-so" rows="6" placeholder="Qoraalka oo faahfaahsan. Sadar bannaan u dhexeysii cutubyada." 
-                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
-                    </div>
-                </div>
-
-                <!-- Bottom Publish Button -->
-                <div class="pt-4 flex items-center justify-end space-x-3">
-                    <button type="submit" id="submit-btn" class="px-7 py-3 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
-                        Publish &amp; Commit Article
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Manage Existing Articles -->
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-4">
-            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
-                <h3 class="text-base font-bold text-gray-900">Manage Published Articles</h3>
-                <span id="total-articles-count" class="text-xs text-gray-500 font-medium">0 articles</span>
-            </div>
-            
-            <div id="articles-table-container" class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-gray-600">
-                    <thead class="text-xs text-gray-400 uppercase bg-gray-50 border-b border-gray-100">
-                        <tr>
-                            <th class="py-3 px-4">Image</th>
-                            <th class="py-3 px-4">Headline</th>
-                            <th class="py-3 px-4">Category</th>
-                            <th class="py-3 px-4">Date</th>
-                            <th class="py-3 px-4 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="articles-list-body" class="divide-y divide-gray-100"></tbody>
-                </table>
-            </div>
-        </div>
+    <!-- Main Content Grid -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <div id="articles-loading" class="text-center py-20 text-sm font-medium text-gray-400">Loading latest dispatches...</div>
+        
+        <!-- Articles Grid -->
+        <div id="articles-grid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
 
-    <!-- Unified Script -->
+    <!-- Reader Modal -->
+    <div id="article-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 sm:p-6 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200">
+            <div class="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-gray-100 flex items-center justify-between z-10">
+                <span id="modal-category" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-50 text-sky-700"></span>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 font-bold transition">&times;</button>
+            </div>
+            <div class="p-6 sm:p-8 space-y-5">
+                <img id="modal-img" src="" alt="News Image" class="w-full h-72 sm:h-96 object-cover rounded-xl border border-gray-100 shadow-sm">
+                <div class="text-xs text-gray-400 font-medium flex items-center space-x-2">
+                    <span id="modal-location" class="font-bold text-gray-700"></span>
+                    <span>&bull;</span>
+                    <span id="modal-date"></span>
+                </div>
+                <h1 id="modal-title" class="text-xl sm:text-2xl font-black text-gray-900 leading-snug"></h1>
+                <p id="modal-summary" class="text-sm sm:text-base font-semibold text-gray-700 border-l-4 border-[#0071e3] pl-4 py-1 italic bg-sky-50/40 rounded-r-lg"></p>
+                <div id="modal-video-container" class="hidden pt-2"></div>
+                <div id="modal-body" class="text-sm sm:text-base text-gray-800 leading-relaxed space-y-4 border-t border-gray-100 pt-5"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12 py-8 text-center text-xs text-gray-400">
+        <p>&copy; 2026 SomaliGlobalNews (SGN). All rights reserved.</p>
+        <p class="mt-1"><a href="admin.html" class="text-gray-400 hover:underline">Editorial Desk Access</a></p>
+    </footer>
+
+    <!-- Script to Load Articles directly from public/data/news.json -->
     <script>
-        const SGN_PASS = 'sgn2026';
-        const GH_OWNER = 'somaliglobal';
-        const GH_REPO = 'somaliglobalnews.com';
+        let articlesData = [];
+        let currentLang = 'en';
+        let currentCategory = 'All';
 
-        // 1. GATE CONTROLLER: Displays Password & Saved Token Status
-        function checkGate() {
-            if (sessionStorage.getItem('sgn_auth') === 'true') {
-                document.getElementById('auth-gate-modal').classList.add('hidden');
-                return;
-            }
-            document.getElementById('auth-gate-modal').classList.remove('hidden');
-
-            const saved = localStorage.getItem('sgn_gh_token') || '';
-            const tokenInput = document.getElementById('auth-gate-token');
-            const ind = document.getElementById('token-status-indicator');
-
-            if (saved) {
-                tokenInput.value = saved;
-                ind.textContent = "✓ Key saved in memory";
-                ind.className = "text-[10px] text-emerald-600 font-semibold";
-            } else {
-                ind.textContent = "Required for publishing";
-                ind.className = "text-[10px] text-amber-600 font-semibold";
-            }
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const pass = document.getElementById('auth-gate-pass').value;
-            const token = document.getElementById('auth-gate-token').value.trim();
-            const err = document.getElementById('auth-gate-error');
-
-            if (pass !== SGN_PASS) {
-                err.textContent = "Incorrect password.";
-                err.classList.remove('hidden');
-                return;
-            }
-
-            if (token) {
-                localStorage.setItem('sgn_gh_token', token);
-            }
-
-            err.classList.add('hidden');
-            sessionStorage.setItem('sgn_auth', 'true');
-            document.getElementById('auth-gate-modal').classList.add('hidden');
-        }
-
-        function logoutAdmin() {
-            sessionStorage.removeItem('sgn_auth');
-            document.getElementById('auth-gate-pass').value = '';
-            checkGate();
-        }
-
-        checkGate();
-
-        // 2. CHUNK-SAFE BASE64 (Zero stack limit, handles unlimited articles)
-        function safeBase64Encode(str) {
-            const bytes = new TextEncoder().encode(str);
-            let binary = '';
-            const len = bytes.byteLength;
-            for (let i = 0; i < len; i++) {
-                binary += String.fromCharCode(bytes[i]);
-            }
-            return btoa(binary);
-        }
-
-        // 3. GITHUB DIRECT SYNC ENGINE (Writes directly to public/data/news.json)
-        async function syncToGitHub(articlesArray) {
-            const token = localStorage.getItem('sgn_gh_token');
-            if (!token) {
-                logoutAdmin();
-                throw new Error("GitHub Key missing. Please enter your GitHub key on the unlock screen.");
-            }
-
-            const path = 'public/data/news.json';
-            const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=main&t=${Date.now()}`;
-
-            // Fetch current SHA from GitHub
-            const getRes = await fetch(apiUrl, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/vnd.github.v3+json'
-                }
-            });
-
-            if (!getRes.ok) {
-                const getErr = await getRes.json().catch(() => ({}));
-                throw new Error(`Cannot access ${path} (${getRes.status}: ${getErr.message || 'Check key permissions'})`);
-            }
-
-            const fileData = await getRes.json();
-            const currentSha = fileData.sha;
-
-            // Prepare safe payload
-            const payload = {
-                updatedAt: new Date().toISOString(),
-                articles: articlesArray
-            };
-            const jsonString = JSON.stringify(payload, null, 2);
-            const base64Content = safeBase64Encode(jsonString);
-
-            // Commit PUT directly to main branch
-            const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: `SGN Dispatch: update ${path}`,
-                    content: base64Content,
-                    sha: currentSha,
-                    branch: "main"
-                })
-            });
-
-            if (!putRes.ok) {
-                const errJson = await putRes.json().catch(() => ({}));
-                throw new Error(`GitHub rejected commit (${putRes.status}: ${errJson.message || 'Write failed'})`);
-            }
-
-            return path;
-        }
-
-        // Manual Commit Header Button
-        async function commitAllToGitHub() {
-            const btn = document.getElementById('header-commit-btn');
-            const txt = document.getElementById('header-commit-text');
-            if (btn) btn.disabled = true;
-            if (txt) txt.innerText = "Committing...";
-
-            try {
-                const target = await syncToGitHub(articles);
-                showBanner(`Success! Committed all articles live to ${target}.`, "success");
-            } catch (err) {
-                showBanner(`GitHub commit failed: ${err.message}`, "error");
-            } finally {
-                if (btn) btn.disabled = false;
-                if (txt) txt.innerText = "Commit";
-            }
-        }
-
-        let articles = [];
-
-        // 4. LOAD ARTICLES (Loads from public/data/news.json)
-        async function loadExistingArticles() {
-            const local = localStorage.getItem('sgn_articles');
-            if (local) {
-                try {
-                    articles = JSON.parse(local);
-                    renderTable();
-                } catch (e) {}
-            }
-
+        async function loadNews() {
             try {
                 let res = await fetch('public/data/news.json?t=' + Date.now());
                 if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
                 if (!res.ok) res = await fetch('news.json?t=' + Date.now());
-                
+
                 if (res.ok) {
                     const data = await res.json();
-                    const remoteArticles = data.articles || (Array.isArray(data) ? data : []);
-                    if (remoteArticles.length > 0) {
-                        articles = remoteArticles;
-                        localStorage.setItem('sgn_articles', JSON.stringify(articles));
-                        renderTable();
-                    }
+                    articlesData = data.articles || (Array.isArray(data) ? data : []);
                 }
             } catch (err) {
-                console.warn("Notice: Fetching remote news.json failed, relying on portal memory.", err);
+                console.error("Failed to load articles:", err);
             }
+
+            document.getElementById('articles-loading').classList.add('hidden');
+            document.getElementById('articles-grid').classList.remove('hidden');
+            renderArticles();
         }
 
-        // 5. RENDER PORTAL ARTICLE TABLE
-        function renderTable() {
-            const tbody = document.getElementById('articles-list-body');
-            const countEl = document.getElementById('total-articles-count');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            if (countEl) countEl.innerText = `${articles.length} ${articles.length === 1 ? 'article' : 'articles'}`;
+        function setLanguage(lang) {
+            currentLang = lang;
+            const enBtn = document.getElementById('lang-en');
+            const soBtn = document.getElementById('lang-so');
 
-            if (articles.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-gray-400 text-xs italic">No articles published yet.</td></tr>`;
+            if (lang === 'en') {
+                enBtn.className = "px-3 py-1.5 rounded-lg bg-white shadow-xs text-blue-700 transition";
+                soBtn.className = "px-3 py-1.5 rounded-lg text-gray-600 hover:text-gray-900 transition";
+            } else {
+                soBtn.className = "px-3 py-1.5 rounded-lg bg-white shadow-xs text-blue-700 transition";
+                enBtn.className = "px-3 py-1.5 rounded-lg text-gray-600 hover:text-gray-900 transition";
+            }
+            renderArticles();
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All News'))) {
+                    btn.className = "cat-btn px-3.5 py-1.5 rounded-lg bg-[#0071e3] text-white transition shadow-2xs";
+                } else {
+                    btn.className = "cat-btn px-3.5 py-1.5 rounded-lg text-gray-600 hover:bg-white hover:text-gray-900 transition";
+                }
+            });
+            renderArticles();
+        }
+
+        function renderArticles() {
+            const grid = document.getElementById('articles-grid');
+            grid.innerHTML = '';
+
+            const filtered = currentCategory === 'All' 
+                ? articlesData 
+                : articlesData.filter(a => a.category === currentCategory);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-16 text-center text-sm text-gray-400">No dispatches available in this category.</div>`;
                 return;
             }
 
-            articles.forEach((art, index) => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-gray-50 transition";
-                const imgUrl = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80';
-                
-                tr.innerHTML = `
-                    <td class="py-3 px-4">
-                        <img src="${imgUrl}" class="w-12 h-10 object-cover rounded-lg border border-gray-200" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80'">
-                    </td>
-                    <td class="py-3 px-4 font-semibold text-gray-900 max-w-xs truncate">${escapeHtml(art.title || 'Untitled')}</td>
-                    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700">${escapeHtml(art.category || 'General')}</span></td>
-                    <td class="py-3 px-4 text-xs text-gray-400">${art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : (art.date || 'Recent')}</td>
-                    <td class="py-3 px-4 text-right space-x-2">
-                        <button onclick="editArticle('${art.id || index}')" class="text-xs font-semibold text-sky-600 hover:text-sky-800">Edit</button>
-                        <button onclick="deleteArticle('${art.id || index}')" class="text-xs font-semibold text-red-500 hover:text-red-700">Delete</button>
-                    </td>
+            filtered.forEach((art, idx) => {
+                const title = (currentLang === 'so' && art.title_so) ? art.title_so : (art.title || 'Untitled');
+                const summary = (currentLang === 'so' && art.summary_so) ? art.summary_so : (art.summary || '');
+                const img = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80';
+                const dateStr = art.date || (art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : 'Recent');
+
+                const card = document.createElement('article');
+                card.className = "bg-white rounded-2xl border border-gray-200 shadow-2xs hover:shadow-md transition overflow-hidden flex flex-col cursor-pointer";
+                card.onclick = () => openModal(art);
+
+                card.innerHTML = `
+                    <div class="h-48 w-full overflow-hidden bg-gray-100 relative">
+                        <img src="${img}" alt="${escapeHtml(title)}" class="w-full h-full object-cover transition duration-300 hover:scale-105" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80'">
+                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/75 text-white backdrop-blur-xs">${escapeHtml(art.category || 'News')}</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-3">
+                        <div class="space-y-2">
+                            <div class="text-[11px] text-gray-400 font-semibold">${escapeHtml(art.location || 'SGN Bureau')} &bull; ${dateStr}</div>
+                            <h2 class="text-base font-bold text-gray-900 leading-snug line-clamp-2">${escapeHtml(title)}</h2>
+                            <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${escapeHtml(summary)}</p>
+                        </div>
+                        <div class="pt-2 text-xs font-bold text-[#0071e3] flex items-center space-x-1">
+                            <span>Read Full Report</span>
+                            <span>&rarr;</span>
+                        </div>
+                    </div>
                 `;
-                tbody.appendChild(tr);
+                grid.appendChild(card);
             });
         }
 
-        // 6. IMAGE PREVIEW
-        const urlInput = document.getElementById('article-image-url');
-        const previewContainer = document.getElementById('image-preview-container');
-        const previewImg = document.getElementById('image-preview');
+        function openModal(art) {
+            const title = (currentLang === 'so' && art.title_so) ? art.title_so : (art.title || 'Untitled');
+            const summary = (currentLang === 'so' && art.summary_so) ? art.summary_so : (art.summary || '');
+            const content = (currentLang === 'so' && art.content_so) ? art.content_so : (art.content || '');
+            const img = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+            const dateStr = art.date || (art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : 'Recent');
 
-        function updateImagePreview(val) {
-            const cleanUrl = val.trim();
-            if (!cleanUrl) {
-                clearImage();
-                return;
-            }
-            showPreview(cleanUrl);
-        }
+            document.getElementById('modal-category').innerText = art.category || 'News';
+            document.getElementById('modal-img').src = img;
+            document.getElementById('modal-location').innerText = art.location || 'SGN Bureau';
+            document.getElementById('modal-date').innerText = dateStr;
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-summary').innerText = summary;
 
-        function showPreview(src) {
-            if (!previewImg || !previewContainer) return;
-            previewImg.src = src;
-            previewImg.onerror = () => { previewContainer.classList.add('hidden'); };
-            previewImg.onload = () => { previewContainer.classList.remove('hidden'); };
-        }
-
-        function clearImage() {
-            if (urlInput) urlInput.value = '';
-            if (previewImg) previewImg.src = '';
-            if (previewContainer) previewContainer.classList.add('hidden');
-        }
-
-        // 7. FORM SUBMIT: Updates Portal Table & Commits Live in One Step
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-
-            const submitBtn = document.getElementById('submit-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Publishing & Committing...";
-
-            const editId = document.getElementById('edit-article-id').value;
-            const articleObj = {
-                id: editId || `art-${Date.now()}`,
-                title: document.getElementById('article-title').value.trim(),
-                title_so: document.getElementById('article-title-so').value.trim(),
-                category: document.getElementById('article-category').value,
-                location: document.getElementById('article-location').value.trim(),
-                date: document.getElementById('article-date').value.trim() || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-                publishedAt: new Date().toISOString(),
-                imageUrl: document.getElementById('article-image-url').value.trim(),
-                videoUrl: document.getElementById('article-video-url').value.trim() || null,
-                summary: document.getElementById('article-summary').value.trim(),
-                summary_so: document.getElementById('article-summary-so').value.trim(),
-                content: document.getElementById('article-content').value.trim(),
-                content_so: document.getElementById('article-content-so').value.trim(),
-                comments: []
-            };
-
-            if (editId) {
-                const idx = articles.findIndex(a => String(a.id) === String(editId));
-                if (idx !== -1) {
-                    articleObj.comments = articles[idx].comments || [];
-                    articles[idx] = articleObj;
+            // Video embed handling
+            const vidContainer = document.getElementById('modal-video-container');
+            if (art.videoUrl) {
+                let embedUrl = art.videoUrl;
+                if (embedUrl.includes('watch?v=')) {
+                    embedUrl = embedUrl.replace('watch?v=', 'embed/');
                 }
+                vidContainer.innerHTML = `<iframe class="w-full h-64 rounded-xl shadow-xs" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+                vidContainer.classList.remove('hidden');
             } else {
-                articles.unshift(articleObj);
+                vidContainer.classList.add('hidden');
+                vidContainer.innerHTML = '';
             }
 
-            localStorage.setItem('sgn_articles', JSON.stringify(articles));
-            renderTable();
+            // Paragraphs handling
+            const bodyEl = document.getElementById('modal-body');
+            bodyEl.innerHTML = content.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
 
-            try {
-                const target = await syncToGitHub(articles);
-                showBanner(`Success! Published and committed live to ${target}.`, "success");
-                resetForm();
-            } catch(err) {
-                showBanner(`Saved in portal, but GitHub sync failed: ${err.message}`, "error");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Publish & Commit Article";
-            }
+            document.getElementById('article-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
 
-        function editArticle(id) {
-            const art = articles.find((a, idx) => String(a.id || idx) === String(id));
-            if (!art) return;
-
-            document.getElementById('edit-article-id').value = art.id || id;
-            document.getElementById('form-heading').innerText = "Edit Dispatch";
-            document.getElementById('submit-btn').innerText = "Save & Update Dispatch";
-
-            document.getElementById('article-category').value = art.category || 'Somalia';
-            document.getElementById('article-location').value = art.location || '';
-            document.getElementById('article-date').value = art.date || '';
-            document.getElementById('article-image-url').value = art.imageUrl || art.image || '';
-            document.getElementById('article-video-url').value = art.videoUrl || '';
-            document.getElementById('article-title').value = art.title || '';
-            document.getElementById('article-title-so').value = art.title_so || '';
-            document.getElementById('article-summary').value = art.summary || '';
-            document.getElementById('article-summary-so').value = art.summary_so || '';
-            document.getElementById('article-content').value = art.content || '';
-            document.getElementById('article-content-so').value = art.content_so || '';
-
-            if (art.imageUrl || art.image) {
-                showPreview(art.imageUrl || art.image);
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // 8. DELETE ARTICLE
-        async function deleteArticle(id) {
-            if (!confirm("Are you sure you want to delete this article?")) return;
-
-            articles = articles.filter((a, idx) => String(a.id || idx) !== String(id));
-            localStorage.setItem('sgn_articles', JSON.stringify(articles));
-            renderTable();
-
-            try {
-                await syncToGitHub(articles);
-                showBanner("Article removed from portal and committed live to GitHub.", "info");
-            } catch(err) {
-                showBanner(`Removed from portal, but GitHub sync failed: ${err.message}`, "error");
-            }
-        }
-
-        function resetForm() {
-            document.getElementById('article-form').reset();
-            document.getElementById('edit-article-id').value = '';
-            document.getElementById('form-heading').innerText = "Create New Dispatch";
-            document.getElementById('submit-btn').innerText = "Publish & Commit Article";
-            clearImage();
-        }
-
-        // 9. FLOATING BANNER
-        function showBanner(msg, type = "info") {
-            const banner = document.getElementById('status-banner');
-            if (!banner) return;
-            let colorClasses = "bg-sky-50 text-sky-800 border-sky-300";
-            if (type === "success") colorClasses = "bg-emerald-50 text-emerald-800 border-emerald-300";
-            if (type === "error") colorClasses = "bg-rose-50 text-rose-800 border-rose-300";
-
-            banner.className = `fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md block ${colorClasses}`;
-            banner.innerText = msg;
-            setTimeout(() => { banner.classList.add('hidden'); }, 7000);
+        function closeModal() {
+            document.getElementById('article-modal').classList.add('hidden');
+            document.getElementById('modal-video-container').innerHTML = '';
+            document.body.style.overflow = 'auto';
         }
 
         function escapeHtml(text) {
@@ -600,7 +246,7 @@
             return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
-        document.addEventListener('DOMContentLoaded', loadExistingArticles);
+        document.addEventListener('DOMContentLoaded', loadNews);
     </script>
 </body>
 </html>
