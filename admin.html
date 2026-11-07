@@ -294,7 +294,7 @@
             const token = localStorage.getItem('sgn_gh_token');
             if (!token) throw new Error("GitHub token not found. Please log in with your token.");
 
-            const paths = ['news.json', 'data/news.json', 'public/data/news.json'];
+            const paths = ['public/data/news.json', 'data/news.json', 'news.json'];
             let lastError = null;
 
             for (let path of paths) {
@@ -370,10 +370,9 @@
                 } catch (e) {}
             }
 
-            try {
-                let res = await fetch('news.json?t=' + Date.now());
-                if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
-                if (!res.ok) res = await fetch('public/data/news.json?t=' + Date.now());
+            try {let res = await fetch('public/data/news.json?t=' + Date.now());
+if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
+if (!res.ok) res = await fetch('news.json?t=' + Date.now());
                 
                 if (res.ok) {
                     const data = await res.json();
