@@ -23,6 +23,9 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
+    <!-- FLOATING ALERT BANNER (Always visible anywhere on the page) -->
+    <div id="status-banner" class="hidden fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md transition-all duration-300"></div>
+
     <!-- PASSWORD & ONE-TIME GITHUB GATE -->
     <div id="auth-gate-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 px-4">
         <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-slate-200 text-center space-y-4">
@@ -73,16 +76,16 @@
                 </div>
             </div>
 
-            <!-- Header Actions -->
+            <!-- TOP RIGHT ACTIONS: View Live Site, Commit, Lock -->
             <div class="flex items-center space-x-2.5">
                 <a href="index.html" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
                     <span>&larr; View Live Site</span>
                 </a>
                 <button id="header-commit-btn" onclick="commitAllToGitHub()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                    <span id="header-commit-text">Commit to GitHub</span>
+                    <span id="header-commit-text">Commit</span>
                 </button>
-                <button onclick="logoutAdmin()" title="Lock Portal" class="inline-flex items-center space-x-1 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
+                <button onclick="logoutAdmin()" title="Lock Portal" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                     <span>Lock</span>
                 </button>
@@ -92,9 +95,6 @@
 
     <!-- Main Container -->
     <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
-        
-        <!-- Status Notification Banner -->
-        <div id="status-banner" class="hidden p-4 rounded-xl text-sm font-medium border"></div>
 
         <!-- Article Publishing Form -->
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
@@ -130,7 +130,7 @@
                     </div>
                 </div>
 
-                <!-- Clean Image Input Section -->
+                <!-- Clean Image Web URL Section -->
                 <div class="bg-sky-50/40 rounded-2xl p-5 border border-sky-100 space-y-3">
                     <label class="block text-xs font-bold text-sky-900 uppercase tracking-wider">
                         Image Web URL *
@@ -138,7 +138,7 @@
                     <input type="text" 
                            id="article-image-url" 
                            required
-                           placeholder="Paste direct image URL (https://...)" 
+                           placeholder="Paste direct image web link (https://...)" 
                            class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white"
                            oninput="updateImagePreview(this.value)">
 
@@ -156,7 +156,7 @@
 
                 <!-- Video URL Field -->
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">Optional Video Snippet URL (YouTube Embed / Direct Video)</label>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Optional Video Snippet URL (YouTube / Direct Video)</label>
                     <input type="text" id="article-video-url" placeholder="e.g. https://www.youtube.com/watch?v=... or leave empty" 
                            class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
                 </div>
@@ -201,10 +201,10 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
+                <!-- Bottom Publish Button -->
                 <div class="pt-4 flex items-center justify-end space-x-3">
-                    <button type="submit" id="submit-btn" class="px-6 py-3 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
-                        Publish Article to Portal
+                    <button type="submit" id="submit-btn" class="px-7 py-3 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
+                        Publish &amp; Commit Article
                     </button>
                 </div>
             </form>
@@ -277,23 +277,23 @@
 
         checkGate();
 
-        // 2. SAFE BASE64 ENCODER (Prevents call stack crashes with large article lists)
+        // 2. CHUNK-SAFE BASE64 (Zero stack-size limit, handles 100+ articles instantly)
         function safeBase64Encode(str) {
             const bytes = new TextEncoder().encode(str);
             let binary = '';
-            const chunkSize = 8192;
-            for (let i = 0; i < bytes.length; i += chunkSize) {
-                const chunk = bytes.subarray(i, i + chunkSize);
-                binary += String.fromCharCode.apply(null, chunk);
+            const len = bytes.byteLength;
+            for (let i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
             }
             return btoa(binary);
         }
 
-        // 3. GITHUB DIRECT SYNC ENGINE
+        // 3. GITHUB DIRECT SYNC ENGINE (Writes directly to public/data/news.json)
         async function syncToGitHub(articlesArray) {
             const token = localStorage.getItem('sgn_gh_token');
-            if (!token) throw new Error("GitHub token not found. Please log in with your token.");
+            if (!token) throw new Error("GitHub token not found. Please log in with your GitHub token.");
 
+            // Primary target is public/data/news.json
             const paths = ['public/data/news.json', 'data/news.json', 'news.json'];
             let lastError = null;
 
@@ -309,7 +309,11 @@
 
                     if (res.ok) {
                         const fileData = await res.json();
-                        const jsonString = JSON.stringify({ articles: articlesArray }, null, 2);
+                        const payload = {
+                            updatedAt: new Date().toISOString(),
+                            articles: articlesArray
+                        };
+                        const jsonString = JSON.stringify(payload, null, 2);
                         const base64Content = safeBase64Encode(jsonString);
 
                         const putRes = await fetch(url, {
@@ -337,15 +341,15 @@
                     lastError = e.message;
                 }
             }
-            throw new Error(lastError || "Could not write to news.json on GitHub.");
+            throw new Error(lastError || "Could not write to public/data/news.json on GitHub.");
         }
 
-        // Dedicated Header Commit Button Action
+        // Header Commit Button (Manual Commit)
         async function commitAllToGitHub() {
             const btn = document.getElementById('header-commit-btn');
             const txt = document.getElementById('header-commit-text');
-            btn.disabled = true;
-            txt.innerText = "Committing...";
+            if (btn) btn.disabled = true;
+            if (txt) txt.innerText = "Committing...";
 
             try {
                 const target = await syncToGitHub(articles);
@@ -353,14 +357,14 @@
             } catch (err) {
                 showBanner(`GitHub commit failed: ${err.message}`, "error");
             } finally {
-                btn.disabled = false;
-                txt.innerText = "Commit to GitHub";
+                if (btn) btn.disabled = false;
+                if (txt) txt.innerText = "Commit";
             }
         }
 
         let articles = [];
 
-        // 4. LOAD ARTICLES (Restores portal table from local storage immediately, then updates from remote)
+        // 4. LOAD ARTICLES (Reads public/data/news.json first)
         async function loadExistingArticles() {
             const local = localStorage.getItem('sgn_articles');
             if (local) {
@@ -370,9 +374,10 @@
                 } catch (e) {}
             }
 
-            try {let res = await fetch('public/data/news.json?t=' + Date.now());
-if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
-if (!res.ok) res = await fetch('news.json?t=' + Date.now());
+            try {
+                let res = await fetch('public/data/news.json?t=' + Date.now());
+                if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
+                if (!res.ok) res = await fetch('news.json?t=' + Date.now());
                 
                 if (res.ok) {
                     const data = await res.json();
@@ -384,7 +389,7 @@ if (!res.ok) res = await fetch('news.json?t=' + Date.now());
                     }
                 }
             } catch (err) {
-                console.warn("Notice: Fetching remote news.json failed, using portal storage.", err);
+                console.warn("Notice: Fetching remote news.json failed, relying on portal memory.", err);
             }
         }
 
@@ -422,7 +427,7 @@ if (!res.ok) res = await fetch('news.json?t=' + Date.now());
             });
         }
 
-        // 6. IMAGE PREVIEW (Direct Clean Web URLs)
+        // 6. IMAGE PREVIEW (Fast clean URLs)
         const urlInput = document.getElementById('article-image-url');
         const previewContainer = document.getElementById('image-preview-container');
         const previewImg = document.getElementById('image-preview');
@@ -439,12 +444,8 @@ if (!res.ok) res = await fetch('news.json?t=' + Date.now());
         function showPreview(src) {
             if (!previewImg || !previewContainer) return;
             previewImg.src = src;
-            previewImg.onerror = () => {
-                previewContainer.classList.add('hidden');
-            };
-            previewImg.onload = () => {
-                previewContainer.classList.remove('hidden');
-            };
+            previewImg.onerror = () => { previewContainer.classList.add('hidden'); };
+            previewImg.onload = () => { previewContainer.classList.remove('hidden'); };
         }
 
         function clearImage() {
@@ -453,13 +454,13 @@ if (!res.ok) res = await fetch('news.json?t=' + Date.now());
             if (previewContainer) previewContainer.classList.add('hidden');
         }
 
-        // 7. PUBLISH DISPATCH (Updates Portal Table AND Commits to GitHub)
+        // 7. FORM SUBMIT: Updates Portal Table & Commits Live in One Step
         async function handleFormSubmit(e) {
             e.preventDefault();
 
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = true;
-            submitBtn.innerText = "Publishing to Portal & Live Site...";
+            submitBtn.innerText = "Publishing & Committing...";
 
             const editId = document.getElementById('edit-article-id').value;
             const articleObj = {
@@ -471,7 +472,7 @@ if (!res.ok) res = await fetch('news.json?t=' + Date.now());
                 date: document.getElementById('article-date').value.trim() || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
                 publishedAt: new Date().toISOString(),
                 imageUrl: document.getElementById('article-image-url').value.trim(),
-                videoUrl: document.getElementById('article-video-url').value.trim(),
+                videoUrl: document.getElementById('article-video-url').value.trim() || null,
                 summary: document.getElementById('article-summary').value.trim(),
                 summary_so: document.getElementById('article-summary-so').value.trim(),
                 content: document.getElementById('article-content').value.trim(),
@@ -489,20 +490,20 @@ if (!res.ok) res = await fetch('news.json?t=' + Date.now());
                 articles.unshift(articleObj);
             }
 
-            // Immediately update the portal table
+            // Immediately update the table
             localStorage.setItem('sgn_articles', JSON.stringify(articles));
             renderTable();
 
-            // Commit directly to GitHub
+            // Commit directly to GitHub live site
             try {
-                await syncToGitHub(articles);
-                showBanner("Article published to portal and pushed live to GitHub!", "success");
+                const target = await syncToGitHub(articles);
+                showBanner(`Success! Published and committed live to ${target}.`, "success");
                 resetForm();
             } catch(err) {
-                showBanner(`Saved in portal, but live sync failed: ${err.message}`, "error");
+                showBanner(`Saved in portal, but GitHub sync failed: ${err.message}`, "error");
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerText = "Publish Article to Portal";
+                submitBtn.innerText = "Publish & Commit Article";
             }
         }
 
@@ -533,7 +534,7 @@ if (!res.ok) res = await fetch('news.json?t=' + Date.now());
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 8. DELETE ARTICLE (Removes from Portal Table AND Removes from GitHub)
+        // 8. DELETE ARTICLE: Removes from Portal and Commits Live
         async function deleteArticle(id) {
             if (!confirm("Are you sure you want to delete this article?")) return;
 
@@ -543,7 +544,7 @@ if (!res.ok) res = await fetch('news.json?t=' + Date.now());
 
             try {
                 await syncToGitHub(articles);
-                showBanner("Article deleted from portal and live site.", "info");
+                showBanner("Article removed from portal and committed live to GitHub.", "info");
             } catch(err) {
                 showBanner(`Removed from portal, but GitHub sync failed: ${err.message}`, "error");
             }
@@ -553,19 +554,21 @@ if (!res.ok) res = await fetch('news.json?t=' + Date.now());
             document.getElementById('article-form').reset();
             document.getElementById('edit-article-id').value = '';
             document.getElementById('form-heading').innerText = "Create New Dispatch";
-            document.getElementById('submit-btn').innerText = "Publish Article to Portal";
+            document.getElementById('submit-btn').innerText = "Publish & Commit Article";
             clearImage();
         }
 
+        // 9. FLOATING BANNER NOTIFIER
         function showBanner(msg, type = "info") {
             const banner = document.getElementById('status-banner');
-            let colorClasses = "bg-sky-50 text-sky-800 border-sky-200";
-            if (type === "success") colorClasses = "bg-emerald-50 text-emerald-800 border-emerald-200";
-            if (type === "error") colorClasses = "bg-rose-50 text-rose-800 border-rose-200";
+            if (!banner) return;
+            let colorClasses = "bg-sky-50 text-sky-800 border-sky-300";
+            if (type === "success") colorClasses = "bg-emerald-50 text-emerald-800 border-emerald-300";
+            if (type === "error") colorClasses = "bg-rose-50 text-rose-800 border-rose-300";
 
-            banner.className = `p-4 rounded-xl text-xs font-semibold border block ${colorClasses}`;
+            banner.className = `fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md block ${colorClasses}`;
             banner.innerText = msg;
-            setTimeout(() => { banner.classList.add('hidden'); }, 5000);
+            setTimeout(() => { banner.classList.add('hidden'); }, 7000);
         }
 
         function escapeHtml(text) {
