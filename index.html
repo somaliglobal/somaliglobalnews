@@ -1,19 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JWC2ZS074Z"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-JWC2ZS074Z');
-    </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGN SomaliGlobalNews | Global News & Regional Insights</title>
+    <title>Publisher Portal | SGN SomaliGlobalNews</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,658 +12,601 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            color: #1d1d1f;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
         }
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f5f5f7;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #d2d2d7;
-            border-radius: 3px;
-        }
-
-        /* Option A Signature Glow & Badge Container */
         .sgn-glowing-badge {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 9999px;
-            box-shadow: 0 0 16px rgba(56, 189, 248, 0.45), 0 0 6px rgba(14, 165, 233, 0.7);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-        .group:hover .sgn-glowing-badge {
-            transform: scale(1.05);
-            box-shadow: 0 0 24px rgba(56, 189, 248, 0.75), 0 0 10px rgba(14, 165, 233, 0.9);
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.45), 0 0 4px rgba(14, 165, 233, 0.6);
         }
     </style>
 </head>
-<body class="bg-white text-gray-900 antialiased min-h-screen flex flex-col selection:bg-blue-100 selection:text-blue-700">
+<body class="min-h-screen flex flex-col antialiased">
 
-    <!-- Top Utility & Breaking News Bar -->
-    <div class="bg-[#f5f5f7] border-b border-gray-200 text-xs text-gray-600 py-2 px-4">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div class="flex items-center gap-2 overflow-hidden">
-                <span class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider">Live</span>
-                <p id="breaking-ticker" class="truncate font-medium text-gray-800">Delivering independent insights across the Horn of Africa and the globe.</p>
-            </div>
-            <div id="current-date" class="text-gray-500 font-normal"></div>
-        </div>
-    </div>
+    <!-- FLOATING ALERT BANNER (Visible from anywhere on the page) -->
+    <div id="status-banner" class="hidden fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md transition-all duration-300"></div>
 
-    <!-- Main Navigation Header -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200/80 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
-            <!-- Logo & Brand: Option A Badge + Light Blue Title -->
-            <div class="flex items-center space-x-3">
-                <a href="#" onclick="filterCategory('All')" class="group flex items-center space-x-3.5 text-left focus:outline-none">
-                    
-                    <!-- Self-Contained Circular Badge -->
-                    <div class="sgn-glowing-badge w-11 h-11 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300">
-                        <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center overflow-hidden border border-sky-400/60">
-                            <svg class="w-8 h-8 text-sky-400" viewBox="0 0 100 100" fill="none">
-                                <circle cx="50" cy="50" r="46" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="3 3" opacity="0.6"/>
-                                <circle cx="50" cy="50" r="40" stroke="#bae6fd" stroke-width="2" opacity="0.8"/>
-                                <circle cx="50" cy="50" r="33" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4 2"/>
-                                
-                                <!-- Central Star -->
-                                <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" 
-                                         fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
-                                
-                                <!-- SGN Central Letters -->
-                                <text x="50" y="54" 
-                                      fill="#ffffff" 
-                                      font-family="'Inter', sans-serif" 
-                                      font-size="15" 
-                                      font-weight="900" 
-                                      letter-spacing="0.8" 
-                                      text-anchor="middle" 
-                                      dominant-baseline="central">SGN</text>
-                                
-                                <path d="M22,32 A 38 38 0 0,1 78,32" stroke="#bae6fd" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
-                                <path d="M26,24 A 46 46 0 0,1 74,24" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Light Blue Branding Title -->
-                    <div>
-                        <span class="block text-xl font-extrabold tracking-tight text-[#0071e3] group-hover:text-sky-500 transition-colors leading-tight">
-                            SGN SomaliGlobalNews
-                        </span>
-                        <span class="block text-[11px] text-sky-500 font-semibold tracking-wider uppercase mt-0.5">
-                            Independent Global Intelligence
-                        </span>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Desktop Category Navigation -->
-            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium text-gray-600">
-                <button onclick="filterCategory('All')" class="px-3 py-2 rounded-lg text-blue-600 bg-blue-50/80 transition-all font-semibold nav-btn" data-category="All">Home</button>
-                <button onclick="filterCategory('Somalia')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Somalia">Somalia</button>
-                <button onclick="filterCategory('Horn of Africa')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Horn of Africa">Horn of Africa</button>
-                <button onclick="filterCategory('Middle East')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Middle East">Middle East</button>
-                <button onclick="filterCategory('World')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="World">World</button>
-                <button onclick="filterCategory('Editorial')" class="px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn" data-category="Editorial">Editorial</button>
-            </nav>
-
-            <!-- Search & Contact Us Actions -->
-            <div class="flex items-center space-x-3">
-                <button onclick="openContactDrawer()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-blue-600 transition-colors">
-                    <svg class="w-3.5 h-3.5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    <span>Contact Us</span>
-                </button>
-
-                <div class="relative hidden sm:block">
-                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search articles..." class="bg-[#f5f5f7] border-none text-sm rounded-full pl-9 pr-4 py-2 w-44 lg:w-56 focus:outline-none focus:ring-2 focus:ring-sky-500/50 text-gray-800 placeholder-gray-400">
-                    <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+    <!-- ONE-TIME SETUP & PASSWORD GATE -->
+    <div id="auth-gate-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 px-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-slate-200 text-center space-y-4">
+            <div class="mx-auto w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300 sgn-glowing-badge">
+                <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
+                    <svg class="w-6 h-6 text-sky-400" viewBox="0 0 100 100" fill="none">
+                        <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+                        <text x="50" y="54" fill="#ffffff" font-family="'Inter', sans-serif" font-size="14" font-weight="900" text-anchor="middle" dominant-baseline="central">SGN</text>
                     </svg>
                 </div>
             </div>
-        </div>
+            <h2 class="text-lg font-extrabold text-slate-900">SGN Editorial Desk</h2>
+            
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-3 text-left">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+                    <input type="password" id="auth-gate-pass" placeholder="Enter password" required autofocus
+                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                </div>
 
-        <!-- Mobile Secondary Category Bar -->
-        <div class="md:hidden flex overflow-x-auto px-4 py-2 space-x-2 bg-gray-50 border-t border-gray-100 scrollbar-none">
-            <button onclick="filterCategory('All')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white nav-btn-mobile" data-category="All">Home</button>
-            <button onclick="filterCategory('Somalia')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Somalia">Somalia</button>
-            <button onclick="filterCategory('Horn of Africa')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Horn of Africa">Horn of Africa</button>
-            <button onclick="filterCategory('Middle East')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Middle East">Middle East</button>
-            <button onclick="filterCategory('World')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="World">World</button>
-            <button onclick="filterCategory('Editorial')" class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile" data-category="Editorial">Editorial</button>
+                <!-- GitHub Token (Shown on first setup, hidden once saved) -->
+                <div id="auth-token-group">
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">GitHub Token (One-time setup)</label>
+                    <input type="password" id="auth-gate-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs font-mono focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    <p class="text-[11px] text-gray-400 mt-1">Saved permanently to your browser. You will never be asked again.</p>
+                </div>
+
+                <div id="token-status-hint" class="hidden text-[11px] text-emerald-600 flex justify-between items-center pt-1">
+                    <span>&#10003; GitHub Key configured</span>
+                    <button type="button" onclick="showTokenFieldAgain()" class="text-sky-600 hover:underline">Change Key</button>
+                </div>
+
+                <p id="auth-gate-error" class="hidden text-xs font-semibold text-red-600 text-center">Incorrect password.</p>
+                
+                <button type="submit" class="w-full py-2.5 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
+                    Unlock Portal
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Top Admin Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="sgn-glowing-badge w-10 h-10 rounded-full p-0.5 bg-gradient-to-tr from-sky-500 via-blue-600 to-cyan-300">
+                    <div class="w-full h-full rounded-full bg-[#071328] flex items-center justify-center border border-sky-400/60">
+                        <svg class="w-7 h-7 text-sky-400" viewBox="0 0 100 100" fill="none">
+                            <circle cx="50" cy="50" r="46" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="3 3" opacity="0.6"/>
+                            <polygon points="50,14 61,36 84,36 65,51 72,73 50,60 28,73 35,51 16,36 39,36" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+                            <text x="50" y="54" fill="#ffffff" font-family="'Inter', sans-serif" font-size="15" font-weight="900" letter-spacing="0.8" text-anchor="middle" dominant-baseline="central">SGN</text>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold text-[#0071e3] leading-none">SGN SomaliGlobalNews</h1>
+                    <p class="text-[11px] text-gray-500 font-semibold tracking-wide uppercase mt-1">Publisher &amp; Editorial Desk</p>
+                </div>
+            </div>
+
+            <!-- Header Actions: View Live Site, Commit, Lock -->
+            <div class="flex items-center space-x-2.5">
+                <a href="index.html" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
+                    <span>&larr; View Live Site</span>
+                </a>
+                <button id="header-commit-btn" onclick="commitAllToGitHub()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    <span id="header-commit-text">Commit</span>
+                </button>
+                <button onclick="logoutAdmin()" title="Lock Portal" class="inline-flex items-center space-x-1 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <span>Lock</span>
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        <section id="featured-section" class="mb-12"></section>
+    <!-- Main Container -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
 
-        <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
-            <h2 id="current-category-title" class="text-2xl font-bold tracking-tight text-gray-900">Latest Dispatches</h2>
-            <span id="article-count" class="text-sm text-gray-500 font-medium">Loading stories...</span>
+        <!-- Article Publishing Form -->
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                <h2 class="text-base font-bold text-gray-900" id="form-heading">Create New Dispatch</h2>
+                <button type="button" onclick="resetForm()" class="text-xs text-gray-500 hover:text-gray-800 underline">Reset Form</button>
+            </div>
+
+            <form id="article-form" onsubmit="handleFormSubmit(event)" class="p-6 sm:p-8 space-y-6">
+                <input type="hidden" id="edit-article-id" value="">
+
+                <!-- Metadata Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Category *</label>
+                        <select id="article-category" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white">
+                            <option value="Somalia">Somalia</option>
+                            <option value="Horn of Africa">Horn of Africa</option>
+                            <option value="Middle East">Middle East</option>
+                            <option value="World">World</option>
+                            <option value="Editorial">Editorial</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Location / Bureau Dateline</label>
+                        <input type="text" id="article-location" placeholder="e.g. MOGADISHU, ADEN, NAIROBI" 
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Publish Date (Auto or Custom)</label>
+                        <input type="text" id="article-date" placeholder="Leave empty for current time" 
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- Clean Image Web URL Section -->
+                <div class="bg-sky-50/40 rounded-2xl p-5 border border-sky-100 space-y-3">
+                    <label class="block text-xs font-bold text-sky-900 uppercase tracking-wider">
+                        Image Web URL *
+                    </label>
+                    <input type="text" 
+                           id="article-image-url" 
+                           required
+                           placeholder="Paste direct image web link (https://...)" 
+                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white"
+                           oninput="updateImagePreview(this.value)">
+
+                    <!-- Live Image Preview Box -->
+                    <div id="image-preview-container" class="hidden relative rounded-xl overflow-hidden border border-gray-200 bg-gray-900 h-48 w-full max-w-md mx-auto shadow-inner">
+                        <img id="image-preview" src="" alt="Preview" class="w-full h-full object-cover">
+                        <button type="button" 
+                                onclick="clearImage()" 
+                                title="Remove image"
+                                class="absolute top-2 right-2 bg-black/70 hover:bg-black text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Video URL Field -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Optional Video Snippet URL (YouTube / Direct Video)</label>
+                    <input type="text" id="article-video-url" placeholder="e.g. https://www.youtube.com/watch?v=... or leave empty" 
+                           class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                </div>
+
+                <!-- English Content Section -->
+                <div class="border-t border-gray-100 pt-5 space-y-4">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">English Dispatch</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Headline (English) *</label>
+                        <input type="text" id="article-title" required placeholder="Enter primary news headline" 
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Summary / Lead Paragraph (English) *</label>
+                        <textarea id="article-summary" rows="2" required placeholder="Concise overview for cards and reader view..." 
+                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Full Article Body (English) *</label>
+                        <textarea id="article-content" rows="6" required placeholder="Write the full news report. Separate paragraphs with a blank line." 
+                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Af-Soomaali Content Section -->
+                <div class="border-t border-gray-100 pt-5 space-y-4">
+                    <h3 class="text-xs font-bold text-amber-700 uppercase tracking-wider">Faahfaahinta Af-Soomaaliga (Optional but Recommended)</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Cinwaanka (Af-Soomaali)</label>
+                        <input type="text" id="article-title-so" placeholder="Geli cinwaanka warbixinta oo Af-Soomaali ah" 
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Soo-koobidda (Af-Soomaali)</label>
+                        <textarea id="article-summary-so" rows="2" placeholder="Dulmar kooban oo Af-Soomaali ah..." 
+                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Qoraalka Buuxa (Af-Soomaali)</label>
+                        <textarea id="article-content-so" rows="6" placeholder="Qoraalka oo faahfaahsan. Sadar bannaan u dhexeysii cutubyada." 
+                                  class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Bottom Publish Button -->
+                <div class="pt-4 flex items-center justify-end space-x-3">
+                    <button type="submit" id="submit-btn" class="px-7 py-3 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
+                        Publish &amp; Commit Article
+                    </button>
+                </div>
+            </form>
         </div>
 
-        <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-
-        <div id="empty-state" class="hidden text-center py-20">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
-                </svg>
+        <!-- Manage Existing Articles -->
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-4">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                <h3 class="text-base font-bold text-gray-900">Manage Published Articles</h3>
+                <span id="total-articles-count" class="text-xs text-gray-500 font-medium">0 articles</span>
             </div>
-            <h3 class="text-lg font-semibold text-gray-800">No stories found</h3>
-            <p class="text-gray-500 text-sm mt-1">Check back soon for new updates in this category.</p>
+            
+            <div id="articles-table-container" class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-gray-600">
+                    <thead class="text-xs text-gray-400 uppercase bg-gray-50 border-b border-gray-100">
+                        <tr>
+                            <th class="py-3 px-4">Image</th>
+                            <th class="py-3 px-4">Headline</th>
+                            <th class="py-3 px-4">Category</th>
+                            <th class="py-3 px-4">Date</th>
+                            <th class="py-3 px-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articles-list-body" class="divide-y divide-gray-100"></tbody>
+                </table>
+            </div>
         </div>
     </main>
 
-    <!-- Full Article Modal / Reader View -->
-    <div id="article-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 my-8">
-            <div class="sticky top-0 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-gray-100 flex items-center justify-between z-10">
-                <div class="flex items-center space-x-3">
-                    <span id="modal-category" class="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider"></span>
-                    <span id="modal-date" class="text-xs text-gray-400"></span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button onclick="toggleTranslation()" id="translate-btn" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors">
-                        <svg class="w-3.5 h-3.5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
-                        <span id="translate-btn-text">Somali</span>
-                    </button>
-                    <button onclick="closeArticleModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="p-6 sm:p-10 space-y-6">
-                <h1 id="modal-title" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 leading-tight"></h1>
-                
-                <!-- Media Container -->
-                <div id="modal-media-container" class="rounded-xl overflow-hidden bg-black/5 border border-gray-100">
-                    <img id="modal-image" src="" alt="" class="w-full max-h-[420px] object-cover" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'">
-                    
-                    <div id="modal-video-wrapper" class="hidden aspect-video w-full bg-black">
-                        <iframe id="modal-iframe" 
-                                class="w-full h-full" 
-                                src="" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                allowfullscreen>
-                        </iframe>
-                        <video id="modal-video" class="w-full h-full hidden" controls playsinline></video>
-                    </div>
-                </div>
-
-                <div id="content-english" class="prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-4 text-base sm:text-lg"></div>
-                <div id="content-somali" class="hidden prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-4 text-base sm:text-lg font-normal bg-amber-50/50 p-6 rounded-2xl border border-amber-200/50"></div>
-
-                <div class="mt-12 pt-8 border-t border-gray-100">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">Reader Comments (<span id="comment-count">0</span>)</h3>
-                    
-                    <form id="comment-form" onsubmit="submitComment(event)" class="mb-8 space-y-3">
-                        <div>
-                            <input type="text" id="commenter-name" placeholder="Your Name" required class="w-full sm:w-1/2 bg-[#f5f5f7] border-none text-sm rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-sky-500/50 text-gray-800 placeholder-gray-400">
-                        </div>
-                        <div>
-                            <textarea id="commenter-text" rows="3" placeholder="Leave your perspective or comment..." required class="w-full bg-[#f5f5f7] border-none text-sm rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-sky-500/50 text-gray-800 placeholder-gray-400"></textarea>
-                        </div>
-                        <button type="submit" class="px-5 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-medium text-sm transition-colors shadow-sm">Post Comment</button>
-                    </form>
-
-                    <div id="comments-list" class="space-y-4"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Side Contact Drawer -->
-    <div id="contactDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="closeContactDrawer()"></div>
-
-        <div class="absolute inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
-            <div class="w-screen max-w-md bg-white shadow-2xl p-6 sm:p-8 flex flex-col justify-between border-l border-[#e5e5e7]">
-                <div>
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center space-x-2">
-                            <span class="w-7 h-7 bg-sky-50 text-[#0071e3] font-bold text-xs rounded-full flex items-center justify-center border border-sky-200">SGN</span>
-                            <h3 class="text-xl font-bold text-[#1d1d1f]">Contact News Desk</h3>
-                        </div>
-                        <button onclick="closeContactDrawer()" class="text-gray-400 hover:text-black text-2xl font-bold w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">&times;</button>
-                    </div>
-                    <p class="text-xs text-gray-500 mb-6">Have a news tip, press release, correction, or inquiry? Send a message directly to the SGN editorial team.</p>
-
-                    <form onsubmit="handleContactSubmit(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Your Name</label>
-                            <input type="text" name="name" required placeholder="Enter your full name" 
-                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Your Email</label>
-                            <input type="email" name="email" required placeholder="name@example.com" 
-                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Subject</label>
-                            <input type="text" name="subject" placeholder="News Tip / Editorial Inquiry" 
-                                   class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Message</label>
-                            <textarea name="message" rows="5" required placeholder="Write your message here..." 
-                                      class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
-                        </div>
-                        <button type="submit" id="contactSubmitBtn" class="w-full bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold py-3 rounded-xl transition shadow-sm">
-                            Send Message to Desk
-                        </button>
-                    </form>
-
-                    <div id="contactSuccessMsg" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-xs text-green-800 text-center font-medium">
-                        ✓ Thank you! Your message has been sent to the editorial desk.
-                    </div>
-                </div>
-
-                <div class="text-center text-[11px] text-gray-400 pt-6 border-t border-gray-100">
-                    SGN SomaliGlobalNews &bull; Secure Editorial Desk
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-[#f5f5f7] border-t border-gray-200 text-gray-500 text-sm py-12 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-center md:text-left">
-                <span class="font-bold text-[#0071e3] tracking-tight">SGN SomaliGlobalNews</span>
-                <p class="text-xs text-gray-400 mt-1">&copy; 2026 SGN SomaliGlobalNews. All rights reserved.</p>
-            </div>
-            <div class="flex space-x-6 text-xs font-medium">
-                <a href="#" onclick="filterCategory('All'); return false;" class="hover:text-blue-600 transition-colors">Home</a>
-                <a href="#" onclick="filterCategory('Editorial'); return false;" class="hover:text-blue-600 transition-colors">Editorial</a>
-                <a href="javascript:void(0)" onclick="openContactDrawer()" class="hover:text-blue-600 transition-colors">Contact Us</a>
-                <a href="admin.html" class="hover:text-blue-600 transition-colors">Publisher Portal</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Client Script -->
+    <!-- Unified Script -->
     <script>
-        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', dateOptions);
+        const SGN_PASS = 'sgn2026';
+        const GH_OWNER = 'somaliglobal';
+        const GH_REPO = 'somaliglobalnews.com';
 
-        let articlesStore = [];
-        let currentCategory = 'All';
-        let currentArticleId = null;
-        let isSomaliActive = false;
+        // 1. GATE CONTROLLER (Checks token status and auto-hides input if already set)
+        function checkGate() {
+            if (sessionStorage.getItem('sgn_auth') === 'true') {
+                document.getElementById('auth-gate-modal').classList.add('hidden');
+                return;
+            }
+            document.getElementById('auth-gate-modal').classList.remove('hidden');
 
-        async function initFeed() {
+            const tokenGroup = document.getElementById('auth-token-group');
+            const tokenHint = document.getElementById('token-status-hint');
+
+            if (localStorage.getItem('sgn_gh_token')) {
+                tokenGroup.classList.add('hidden');
+                tokenHint.classList.remove('hidden');
+            } else {
+                tokenGroup.classList.remove('hidden');
+                tokenHint.classList.add('hidden');
+            }
+        }
+
+        function showTokenFieldAgain() {
+            document.getElementById('auth-token-group').classList.remove('hidden');
+            document.getElementById('token-status-hint').classList.add('hidden');
+            document.getElementById('auth-gate-token').focus();
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const pass = document.getElementById('auth-gate-pass').value;
+            const token = document.getElementById('auth-gate-token').value.trim();
+            const err = document.getElementById('auth-gate-error');
+
+            if (pass !== SGN_PASS) {
+                err.classList.remove('hidden');
+                return;
+            }
+
+            // Save token if user provided one
+            if (token) {
+                localStorage.setItem('sgn_gh_token', token);
+            }
+
+            sessionStorage.setItem('sgn_auth', 'true');
+            document.getElementById('auth-gate-modal').classList.add('hidden');
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('sgn_auth');
+            document.getElementById('auth-gate-pass').value = '';
+            checkGate();
+        }
+
+        checkGate();
+
+        // 2. CHUNK-SAFE BASE64 (Zero stack limit, handles unlimited articles)
+        function safeBase64Encode(str) {
+            const bytes = new TextEncoder().encode(str);
+            let binary = '';
+            const len = bytes.byteLength;
+            for (let i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);
+        }
+
+        // 3. GITHUB DIRECT SYNC ENGINE (Writes directly to public/data/news.json)
+        async function syncToGitHub(articlesArray) {
+            const token = localStorage.getItem('sgn_gh_token');
+            if (!token) {
+                logoutAdmin();
+                showTokenFieldAgain();
+                throw new Error("GitHub Token not found. Please enter your GitHub key on the unlock screen.");
+            }
+
+            const path = 'public/data/news.json';
+            const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}?ref=main&t=${Date.now()}`;
+
+            // Fetch current SHA from GitHub
+            const getRes = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (!getRes.ok) {
+                const getErr = await getRes.json().catch(() => ({}));
+                throw new Error(`Cannot access ${path} (${getRes.status}: ${getErr.message || 'Check key permissions'})`);
+            }
+
+            const fileData = await getRes.json();
+            const currentSha = fileData.sha;
+
+            // Prepare safe payload
+            const payload = {
+                updatedAt: new Date().toISOString(),
+                articles: articlesArray
+            };
+            const jsonString = JSON.stringify(payload, null, 2);
+            const base64Content = safeBase64Encode(jsonString);
+
+            // Commit PUT directly to main branch
+            const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: `SGN Dispatch: update ${path}`,
+                    content: base64Content,
+                    sha: currentSha,
+                    branch: "main"
+                })
+            });
+
+            if (!putRes.ok) {
+                const errJson = await putRes.json().catch(() => ({}));
+                throw new Error(`GitHub rejected commit (${putRes.status}: ${errJson.message || 'Write failed'})`);
+            }
+
+            return path;
+        }
+
+        // Manual Commit Header Button
+        async function commitAllToGitHub() {
+            const btn = document.getElementById('header-commit-btn');
+            const txt = document.getElementById('header-commit-text');
+            if (btn) btn.disabled = true;
+            if (txt) txt.innerText = "Committing...";
+
+            try {
+                const target = await syncToGitHub(articles);
+                showBanner(`Success! Committed all articles live to ${target}.`, "success");
+            } catch (err) {
+                showBanner(`GitHub commit failed: ${err.message}`, "error");
+            } finally {
+                if (btn) btn.disabled = false;
+                if (txt) txt.innerText = "Commit";
+            }
+        }
+
+        let articles = [];
+
+        // 4. LOAD ARTICLES (Loads from public/data/news.json)
+        async function loadExistingArticles() {
+            const local = localStorage.getItem('sgn_articles');
+            if (local) {
+                try {
+                    articles = JSON.parse(local);
+                    renderTable();
+                } catch (e) {}
+            }
+
             try {
                 let res = await fetch('public/data/news.json?t=' + Date.now());
-                if (!res.ok) {
-                    res = await fetch('data/news.json?t=' + Date.now());
-                }
-                if (!res.ok) {
-                    res = await fetch('news.json?t=' + Date.now());
-                }
-
+                if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
+                if (!res.ok) res = await fetch('news.json?t=' + Date.now());
+                
                 if (res.ok) {
                     const data = await res.json();
-                    const rawList = data.articles || (Array.isArray(data) ? data : []);
-                    
-                    articlesStore = rawList.map((item, idx) => ({
-                        id: item.id || `art-${idx}`,
-                        title: item.title || "Untitled Report",
-                        titleSomali: item.title_so || "",
-                        category: item.category || "General",
-                        location: item.location || "",
-                        date: item.publishedAt ? new Date(item.publishedAt).toLocaleDateString('en-US', dateOptions) : (item.date || "Recent"),
-                        image: item.imageUrl || item.image || item.thumbnail || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80",
-                        videoUrl: item.videoUrl || item.video || null,
-                        summary: item.summary || item.excerpt || "",
-                        summarySomali: item.summary_so || "",
-                        content: item.content || item.body || item.summary || "",
-                        contentSomali: item.content_so || item.somaliText || item.summary_so || "",
-                        comments: item.comments || []
-                    }));
-
-                    if (articlesStore.length > 0) {
-                        document.getElementById('breaking-ticker').innerText = articlesStore[0].title;
-                    }
-                } else {
-                    const localData = localStorage.getItem('sgn_articles');
-                    if (localData) {
-                        articlesStore = JSON.parse(localData);
+                    const remoteArticles = data.articles || (Array.isArray(data) ? data : []);
+                    if (remoteArticles.length > 0) {
+                        articles = remoteArticles;
+                        localStorage.setItem('sgn_articles', JSON.stringify(articles));
+                        renderTable();
                     }
                 }
             } catch (err) {
-                console.warn("Could not fetch remote news.json, checking local storage cache.", err);
-                const localData = localStorage.getItem('sgn_articles');
-                if (localData) {
-                    articlesStore = JSON.parse(localData);
-                }
-            }
-
-            renderArticles(currentCategory);
-        }
-
-        function renderArticles(filter = 'All', searchQuery = '') {
-            const grid = document.getElementById('articles-grid');
-            const featuredSection = document.getElementById('featured-section');
-            const emptyState = document.getElementById('empty-state');
-            const articleCountEl = document.getElementById('article-count');
-
-            grid.innerHTML = '';
-            
-            let filtered = articlesStore.filter(art => {
-                const artCat = art.category || 'General';
-                const matchesCat = filter === 'All' || 
-                    (filter === 'Horn of Africa' && ['Horn of Africa', 'Ethiopia', 'Kenya', 'Djibouti', 'Eritrea'].includes(artCat)) ||
-                    artCat.toLowerCase() === filter.toLowerCase();
-                    
-                const matchesSearch = (art.title || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                      (art.summary || '').toLowerCase().includes(searchQuery.toLowerCase());
-                return matchesCat && matchesSearch;
-            });
-
-            articleCountEl.innerText = `${filtered.length} ${filtered.length === 1 ? 'story' : 'stories'}`;
-
-            if (filtered.length === 0) {
-                featuredSection.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            } else {
-                emptyState.classList.add('hidden');
-            }
-
-            if (filter === 'All' && !searchQuery && filtered.length > 0) {
-                const featured = filtered[0];
-                featuredSection.innerHTML = `
-                    <div onclick="openArticleModal('${featured.id}')" class="group cursor-pointer bg-gray-50 rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition-all flex flex-col lg:flex-row">
-                        <div class="lg:w-7/12 relative overflow-hidden bg-gray-200 min-h-[300px]">
-                            <img src="${featured.image}" alt="${featured.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'">
-                        </div>
-                        <div class="lg:w-5/12 p-8 sm:p-10 flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center space-x-3 mb-3">
-                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">${featured.category}</span>
-                                    <span class="text-xs text-gray-400">${featured.date}</span>
-                                </div>
-                                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 group-hover:text-blue-600 transition-colors leading-snug mb-4">${featured.title}</h1>
-                                <p class="text-gray-600 text-base leading-relaxed mb-6">${featured.summary}</p>
-                            </div>
-                            <div class="flex items-center text-blue-600 font-semibold text-sm group-hover:translate-x-1 transition-transform">
-                                Read Full Dispatch &rarr;
-                            </div>
-                        </div>
-                    </div>
-                `;
-                filtered = filtered.slice(1);
-            } else {
-                featuredSection.innerHTML = '';
-            }
-
-            filtered.forEach(art => {
-                const comments = getCommentsForArticle(art.id);
-                const card = document.createElement('div');
-                card.className = "group cursor-pointer bg-white rounded-xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition-all flex flex-col justify-between";
-                card.setAttribute('onclick', `openArticleModal('${art.id}')`);
-                card.innerHTML = `
-                    <div>
-                        <div class="h-48 overflow-hidden bg-gray-100 relative">
-                            <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80'">
-                            ${art.videoUrl ? '<span class="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 backdrop-blur-sm">▶ Video</span>' : ''}
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="bg-gray-100 text-gray-700 text-[11px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider">${art.category}</span>
-                                <span class="text-xs text-gray-400">${art.date}</span>
-                            </div>
-                            <h3 class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors leading-snug mb-2">${art.title}</h3>
-                            <p class="text-gray-600 text-sm line-clamp-2 leading-relaxed">${art.summary}</p>
-                        </div>
-                    </div>
-                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-gray-50 text-xs font-semibold text-blue-600">
-                        <span>Read Full</span>
-                        <span class="text-gray-400 font-normal">${comments.length} comments</span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function filterCategory(category) {
-            currentCategory = category;
-            document.getElementById('current-category-title').innerText = category === 'All' ? 'Latest Dispatches' : category;
-            
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                if (btn.getAttribute('data-category') === category) {
-                    btn.className = "px-3 py-2 rounded-lg text-blue-600 bg-blue-50/80 transition-all font-semibold nav-btn";
-                } else {
-                    btn.className = "px-3 py-2 rounded-lg hover:text-blue-600 hover:bg-gray-50 transition-all nav-btn text-gray-600";
-                }
-            });
-
-            document.querySelectorAll('.nav-btn-mobile').forEach(btn => {
-                if (btn.getAttribute('data-category') === category) {
-                    btn.className = "whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white nav-btn-mobile";
-                } else {
-                    btn.className = "whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 nav-btn-mobile";
-                }
-            });
-
-            renderArticles(currentCategory, document.getElementById('search-input').value);
-        }
-
-        function handleSearch(query) {
-            renderArticles(currentCategory, query);
-        }
-
-        function openArticleModal(id) {
-            currentArticleId = id;
-            isSomaliActive = false;
-            updateTranslationUI();
-
-            const article = articlesStore.find(a => String(a.id) === String(id));
-            if (!article) return;
-
-            document.getElementById('modal-category').innerText = article.location || article.category;
-            document.getElementById('modal-date').innerText = article.date;
-            document.getElementById('modal-title').innerText = article.title;
-
-            const videoWrapper = document.getElementById('modal-video-wrapper');
-            const imageEl = document.getElementById('modal-image');
-            const iframeEl = document.getElementById('modal-iframe');
-            const videoEl = document.getElementById('modal-video');
-
-            if (article.videoUrl && article.videoUrl.trim() !== "") {
-                imageEl.classList.add('hidden');
-                videoWrapper.classList.remove('hidden');
-
-                const vUrl = article.videoUrl.trim();
-                let ytId = null;
-
-                const ytMatch = vUrl.match(/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/i);
-                if (ytMatch && ytMatch[1]) {
-                    ytId = ytMatch[1];
-                }
-
-                if (ytId) {
-                    iframeEl.src = `https://www.youtube.com/embed/${ytId}?rel=0`;
-                    iframeEl.classList.remove('hidden');
-                    videoEl.classList.add('hidden');
-                    videoEl.pause();
-                    videoEl.src = "";
-                } else {
-                    videoEl.src = vUrl;
-                    videoEl.classList.remove('hidden');
-                    iframeEl.classList.add('hidden');
-                    iframeEl.src = "";
-                }
-            } else {
-                videoWrapper.classList.add('hidden');
-                iframeEl.src = "";
-                videoEl.pause();
-                videoEl.src = "";
-                imageEl.src = article.image;
-                imageEl.classList.remove('hidden');
-            }
-            
-            const engParagraphs = (article.content || article.summary || '').split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
-            document.getElementById('content-english').innerHTML = engParagraphs;
-
-            const somaliSource = article.contentSomali || article.summarySomali;
-            if (somaliSource) {
-                const somTitle = article.titleSomali ? `<h3 class="text-xl font-bold text-gray-900 mb-2">${escapeHtml(article.titleSomali)}</h3>` : '';
-                const somParagraphs = somaliSource.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
-                document.getElementById('content-somali').innerHTML = `${somTitle}${somParagraphs}`;
-            } else {
-                document.getElementById('content-somali').innerHTML = `<p class="italic text-gray-500">Faahfaahin Af-Soomaali ah weli lama diyaarin warbixintan.</p>`;
-            }
-
-            renderComments(getCommentsForArticle(article.id));
-            document.getElementById('article-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeArticleModal() {
-            document.getElementById('modal-iframe').src = "";
-            const vid = document.getElementById('modal-video');
-            vid.pause();
-            vid.src = "";
-
-            document.getElementById('article-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            currentArticleId = null;
-        }
-
-        function toggleTranslation() {
-            isSomaliActive = !isSomaliActive;
-            updateTranslationUI();
-        }
-
-        function updateTranslationUI() {
-            const engEl = document.getElementById('content-english');
-            const somEl = document.getElementById('content-somali');
-            const btnText = document.getElementById('translate-btn-text');
-
-            if (isSomaliActive) {
-                engEl.classList.add('hidden');
-                somEl.classList.remove('hidden');
-                btnText.innerText = "English";
-            } else {
-                engEl.classList.remove('hidden');
-                somEl.classList.add('hidden');
-                btnText.innerText = "Somali";
+                console.warn("Notice: Fetching remote news.json failed, relying on portal memory.", err);
             }
         }
 
-        /* Contact Drawer Functions */
-        function openContactDrawer() {
-            document.getElementById('contactDrawer').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
+        // 5. RENDER PORTAL ARTICLE TABLE
+        function renderTable() {
+            const tbody = document.getElementById('articles-list-body');
+            const countEl = document.getElementById('total-articles-count');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            if (countEl) countEl.innerText = `${articles.length} ${articles.length === 1 ? 'article' : 'articles'}`;
 
-        function closeContactDrawer() {
-            document.getElementById('contactDrawer').classList.add('hidden');
-            document.getElementById('contactSuccessMsg').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        async function handleContactSubmit(e) {
-            e.preventDefault();
-            const form = e.target;
-            const btn = document.getElementById('contactSubmitBtn');
-            const originalText = btn.innerText;
-
-            btn.disabled = true;
-            btn.innerText = "Sending to Desk...";
-
-            try {
-                const response = await fetch("https://formspree.io/f/xqppdbel", {
-                    method: "POST",
-                    body: new FormData(form),
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    document.getElementById('contactSuccessMsg').classList.remove('hidden');
-                    form.reset();
-                } else {
-                    const data = await response.json();
-                    alert(data.errors ? data.errors.map(err => err.message).join(", ") : "Could not send message. Please try again.");
-                }
-            } catch (err) {
-                alert("Network error: " + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.innerText = originalText;
-            }
-        }
-
-        function getCommentsForArticle(articleId) {
-            return JSON.parse(localStorage.getItem(`sgn_comm_${articleId}`) || '[]');
-        }
-
-        function renderComments(comments) {
-            const container = document.getElementById('comments-list');
-            document.getElementById('comment-count').innerText = comments.length;
-            container.innerHTML = '';
-
-            if (comments.length === 0) {
-                container.innerHTML = `<p class="text-sm text-gray-400 italic">No comments yet. Be the first to share your perspective.</p>`;
+            if (articles.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-gray-400 text-xs italic">No articles published yet.</td></tr>`;
                 return;
             }
 
-            comments.forEach((c) => {
-                const item = document.createElement('div');
-                item.className = "bg-[#f5f5f7] p-4 rounded-xl space-y-1 relative group";
-                item.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <span class="font-semibold text-sm text-gray-900">${escapeHtml(c.name)}</span>
-                        <span class="text-[11px] text-gray-400">${c.date}</span>
-                    </div>
-                    <p class="text-sm text-gray-700 leading-relaxed">${escapeHtml(c.text)}</p>
+            articles.forEach((art, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition";
+                const imgUrl = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80';
+                
+                tr.innerHTML = `
+                    <td class="py-3 px-4">
+                        <img src="${imgUrl}" class="w-12 h-10 object-cover rounded-lg border border-gray-200" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80'">
+                    </td>
+                    <td class="py-3 px-4 font-semibold text-gray-900 max-w-xs truncate">${escapeHtml(art.title || 'Untitled')}</td>
+                    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700">${escapeHtml(art.category || 'General')}</span></td>
+                    <td class="py-3 px-4 text-xs text-gray-400">${art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : (art.date || 'Recent')}</td>
+                    <td class="py-3 px-4 text-right space-x-2">
+                        <button onclick="editArticle('${art.id || index}')" class="text-xs font-semibold text-sky-600 hover:text-sky-800">Edit</button>
+                        <button onclick="deleteArticle('${art.id || index}')" class="text-xs font-semibold text-red-500 hover:text-red-700">Delete</button>
+                    </td>
                 `;
-                container.appendChild(item);
+                tbody.appendChild(tr);
             });
         }
 
-        function submitComment(e) {
+        // 6. IMAGE PREVIEW
+        const urlInput = document.getElementById('article-image-url');
+        const previewContainer = document.getElementById('image-preview-container');
+        const previewImg = document.getElementById('image-preview');
+
+        function updateImagePreview(val) {
+            const cleanUrl = val.trim();
+            if (!cleanUrl) {
+                clearImage();
+                return;
+            }
+            showPreview(cleanUrl);
+        }
+
+        function showPreview(src) {
+            if (!previewImg || !previewContainer) return;
+            previewImg.src = src;
+            previewImg.onerror = () => { previewContainer.classList.add('hidden'); };
+            previewImg.onload = () => { previewContainer.classList.remove('hidden'); };
+        }
+
+        function clearImage() {
+            if (urlInput) urlInput.value = '';
+            if (previewImg) previewImg.src = '';
+            if (previewContainer) previewContainer.classList.add('hidden');
+        }
+
+        // 7. FORM SUBMIT: Updates Portal Table & Commits Live in One Step
+        async function handleFormSubmit(e) {
             e.preventDefault();
-            const nameInput = document.getElementById('commenter-name');
-            const textInput = document.getElementById('commenter-text');
 
-            if (!nameInput.value.trim() || !textInput.value.trim() || !currentArticleId) return;
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Publishing & Committing...";
 
-            const comments = getCommentsForArticle(currentArticleId);
-            const newComment = {
-                name: nameInput.value.trim(),
-                text: textInput.value.trim(),
-                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            const editId = document.getElementById('edit-article-id').value;
+            const articleObj = {
+                id: editId || `art-${Date.now()}`,
+                title: document.getElementById('article-title').value.trim(),
+                title_so: document.getElementById('article-title-so').value.trim(),
+                category: document.getElementById('article-category').value,
+                location: document.getElementById('article-location').value.trim(),
+                date: document.getElementById('article-date').value.trim() || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                publishedAt: new Date().toISOString(),
+                imageUrl: document.getElementById('article-image-url').value.trim(),
+                videoUrl: document.getElementById('article-video-url').value.trim() || null,
+                summary: document.getElementById('article-summary').value.trim(),
+                summary_so: document.getElementById('article-summary-so').value.trim(),
+                content: document.getElementById('article-content').value.trim(),
+                content_so: document.getElementById('article-content-so').value.trim(),
+                comments: []
             };
 
-            comments.unshift(newComment);
-            localStorage.setItem(`sgn_comm_${currentArticleId}`, JSON.stringify(comments));
+            if (editId) {
+                const idx = articles.findIndex(a => String(a.id) === String(editId));
+                if (idx !== -1) {
+                    articleObj.comments = articles[idx].comments || [];
+                    articles[idx] = articleObj;
+                }
+            } else {
+                articles.unshift(articleObj);
+            }
 
-            renderComments(comments);
-            textInput.value = '';
+            localStorage.setItem('sgn_articles', JSON.stringify(articles));
+            renderTable();
+
+            try {
+                const target = await syncToGitHub(articles);
+                showBanner(`Success! Published and committed live to ${target}.`, "success");
+                resetForm();
+            } catch(err) {
+                showBanner(`Saved in portal, but GitHub sync failed: ${err.message}`, "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Publish & Commit Article";
+            }
+        }
+
+        function editArticle(id) {
+            const art = articles.find((a, idx) => String(a.id || idx) === String(id));
+            if (!art) return;
+
+            document.getElementById('edit-article-id').value = art.id || id;
+            document.getElementById('form-heading').innerText = "Edit Dispatch";
+            document.getElementById('submit-btn').innerText = "Save & Update Dispatch";
+
+            document.getElementById('article-category').value = art.category || 'Somalia';
+            document.getElementById('article-location').value = art.location || '';
+            document.getElementById('article-date').value = art.date || '';
+            document.getElementById('article-image-url').value = art.imageUrl || art.image || '';
+            document.getElementById('article-video-url').value = art.videoUrl || '';
+            document.getElementById('article-title').value = art.title || '';
+            document.getElementById('article-title-so').value = art.title_so || '';
+            document.getElementById('article-summary').value = art.summary || '';
+            document.getElementById('article-summary-so').value = art.summary_so || '';
+            document.getElementById('article-content').value = art.content || '';
+            document.getElementById('article-content-so').value = art.content_so || '';
+
+            if (art.imageUrl || art.image) {
+                showPreview(art.imageUrl || art.image);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 8. DELETE ARTICLE
+        async function deleteArticle(id) {
+            if (!confirm("Are you sure you want to delete this article?")) return;
+
+            articles = articles.filter((a, idx) => String(a.id || idx) !== String(id));
+            localStorage.setItem('sgn_articles', JSON.stringify(articles));
+            renderTable();
+
+            try {
+                await syncToGitHub(articles);
+                showBanner("Article removed from portal and committed live to GitHub.", "info");
+            } catch(err) {
+                showBanner(`Removed from portal, but GitHub sync failed: ${err.message}`, "error");
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('article-form').reset();
+            document.getElementById('edit-article-id').value = '';
+            document.getElementById('form-heading').innerText = "Create New Dispatch";
+            document.getElementById('submit-btn').innerText = "Publish & Commit Article";
+            clearImage();
+        }
+
+        // 9. FLOATING BANNER
+        function showBanner(msg, type = "info") {
+            const banner = document.getElementById('status-banner');
+            if (!banner) return;
+            let colorClasses = "bg-sky-50 text-sky-800 border-sky-300";
+            if (type === "success") colorClasses = "bg-emerald-50 text-emerald-800 border-emerald-300";
+            if (type === "error") colorClasses = "bg-rose-50 text-rose-800 border-rose-300";
+
+            banner.className = `fixed top-5 right-5 z-50 p-4 rounded-xl text-xs font-semibold shadow-2xl border max-w-md block ${colorClasses}`;
+            banner.innerText = msg;
+            setTimeout(() => { banner.classList.add('hidden'); }, 7000);
         }
 
         function escapeHtml(text) {
             const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-            return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+            return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
-        document.addEventListener('DOMContentLoaded', initFeed);
+        document.addEventListener('DOMContentLoaded', loadExistingArticles);
     </script>
 </body>
 </html>
