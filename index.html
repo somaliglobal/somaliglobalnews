@@ -181,107 +181,110 @@
     </footer>
 
     <!-- Scripts -->
-    <script>
-        let articlesData = [];
-        let currentLang = 'en';
-        let currentCategory = 'All';
+  <script>
+        var articlesData = [];
+        var currentLang = 'en';
+        var currentCategory = 'All';
 
         async function loadNews() {
+            var loadingEl = document.getElementById('articles-loading');
+            var gridEl = document.getElementById('articles-grid');
+
             try {
-                let res = await fetch('public/data/news.json?t=' + Date.now());
+                var res = await fetch('/public/data/news.json?t=' + Date.now());
+                if (!res.ok) res = await fetch('public/data/news.json?t=' + Date.now());
                 if (!res.ok) res = await fetch('data/news.json?t=' + Date.now());
-                if (!res.ok) res = await fetch('news.json?t=' + Date.now());
 
                 if (res.ok) {
-                    const data = await res.json();
+                    var data = await res.json();
                     articlesData = data.articles || (Array.isArray(data) ? data : []);
                 }
             } catch (err) {
-                console.error("Failed to load articles:", err);
+                console.error('Failed to load articles:', err);
             }
 
-            document.getElementById('articles-loading').classList.add('hidden');
-            document.getElementById('articles-grid').classList.remove('hidden');
+            if (loadingEl) loadingEl.classList.add('hidden');
+            if (gridEl) gridEl.classList.remove('hidden');
             renderArticles();
         }
 
         function setLanguage(lang) {
             currentLang = lang;
-            const enBtn = document.getElementById('lang-en');
-            const soBtn = document.getElementById('lang-so');
+            var enBtn = document.getElementById('lang-en');
+            var soBtn = document.getElementById('lang-so');
 
             if (lang === 'en') {
-                enBtn.className = "px-3 py-1.5 rounded-lg bg-white shadow-xs text-blue-700 transition";
-                soBtn.className = "px-3 py-1.5 rounded-lg text-gray-600 hover:text-gray-900 transition";
+                if (enBtn) enBtn.className = 'px-3 py-1.5 rounded-lg bg-white shadow-xs text-blue-700 transition';
+                if (soBtn) soBtn.className = 'px-3 py-1.5 rounded-lg text-gray-600 hover:text-gray-900 transition';
             } else {
-                soBtn.className = "px-3 py-1.5 rounded-lg bg-white shadow-xs text-blue-700 transition";
-                enBtn.className = "px-3 py-1.5 rounded-lg text-gray-600 hover:text-gray-900 transition";
+                if (soBtn) soBtn.className = 'px-3 py-1.5 rounded-lg bg-white shadow-xs text-blue-700 transition';
+                if (enBtn) enBtn.className = 'px-3 py-1.5 rounded-lg text-gray-600 hover:text-gray-900 transition';
             }
             renderArticles();
         }
 
         function filterCategory(cat) {
             currentCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All News'))) {
-                    btn.className = "cat-btn px-3.5 py-1.5 rounded-lg bg-[#0071e3] text-white transition shadow-2xs";
+            document.querySelectorAll('.cat-btn').forEach(function(btn) {
+                if (btn.innerText.indexOf(cat) !== -1 || (cat === 'All' && btn.innerText.indexOf('All News') !== -1)) {
+                    btn.className = 'cat-btn px-3.5 py-1.5 rounded-lg bg-[#0071e3] text-white transition shadow-2xs';
                 } else {
-                    btn.className = "cat-btn px-3.5 py-1.5 rounded-lg text-gray-600 hover:bg-white hover:text-gray-900 transition";
+                    btn.className = 'cat-btn px-3.5 py-1.5 rounded-lg text-gray-600 hover:bg-white hover:text-gray-900 transition';
                 }
             });
             renderArticles();
         }
 
         function renderArticles() {
-            const grid = document.getElementById('articles-grid');
+            var grid = document.getElementById('articles-grid');
+            if (!grid) return;
             grid.innerHTML = '';
 
-            const filtered = currentCategory === 'All' 
-                ? articlesData 
-                : articlesData.filter(a => a.category === currentCategory);
+            var filtered = currentCategory === 'All'
+                ? articlesData
+                : articlesData.filter(function(a) { return a.category === currentCategory; });
 
             if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-16 text-center text-sm text-gray-400">No dispatches available in this category.</div>`;
+                grid.innerHTML = '<div class="col-span-full py-16 text-center text-sm text-gray-400">No dispatches available in this category.</div>';
                 return;
             }
 
-            filtered.forEach((art, idx) => {
-                const title = (currentLang === 'so' && art.title_so) ? art.title_so : (art.title || 'Untitled');
-                const summary = (currentLang === 'so' && art.summary_so) ? art.summary_so : (art.summary || '');
-                const img = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80';
-                const dateStr = art.date || (art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : 'Recent');
+            filtered.forEach(function(art) {
+                var title = (currentLang === 'so' && art.title_so) ? art.title_so : (art.title || 'Untitled');
+                var summary = (currentLang === 'so' && art.summary_so) ? art.summary_so : (art.summary || '');
+                var img = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80';
+                var dateStr = art.date || (art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : 'Recent');
 
-                const card = document.createElement('article');
-                card.className = "bg-white rounded-2xl border border-gray-200 shadow-2xs hover:shadow-md transition overflow-hidden flex flex-col cursor-pointer";
-                card.onclick = () => openModal(art);
+                var card = document.createElement('article');
+                card.className = 'bg-white rounded-2xl border border-gray-200 shadow-2xs hover:shadow-md transition overflow-hidden flex flex-col cursor-pointer';
+                card.onclick = function() { openModal(art); };
 
-                card.innerHTML = `
-                    <div class="h-48 w-full overflow-hidden bg-gray-100 relative">
-                        <img src="${img}" referrerpolicy="no-referrer" alt="${escapeHtml(title)}" class="w-full h-full object-cover transition duration-300 hover:scale-105" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80'">
-                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/75 text-white backdrop-blur-xs">${escapeHtml(art.category || 'News')}</span>
-                    </div>
-                    <div class="p-5 flex-grow flex flex-col justify-between space-y-3">
-                        <div class="space-y-2">
-                            <div class="text-[11px] text-gray-400 font-semibold">${escapeHtml(art.location || 'SGN Bureau')} • ${dateStr}</div>
-                            <h2 class="text-base font-bold text-gray-900 leading-snug line-clamp-2">${escapeHtml(title)}</h2>
-                            <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">${escapeHtml(summary)}</p>
-                        </div>
-                        <div class="pt-2 text-xs font-bold text-[#0071e3] flex items-center space-x-1">
-                            <span>Read Full Report</span>
-                            <span>→</span>
-                        </div>
-                    </div>
-                `;
+                card.innerHTML =
+                    '<div class="h-48 w-full overflow-hidden bg-gray-100 relative">' +
+                        '<img src="' + img + '" referrerpolicy="no-referrer" alt="' + escapeHtml(title) + '" class="w-full h-full object-cover transition duration-300 hover:scale-105" onerror="this.src=\'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80\'">' +
+                        '<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/75 text-white backdrop-blur-xs">' + escapeHtml(art.category || 'News') + '</span>' +
+                    '</div>' +
+                    '<div class="p-5 flex-grow flex flex-col justify-between space-y-3">' +
+                        '<div class="space-y-2">' +
+                            '<div class="text-[11px] text-gray-400 font-semibold">' + escapeHtml(art.location || 'SGN Bureau') + ' • ' + dateStr + '</div>' +
+                            '<h2 class="text-base font-bold text-gray-900 leading-snug line-clamp-2">' + escapeHtml(title) + '</h2>' +
+                            '<p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">' + escapeHtml(summary) + '</p>' +
+                        '</div>' +
+                        '<div class="pt-2 text-xs font-bold text-[#0071e3] flex items-center space-x-1">' +
+                            '<span>Read Full Report</span>' +
+                            '<span>→</span>' +
+                        '</div>' +
+                    '</div>';
                 grid.appendChild(card);
             });
         }
 
         function openModal(art) {
-            const title = (currentLang === 'so' && art.title_so) ? art.title_so : (art.title || 'Untitled');
-            const summary = (currentLang === 'so' && art.summary_so) ? art.summary_so : (art.summary || '');
-            const content = (currentLang === 'so' && art.content_so) ? art.content_so : (art.content || '');
-            const img = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
-            const dateStr = art.date || (art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : 'Recent');
+            var title = (currentLang === 'so' && art.title_so) ? art.title_so : (art.title || 'Untitled');
+            var summary = (currentLang === 'so' && art.summary_so) ? art.summary_so : (art.summary || '');
+            var content = (currentLang === 'so' && art.content_so) ? art.content_so : (art.content || '');
+            var img = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+            var dateStr = art.date || (art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : 'Recent');
 
             document.getElementById('modal-category').innerText = art.category || 'News';
             document.getElementById('modal-img').src = img;
@@ -290,23 +293,23 @@
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-summary').innerText = summary;
 
-            // Video embed handling
-            const vidContainer = document.getElementById('modal-video-container');
+            var vidContainer = document.getElementById('modal-video-container');
             if (art.videoUrl) {
-                let embedUrl = art.videoUrl;
-                if (embedUrl.includes('watch?v=')) {
+                var embedUrl = art.videoUrl;
+                if (embedUrl.indexOf('watch?v=') !== -1) {
                     embedUrl = embedUrl.replace('watch?v=', 'embed/');
                 }
-                vidContainer.innerHTML = `<iframe class="w-full h-64 rounded-xl shadow-xs" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+                vidContainer.innerHTML = '<iframe class="w-full h-64 rounded-xl shadow-xs" src="' + embedUrl + '" frameborder="0" allowfullscreen></iframe>';
                 vidContainer.classList.remove('hidden');
             } else {
                 vidContainer.classList.add('hidden');
                 vidContainer.innerHTML = '';
             }
 
-            // Paragraphs handling
-            const bodyEl = document.getElementById('modal-body');
-            bodyEl.innerHTML = content.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
+            var bodyEl = document.getElementById('modal-body');
+            bodyEl.innerHTML = content.split('\n\n').map(function(p) {
+                return '<p>' + escapeHtml(p) + '</p>';
+            }).join('');
 
             document.getElementById('article-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -318,7 +321,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Contact Drawer Handlers
         function openContactDrawer() {
             var drawer = document.getElementById('contact-drawer');
             var backdrop = document.getElementById('contact-drawer-backdrop');
@@ -348,7 +350,7 @@
             var alertBox = document.getElementById('form-status-alert');
 
             btn.disabled = true;
-            btn.innerText = "Sending...";
+            btn.innerText = 'Sending...';
             alertBox.style.display = 'none';
 
             try {
@@ -360,30 +362,34 @@
                 });
 
                 if (response.ok) {
-                    alertBox.className = "p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300";
-                    alertBox.innerText = "Thank you! Your message has been sent successfully.";
+                    alertBox.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300';
+                    alertBox.innerText = 'Thank you! Your message has been sent successfully.';
                     alertBox.style.display = 'block';
                     form.reset();
                     setTimeout(function() { closeContactDrawer(); }, 3000);
                 } else {
-                    throw new Error("Formspree response error");
+                    throw new Error('Formspree response error');
                 }
             } catch (err) {
-                alertBox.className = "p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-300";
-                alertBox.innerText = "Something went wrong. Please try again or email us directly.";
+                alertBox.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-300';
+                alertBox.innerText = 'Something went wrong. Please try again or email us directly.';
                 alertBox.style.display = 'block';
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Send Message";
+                btn.innerText = 'Send Message';
             }
         }
 
         function escapeHtml(text) {
-            const map = { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' };
-            return String(text).replace(/[&<>"']/g, m => map[m]);
+            var map = { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' };
+            return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
-        document.addEventListener('DOMContentLoaded', loadNews);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadNews);
+        } else {
+            loadNews();
+        }
     </script>
 </body>
 </html>
