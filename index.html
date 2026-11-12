@@ -381,10 +381,11 @@
         }
 
         function escapeHtml(text) {
-            var map = { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' };
-            return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
-        }
-
+         var div = document.createElement('div');
+         div.textContent = String(text);
+         return div.innerHTML;
+     }
+        
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', loadNews);
         } else {
