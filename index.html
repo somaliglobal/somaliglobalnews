@@ -499,17 +499,20 @@
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-summary').innerText = summary;
 
-            var vidContainer = document.getElementById('modal-video-container');
+          var vidContainer = document.getElementById('modal-video-container');
             if (art.videoUrl) {
-                var embedUrl = art.videoUrl;
-                if (embedUrl.indexOf('watch?v=') !== -1) {
-                    embedUrl = embedUrl.replace('watch?v=', 'embed/');
+                var rawUrl = art.videoUrl.trim();
+                var ytMatch = rawUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+                if (ytMatch && ytMatch[1]) {
+                    vidContainer.innerHTML = '<iframe class="w-full h-64 sm:h-80 rounded-xl shadow-xs" src="https://www.youtube.com/embed/' + ytMatch[1] + '" frameborder="0" allowfullscreen></iframe>';
+                } else {
+                    vidContainer.innerHTML = '<a href="' + escapeHtml(rawUrl) + '" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 px-4 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold shadow-xs transition"><span>▶ Daawo Muuqaalka / Watch Video Dispatch</span><span>↗</span></a>';
                 }
-                vidContainer.innerHTML = '<iframe class="w-full h-64 rounded-xl shadow-xs" src="' + embedUrl + '" frameborder="0" allowfullscreen></iframe>';
                 vidContainer.classList.remove('hidden');
             } else {
                 vidContainer.classList.add('hidden');
                 vidContainer.innerHTML = '';
+            
             }
 
             var bodyEl = document.getElementById('modal-body');
