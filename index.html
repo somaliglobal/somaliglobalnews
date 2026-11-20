@@ -85,6 +85,45 @@
         
         <!-- Articles Grid -->
         <div id="articles-grid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- Bottom Archive Search Section -->
+        <section id="archive-search-section" class="mt-14 pt-10 border-t border-gray-200">
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-2xs p-6 sm:p-8 max-w-3xl mx-auto text-center space-y-4">
+                <div>
+                    <h2 class="text-base sm:text-lg font-extrabold text-gray-900">Kaydka Wararka Hore / News Archive</h2>
+                    <p class="text-xs text-gray-500 mt-1">Raadi wararkii hore ee SGN (Af-Soomaali ama English)</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-2.5 justify-center">
+                    <input type="text"
+                           id="archive-search-input"
+                           placeholder="Geli ereyga aad raadinayso... / Search archive..."
+                           onkeydown="if(event.key==='Enter') searchArchive()"
+                           class="w-full sm:flex-1 px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-slate-50 focus:bg-white">
+                    <div class="flex gap-2 justify-center">
+                        <button type="button"
+                                onclick="searchArchive()"
+                                class="px-5 py-2.5 bg-[#0071e3] hover:bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-xs transition">
+                            Raadi / Search
+                        </button>
+                        <button type="button"
+                                id="archive-clear-btn"
+                                onclick="clearArchiveSearch()"
+                                class="hidden px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs sm:text-sm font-semibold rounded-xl transition">
+                            Xir / Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Archive Search Results Grid -->
+            <div id="archive-results-wrapper" class="hidden mt-8 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 id="archive-results-heading" class="text-sm font-bold text-gray-700"></h3>
+                </div>
+                <div id="archive-results-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+        </section>
     </main>
 
     <!-- Reader Modal (Wide Laptop / Desktop View) -->
@@ -132,7 +171,7 @@
 
         <form id="sgn-contact-form" 
               action="https://formspree.io/f/xqppdbel"
-            method="POST" 
+              method="POST" 
               onsubmit="handleContactSubmit(event)"
               class="p-6 space-y-4 flex-grow overflow-y-auto">
             
@@ -181,8 +220,9 @@
     </footer>
 
     <!-- Scripts -->
-<script>
+    <script>
         var articlesData = [];
+        var archiveDataCache = null;
         var currentLang = 'en';
         var currentCategory = 'All';
 
@@ -221,6 +261,12 @@
                 if (enBtn) enBtn.className = 'px-3 py-1.5 rounded-lg text-gray-600 hover:text-gray-900 transition';
             }
             renderArticles();
+
+            // Re-render archive results in selected language if open
+            var wrapper = document.getElementById('archive-results-wrapper');
+            if (wrapper && !wrapper.classList.contains('hidden')) {
+                searchArchive();
+            }
         }
 
         function filterCategory(cat) {
@@ -233,6 +279,40 @@
                 }
             });
             renderArticles();
+        }
+
+        function buildArticleCard(art, isArchived) {
+            var title = (currentLang === 'so' && art.title_so) ? art.title_so : (art.title || 'Untitled');
+            var summary = (currentLang === 'so' && art.summary_so) ? art.summary_so : (art.summary || '');
+            var img = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80';
+            var dateStr = art.date || (art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : 'Recent');
+
+            var card = document.createElement('article');
+            card.className = 'bg-white rounded-2xl border border-gray-200 shadow-2xs hover:shadow-md transition overflow-hidden flex flex-col cursor-pointer';
+            card.onclick = function() { openModal(art); };
+
+            var archiveTag = isArchived
+                ? '<span class="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/90 text-white">Archive</span>'
+                : '';
+
+            card.innerHTML =
+                '<div class="h-48 w-full overflow-hidden bg-gray-100 relative">' +
+                    '<img src="' + img + '" referrerpolicy="no-referrer" alt="' + escapeHtml(title) + '" class="w-full h-full object-cover transition duration-300 hover:scale-105" onerror="this.src=\'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80\'">' +
+                    '<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/75 text-white backdrop-blur-xs">' + escapeHtml(art.category || 'News') + '</span>' +
+                    archiveTag +
+                '</div>' +
+                '<div class="p-5 flex-grow flex flex-col justify-between space-y-3">' +
+                    '<div class="space-y-2">' +
+                        '<div class="text-[11px] text-gray-400 font-semibold">' + escapeHtml(art.location || 'SGN Bureau') + ' • ' + dateStr + '</div>' +
+                        '<h2 class="text-base font-bold text-gray-900 leading-snug line-clamp-2">' + escapeHtml(title) + '</h2>' +
+                        '<p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">' + escapeHtml(summary) + '</p>' +
+                    '</div>' +
+                    '<div class="pt-2 text-xs font-bold text-[#0071e3] flex items-center space-x-1">' +
+                        '<span>Read Full Report</span>' +
+                        '<span>→</span>' +
+                    '</div>' +
+                '</div>';
+            return card;
         }
 
         function renderArticles() {
@@ -250,33 +330,88 @@
             }
 
             filtered.forEach(function(art) {
-                var title = (currentLang === 'so' && art.title_so) ? art.title_so : (art.title || 'Untitled');
-                var summary = (currentLang === 'so' && art.summary_so) ? art.summary_so : (art.summary || '');
-                var img = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80';
-                var dateStr = art.date || (art.publishedAt ? new Date(art.publishedAt).toLocaleDateString() : 'Recent');
-
-                var card = document.createElement('article');
-                card.className = 'bg-white rounded-2xl border border-gray-200 shadow-2xs hover:shadow-md transition overflow-hidden flex flex-col cursor-pointer';
-                card.onclick = function() { openModal(art); };
-
-                card.innerHTML =
-                    '<div class="h-48 w-full overflow-hidden bg-gray-100 relative">' +
-                        '<img src="' + img + '" referrerpolicy="no-referrer" alt="' + escapeHtml(title) + '" class="w-full h-full object-cover transition duration-300 hover:scale-105" onerror="this.src=\'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80\'">' +
-                        '<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/75 text-white backdrop-blur-xs">' + escapeHtml(art.category || 'News') + '</span>' +
-                    '</div>' +
-                    '<div class="p-5 flex-grow flex flex-col justify-between space-y-3">' +
-                        '<div class="space-y-2">' +
-                            '<div class="text-[11px] text-gray-400 font-semibold">' + escapeHtml(art.location || 'SGN Bureau') + ' • ' + dateStr + '</div>' +
-                            '<h2 class="text-base font-bold text-gray-900 leading-snug line-clamp-2">' + escapeHtml(title) + '</h2>' +
-                            '<p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">' + escapeHtml(summary) + '</p>' +
-                        '</div>' +
-                        '<div class="pt-2 text-xs font-bold text-[#0071e3] flex items-center space-x-1">' +
-                            '<span>Read Full Report</span>' +
-                            '<span>→</span>' +
-                        '</div>' +
-                    '</div>';
-                grid.appendChild(card);
+                grid.appendChild(buildArticleCard(art, false));
             });
+        }
+
+        async function searchArchive() {
+            var input = document.getElementById('archive-search-input');
+            var wrapper = document.getElementById('archive-results-wrapper');
+            var grid = document.getElementById('archive-results-grid');
+            var heading = document.getElementById('archive-results-heading');
+            var clearBtn = document.getElementById('archive-clear-btn');
+
+            if (!input || !wrapper || !grid) return;
+            var query = input.value.trim().toLowerCase();
+
+            wrapper.classList.remove('hidden');
+            if (clearBtn) clearBtn.classList.remove('hidden');
+            grid.innerHTML = '<div class="col-span-full py-8 text-center text-xs text-gray-400">Waa la baarayaa kaydka... / Searching archive...</div>';
+
+            if (archiveDataCache === null) {
+                try {
+                    var res = await fetch('/public/data/archive.json?t=' + Date.now());
+                    if (!res.ok) res = await fetch('public/data/archive.json?t=' + Date.now());
+                    if (!res.ok) res = await fetch('data/archive.json?t=' + Date.now());
+
+                    if (res.ok) {
+                        var archJson = await res.json();
+                        archiveDataCache = archJson.articles || (Array.isArray(archJson) ? archJson : []);
+                    } else {
+                        archiveDataCache = [];
+                    }
+                } catch (err) {
+                    archiveDataCache = [];
+                }
+            }
+
+            // Combine active articles + archived articles (marking which came from archive)
+            var activeTagged = articlesData.map(function(a) { return { item: a, archived: false }; });
+            var archivedTagged = archiveDataCache.map(function(a) { return { item: a, archived: true }; });
+            var combinedPool = activeTagged.concat(archivedTagged);
+
+            var matches = [];
+            if (!query) {
+                // If user clicks Search with empty input, show all archived dispatches (up to 30)
+                matches = archivedTagged.slice(0, 30);
+            } else {
+                matches = combinedPool.filter(function(entry) {
+                    var a = entry.item;
+                    var haystack = [
+                        a.title_so, a.summary_so, a.content_so,
+                        a.title, a.summary, a.content,
+                        a.location, a.category, a.date
+                    ].filter(Boolean).join(' ').toLowerCase();
+                    return haystack.indexOf(query) !== -1;
+                });
+            }
+
+            grid.innerHTML = '';
+            if (matches.length === 0) {
+                if (heading) heading.innerText = 'Natiijooyin / Results (0)';
+                grid.innerHTML = '<div class="col-span-full py-10 text-center text-sm text-gray-400">Wax war ah oo u dhigma lagama helin kaydka. / No matching dispatches found.</div>';
+                return;
+            }
+
+            if (heading) {
+                heading.innerText = query
+                    ? 'Natiijooyinka Raadinta / Search Results (' + matches.length + ')'
+                    : 'Kaydka Wararka Hore / Archived Dispatches (' + matches.length + ')';
+            }
+
+            matches.forEach(function(entry) {
+                grid.appendChild(buildArticleCard(entry.item, entry.archived));
+            });
+        }
+
+        function clearArchiveSearch() {
+            var input = document.getElementById('archive-search-input');
+            var wrapper = document.getElementById('archive-results-wrapper');
+            var clearBtn = document.getElementById('archive-clear-btn');
+
+            if (input) input.value = '';
+            if (wrapper) wrapper.classList.add('hidden');
+            if (clearBtn) clearBtn.classList.add('hidden');
         }
 
         function openModal(art) {
@@ -381,10 +516,10 @@
         }
 
         function escapeHtml(text) {
-         var div = document.createElement('div');
-         div.textContent = String(text);
-         return div.innerHTML;
-     }
+            var div = document.createElement('div');
+            div.textContent = String(text);
+            return div.innerHTML;
+        }
         
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', loadNews);
@@ -394,5 +529,3 @@
     </script>
 </body>
 </html>
-
-
