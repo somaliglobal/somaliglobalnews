@@ -79,13 +79,13 @@
                 </div>
                 <div>
                     <h1 class="text-lg font-extrabold text-[#0071e3] leading-none">SGN SomaliGlobalNews</h1>
-                    <p class="text-[11px] text-gray-500 font-semibold tracking-wide uppercase mt-1">Publisher &amp; Editorial Desk</p>
+                    <p class="text-[11px] text-gray-500 font-semibold tracking-wide uppercase mt-1">Publisher & Editorial Desk</p>
                 </div>
             </div>
 
             <div class="flex items-center space-x-2">
                 <a href="index.html" class="inline-flex items-center space-x-1 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
-                    <span>&larr; Live Site</span>
+                    <span>← Live Site</span>
                 </a>
                 <button id="header-commit-btn" onclick="commitAllToGitHub()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition shadow-sm">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
@@ -170,7 +170,7 @@
                                 onclick="clearImage()" 
                                 title="Remove Image"
                                 class="absolute top-2 right-2 bg-black/75 hover:bg-black text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition shadow">
-                            &times;
+                            ×
                         </button>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                     <div class="flex items-center justify-between border-b border-amber-200/60 pb-2">
                         <h3 class="text-xs font-black text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
-                            1. Af-Soomaali Dispatch (Default Display)
+1. Af-Soomaali Dispatch (Default Display)
                         </h3>
                         <span class="text-[11px] font-semibold text-amber-700 bg-amber-100/70 px-2 py-0.5 rounded-md">Default Front</span>
                     </div>
@@ -214,7 +214,7 @@
                     <div class="flex items-center justify-between border-b border-slate-200 pb-2">
                         <h3 class="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-sky-500 inline-block"></span>
-                            2. English Dispatch (Secondary / Read Full Toggle)
+2. English Dispatch (Secondary / Read Full Toggle)
                         </h3>
                         <span class="text-[11px] font-semibold text-slate-600 bg-slate-200/70 px-2 py-0.5 rounded-md">Secondary Wire</span>
                     </div>
@@ -239,7 +239,7 @@
                 <!-- Bottom Action Controls -->
                 <div class="pt-4 flex items-center justify-end space-x-3">
                     <button type="submit" id="submit-btn" class="px-7 py-3 bg-[#0071e3] hover:bg-blue-600 text-white text-sm font-semibold rounded-xl shadow transition">
-                        Publish &amp; Commit Article
+                        Publish & Commit Article
                     </button>
                 </div>
             </form>
@@ -248,7 +248,7 @@
         <!-- Manage Existing Articles Table -->
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-4">
             <div class="flex items-center justify-between pb-4 border-b border-gray-100">
-                <h3 class="text-base font-bold text-gray-900">Manage Published Articles</h3>
+                <h3 class="text-base font-bold text-gray-900">Manage Published Articles (Latest 30 Active)</h3>
                 <span id="total-articles-count" class="text-xs text-gray-500 font-medium">0 articles</span>
             </div>
             
@@ -275,6 +275,8 @@
         var GH_REPO = 'somaliglobalnews';
         var GH_BRANCH = 'main';
         var GH_FILE = 'public/data/news.json';
+        var GH_ARCHIVE_FILE = 'public/data/archive.json';
+        var MAX_ACTIVE_ARTICLES = 30;
         var articles = [];
 
         function checkGate() {
@@ -343,6 +345,16 @@
             return btoa(binary);
         }
 
+        function safeBase64Decode(b64) {
+            var cleanB64 = b64.replace(/\s/g, '');
+            var binary = atob(cleanB64);
+            var bytes = new Uint8Array(binary.length);
+            for (var i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            return new TextDecoder().decode(bytes);
+        }
+
         // Live Image Render Handlers
         function handleImageInput(val) {
             var cleanUrl = val.trim();
@@ -396,7 +408,69 @@
             if (badge) badge.style.display = 'none';
         }
 
-        // Dedicated GitHub Sync (Targeting main with Classic 'token' scheme)
+        // Helper: Move articles past #30 into public/data/archive.json (auto-creates file if missing)
+        async function appendToArchiveFile(overflowArticles, authHeader) {
+            if (!overflowArticles || overflowArticles.length === 0) return;
+
+            var getArchUrl = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + GH_ARCHIVE_FILE + "?ref=" + GH_BRANCH;
+            var checkArchRes = await fetch(getArchUrl, {
+                headers: {
+                    'Authorization': authHeader,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            var archiveSha = null;
+            var existingArchived = [];
+
+            if (checkArchRes.ok) {
+                var archFileData = await checkArchRes.json();
+                archiveSha = archFileData.sha;
+                try {
+                    var parsed = JSON.parse(safeBase64Decode(archFileData.content));
+                    existingArchived = parsed.articles || (Array.isArray(parsed) ? parsed : []);
+                } catch (e) {
+                    existingArchived = [];
+                }
+            }
+
+            // Avoid duplicate IDs if re-committing
+            var existingIds = new Set(existingArchived.map(function(a) { return String(a.id); }));
+            var uniqueOverflow = overflowArticles.filter(function(a) { return !existingIds.has(String(a.id)); });
+
+            var mergedArchive = uniqueOverflow.concat(existingArchived);
+            var archivePayload = {
+                updatedAt: new Date().toISOString(),
+                articles: mergedArchive
+            };
+
+            var putArchBody = {
+                message: "chore(archive): move " + uniqueOverflow.length + " older dispatch(es) to " + GH_ARCHIVE_FILE,
+                content: safeBase64Encode(JSON.stringify(archivePayload, null, 2)),
+                branch: GH_BRANCH
+            };
+            if (archiveSha) {
+                putArchBody.sha = archiveSha;
+            }
+
+            var putArchUrl = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + GH_ARCHIVE_FILE;
+            var putArchRes = await fetch(putArchUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': authHeader,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(putArchBody)
+            });
+
+            if (!putArchRes.ok) {
+                var errJson = await putArchRes.json().catch(function() { return {}; });
+                throw new Error("Archive (" + putArchRes.status + "): " + (errJson.message || "Archive write failed"));
+            }
+        }
+
+        // Dedicated GitHub Sync (Keeps newest 30 in news.json, moves overflow to archive.json)
         async function syncToGitHub(articlesArray) {
             var token = localStorage.getItem('sgn_gh_token');
             if (!token) {
@@ -406,9 +480,13 @@
 
             var authHeader = token.startsWith('token ') ? token : ('token ' + token);
 
+            // Split at 30: top 30 stay live, rest go to archive.json
+            var activeArticles = articlesArray.slice(0, MAX_ACTIVE_ARTICLES);
+            var overflowArticles = articlesArray.slice(MAX_ACTIVE_ARTICLES);
+
             var payload = {
                 updatedAt: new Date().toISOString(),
-                articles: articlesArray
+                articles: activeArticles
             };
             var jsonString = JSON.stringify(payload, null, 2);
             var base64Content = safeBase64Encode(jsonString);
@@ -428,7 +506,7 @@
                 targetSha = fileData.sha;
             }
 
-            // 2. Put file to main
+            // 2. Put trimmed news.json (max 30 articles) to main
             var commitBody = {
                 message: "chore(news): publish dispatch to " + GH_FILE,
                 content: base64Content,
@@ -452,6 +530,15 @@
             if (!putRes.ok) {
                 var errJson = await putRes.json().catch(function() { return {}; });
                 throw new Error("GitHub (" + putRes.status + "): " + (errJson.message || "Write failed"));
+            }
+
+            // 3. If any articles exceeded 30, archive them automatically & update local state
+            if (overflowArticles.length > 0) {
+                await appendToArchiveFile(overflowArticles, authHeader);
+                articles = activeArticles;
+                localStorage.setItem('sgn_articles', JSON.stringify(articles));
+                renderTable();
+                return GH_FILE + " (moved " + overflowArticles.length + " older to archive)";
             }
 
             return GH_FILE;
@@ -484,7 +571,7 @@
             }
 
             try {
-                var res = await fetch('public/data/news.json');
+                var res = await fetch('public/data/news.json?t=' + Date.now());
                 if (res.ok) {
                     var data = await res.json();
                     var remoteArticles = data.articles || (Array.isArray(data) ? data : []);
@@ -680,7 +767,7 @@
 
         function escapeHtml(text) {
             if (!text) return '';
-            var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            var map = { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' };
             return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
