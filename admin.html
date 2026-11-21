@@ -187,7 +187,7 @@
                     <div class="flex items-center justify-between border-b border-amber-200/60 pb-2">
                         <h3 class="text-xs font-black text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
-1. Af-Soomaali Dispatch (Default Display)
+                            1. Af-Soomaali Dispatch (Default Display)
                         </h3>
                         <span class="text-[11px] font-semibold text-amber-700 bg-amber-100/70 px-2 py-0.5 rounded-md">Default Front</span>
                     </div>
@@ -214,7 +214,7 @@
                     <div class="flex items-center justify-between border-b border-slate-200 pb-2">
                         <h3 class="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-sky-500 inline-block"></span>
-2. English Dispatch (Secondary / Read Full Toggle)
+                            2. English Dispatch (Secondary / Read Full Toggle)
                         </h3>
                         <span class="text-[11px] font-semibold text-slate-600 bg-slate-200/70 px-2 py-0.5 rounded-md">Secondary Wire</span>
                     </div>
@@ -276,6 +276,7 @@
         var GH_BRANCH = 'main';
         var GH_FILE = 'public/data/news.json';
         var GH_ARCHIVE_FILE = 'public/data/archive.json';
+        var SITE_ORIGIN = 'https://somaliglobalnews.com';
         var MAX_ACTIVE_ARTICLES = 30;
         var articles = [];
 
@@ -408,6 +409,74 @@
             if (badge) badge.style.display = 'none';
         }
 
+        // Helper: Create or update share/<id>.html for social preview cards
+        async function publishShareCard(art, authHeader) {
+            if (!art || !art.id) return;
+            var safeId = String(art.id).replace(/[^a-zA-Z0-9_-]/g, '');
+            if (!safeId) return;
+
+            var sharePath = 'share/' + safeId + '.html';
+            var titleText = escapeHtml(art.title_so || art.title || 'SGN SomaliGlobalNews');
+            var descText = escapeHtml(art.summary_so || art.summary || 'Wararkii ugu dambeeyay ee Soomaaliya iyo Caalamka.');
+            var imgText = escapeHtml(art.imageUrl || art.image || (SITE_ORIGIN + '/og-default.jpg'));
+            var targetUrl = SITE_ORIGIN + '/?article=' + encodeURIComponent(safeId);
+            var shareUrl = SITE_ORIGIN + '/' + sharePath;
+
+            var htmlContent =
+                '<!DOCTYPE html>\n' +
+                '<html lang="so">\n<head>\n' +
+                '  <meta charset="UTF-8">\n' +
+                '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+                '  <title>' + titleText + ' | SGN</title>\n' +
+                '  <meta property="og:site_name" content="SGN SomaliGlobalNews">\n' +
+                '  <meta property="og:type" content="article">\n' +
+                '  <meta property="og:url" content="' + shareUrl + '">\n' +
+                '  <meta property="og:title" content="' + titleText + '">\n' +
+                '  <meta property="og:description" content="' + descText + '">\n' +
+                '  <meta property="og:image" content="' + imgText + '">\n' +
+                '  <meta name="twitter:card" content="summary_large_image">\n' +
+                '  <meta name="twitter:title" content="' + titleText + '">\n' +
+                '  <meta name="twitter:description" content="' + descText + '">\n' +
+                '  <meta name="twitter:image" content="' + imgText + '">\n' +
+                '  <meta http-equiv="refresh" content="0;url=' + targetUrl + '">\n' +
+                '</head>\n<body>\n' +
+                '  <p>Redirecting to <a href="' + targetUrl + '">' + titleText + '</a>...</p>\n' +
+                '  <script>window.location.replace(' + JSON.stringify(targetUrl) + ');<\/script>\n' +
+                '</body>\n</html>';
+
+            var getShareUrl = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + sharePath + "?ref=" + GH_BRANCH;
+            var checkShareRes = await fetch(getShareUrl, {
+                headers: {
+                    'Authorization': authHeader,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            var shareSha = null;
+            if (checkShareRes.ok) {
+                var shareData = await checkShareRes.json();
+                shareSha = shareData.sha;
+            }
+
+            var putShareBody = {
+                message: "chore(share): update social card for " + safeId,
+                content: safeBase64Encode(htmlContent),
+                branch: GH_BRANCH
+            };
+            if (shareSha) putShareBody.sha = shareSha;
+
+            var putShareUrl = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + sharePath;
+            await fetch(putShareUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': authHeader,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(putShareBody)
+            });
+        }
+
         // Helper: Move articles past #30 into public/data/archive.json (auto-creates file if missing)
         async function appendToArchiveFile(overflowArticles, authHeader) {
             if (!overflowArticles || overflowArticles.length === 0) return;
@@ -434,7 +503,6 @@
                 }
             }
 
-            // Avoid duplicate IDs if re-committing
             var existingIds = new Set(existingArchived.map(function(a) { return String(a.id); }));
             var uniqueOverflow = overflowArticles.filter(function(a) { return !existingIds.has(String(a.id)); });
 
@@ -471,7 +539,7 @@
         }
 
         // Dedicated GitHub Sync (Keeps newest 30 in news.json, moves overflow to archive.json)
-        async function syncToGitHub(articlesArray) {
+        async function syncToGitHub(articlesArray, shareArticleObj) {
             var token = localStorage.getItem('sgn_gh_token');
             if (!token) {
                 logoutAdmin();
@@ -480,7 +548,6 @@
 
             var authHeader = token.startsWith('token ') ? token : ('token ' + token);
 
-            // Split at 30: top 30 stay live, rest go to archive.json
             var activeArticles = articlesArray.slice(0, MAX_ACTIVE_ARTICLES);
             var overflowArticles = articlesArray.slice(MAX_ACTIVE_ARTICLES);
 
@@ -491,7 +558,6 @@
             var jsonString = JSON.stringify(payload, null, 2);
             var base64Content = safeBase64Encode(jsonString);
 
-            // 1. Get SHA of public/data/news.json on branch main
             var getUrl = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + GH_FILE + "?ref=" + GH_BRANCH;
             var checkRes = await fetch(getUrl, {
                 headers: {
@@ -506,7 +572,6 @@
                 targetSha = fileData.sha;
             }
 
-            // 2. Put trimmed news.json (max 30 articles) to main
             var commitBody = {
                 message: "chore(news): publish dispatch to " + GH_FILE,
                 content: base64Content,
@@ -532,7 +597,10 @@
                 throw new Error("GitHub (" + putRes.status + "): " + (errJson.message || "Write failed"));
             }
 
-            // 3. If any articles exceeded 30, archive them automatically & update local state
+            if (shareArticleObj) {
+                await publishShareCard(shareArticleObj, authHeader).catch(function() {});
+            }
+
             if (overflowArticles.length > 0) {
                 await appendToArchiveFile(overflowArticles, authHeader);
                 articles = activeArticles;
@@ -551,7 +619,8 @@
             if (txt) txt.innerText = "Committing...";
 
             try {
-                var target = await syncToGitHub(articles);
+                var latestArt = articles.length > 0 ? articles[0] : null;
+                var target = await syncToGitHub(articles, latestArt);
                 showBanner("Success! Articles live on " + target, "success");
             } catch (err) {
                 showBanner("Commit failed: " + err.message, "error");
@@ -602,7 +671,6 @@
                 tr.className = "hover:bg-gray-50 transition";
                 var imgUrl = art.imageUrl || art.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80';
                 var safeId = art.id || String(i);
-                
                 var displayHeadline = art.title_so || art.title || 'Untitled';
 
                 tr.innerHTML = 
@@ -674,7 +742,7 @@
             renderTable();
 
             try {
-                var target = await syncToGitHub(articles);
+                var target = await syncToGitHub(articles, articleObj);
                 showBanner("Success! Articles live on " + target, "success");
                 resetForm();
             } catch(err) {
@@ -706,12 +774,10 @@
             document.getElementById('article-image-url').value = existingImg;
             document.getElementById('article-video-url').value = art.videoUrl || '';
 
-            // Load Af-Soomaali fields first
             document.getElementById('article-title-so').value = art.title_so || '';
             document.getElementById('article-summary-so').value = art.summary_so || '';
             document.getElementById('article-content-so').value = art.content_so || '';
 
-            // Load English fields
             document.getElementById('article-title').value = art.title || '';
             document.getElementById('article-summary').value = art.summary || '';
             document.getElementById('article-content').value = art.content || '';
@@ -737,7 +803,7 @@
             renderTable();
 
             try {
-                await syncToGitHub(articles);
+                await syncToGitHub(articles, null);
                 showBanner("Article deleted and committed to GitHub.", "info");
             } catch(err) {
                 showBanner("Removed locally, but GitHub sync failed: " + err.message, "error");
@@ -765,14 +831,11 @@
             setTimeout(function() { banner.style.display = 'none'; }, 7000);
         }
 
-       function escapeHtml(text) {
+        function escapeHtml(text) {
             if (!text) return '';
-            return String(text)
-                .replace(/&/g, '&')
-                .replace(/</g, '<')
-                .replace(/>/g, '>')
-                .replace(/"/g, '"')
-                .replace(/'/g, ''');
+            var div = document.createElement('div');
+            div.textContent = String(text);
+            return div.innerHTML.split('"').join('"');
         }
 
         window.onload = function() {
