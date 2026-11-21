@@ -765,10 +765,14 @@
             setTimeout(function() { banner.style.display = 'none'; }, 7000);
         }
 
-        function escapeHtml(text) {
+       function escapeHtml(text) {
             if (!text) return '';
-            var map = { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' };
-            return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+            return String(text)
+                .replace(/&/g, '&')
+                .replace(/</g, '<')
+                .replace(/>/g, '>')
+                .replace(/"/g, '"')
+                .replace(/'/g, ''');
         }
 
         window.onload = function() {
