@@ -505,7 +505,13 @@
             document.getElementById('modal-date').innerText = dateStr;
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-summary').innerText = summary;
-
+            if (typeof gtag === 'function') {
+                gtag('event', 'article_read', {
+                    article_id: art.id || 'unknown',
+                    article_title: art.title_so || art.title || 'Untitled',
+                    article_category: art.category || 'General'
+                });
+            }
           var vidContainer = document.getElementById('modal-video-container');
             if (art.videoUrl) {
                 var rawUrl = art.videoUrl.trim();
