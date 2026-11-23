@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://somaliglobalnews.com/sitemap.xml
