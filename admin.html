@@ -276,7 +276,9 @@
         var GH_BRANCH = 'main';
         var GH_FILE = 'public/data/news.json';
         var GH_ARCHIVE_FILE = 'public/data/archive.json';
+        var GH_SITEMAP_FILE = 'sitemap.xml';
         var SITE_ORIGIN = 'https://somaliglobalnews.com';
+        var GA_MEASUREMENT_ID = 'G-JWC2ZS074Z';
         var MAX_ACTIVE_ARTICLES = 30;
         var articles = [];
 
@@ -409,7 +411,7 @@
             if (badge) badge.style.display = 'none';
         }
 
-        // Helper: Create or update share/<id>.html for social preview cards
+        // Helper: Create or update share/<id>.html for social preview cards & Google indexing
         async function publishShareCard(art, authHeader) {
             if (!art || !art.id) return;
             var safeId = String(art.id).replace(/[^a-zA-Z0-9_-]/g, '');
@@ -427,7 +429,11 @@
                 '<html lang="so">\n<head>\n' +
                 '  <meta charset="UTF-8">\n' +
                 '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-                '  <title>' + titleText + ' | SGN</title>\n' +
+                '  <title>' + titleText + ' | SGN SomaliGlobalNews</title>\n' +
+                '  <meta name="description" content="' + descText + '">\n' +
+                '  <link rel="canonical" href="' + shareUrl + '">\n' +
+                '  <script async src="https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID + '"><\/script>\n' +
+                '  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' + GA_MEASUREMENT_ID + '");<\/script>\n' +
                 '  <meta property="og:site_name" content="SGN SomaliGlobalNews">\n' +
                 '  <meta property="og:type" content="article">\n' +
                 '  <meta property="og:url" content="' + shareUrl + '">\n' +
@@ -440,6 +446,8 @@
                 '  <meta name="twitter:image" content="' + imgText + '">\n' +
                 '  <meta http-equiv="refresh" content="0;url=' + targetUrl + '">\n' +
                 '</head>\n<body>\n' +
+                '  <h1>' + titleText + '</h1>\n' +
+                '  <p>' + descText + '</p>\n' +
                 '  <p>Redirecting to <a href="' + targetUrl + '">' + titleText + '</a>...</p>\n' +
                 '  <script>window.location.replace(' + JSON.stringify(targetUrl) + ');<\/script>\n' +
                 '</body>\n</html>';
@@ -474,6 +482,74 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(putShareBody)
+            });
+        }
+
+        // Helper: Keep sitemap.xml synced with homepage + all active share/<id>.html pages
+        async function updateSitemapXml(activeArticles, authHeader) {
+            var today = new Date().toISOString().split('T')[0];
+            var urlsXml =
+                '  <url>\n' +
+                '    <loc>' + SITE_ORIGIN + '/</loc>\n' +
+                '    <lastmod>' + today + '</lastmod>\n' +
+                '    <changefreq>hourly</changefreq>\n' +
+                '    <priority>1.0</priority>\n' +
+                '  </url>\n';
+
+            for (var i = 0; i < activeArticles.length; i++) {
+                var art = activeArticles[i];
+                if (!art || !art.id) continue;
+                var safeId = String(art.id).replace(/[^a-zA-Z0-9_-]/g, '');
+                if (!safeId) continue;
+                var lastMod = today;
+                if (art.publishedAt && String(art.publishedAt).indexOf('T') !== -1) {
+                    lastMod = String(art.publishedAt).split('T')[0];
+                }
+                urlsXml +=
+                    '  <url>\n' +
+                    '    <loc>' + SITE_ORIGIN + '/share/' + safeId + '.html</loc>\n' +
+                    '    <lastmod>' + lastMod + '</lastmod>\n' +
+                    '    <changefreq>daily</changefreq>\n' +
+                    '    <priority>0.8</priority>\n' +
+                    '  </url>\n';
+            }
+
+            var sitemapContent =
+                '<?xml version="1.0" encoding="UTF-8"?>\n' +
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+                urlsXml +
+                '</urlset>\n';
+
+            var getMapUrl = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + GH_SITEMAP_FILE + "?ref=" + GH_BRANCH;
+            var checkMapRes = await fetch(getMapUrl, {
+                headers: {
+                    'Authorization': authHeader,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            var mapSha = null;
+            if (checkMapRes.ok) {
+                var mapData = await checkMapRes.json();
+                mapSha = mapData.sha;
+            }
+
+            var putMapBody = {
+                message: "chore(seo): update " + GH_SITEMAP_FILE + " with " + activeArticles.length + " dispatches",
+                content: safeBase64Encode(sitemapContent),
+                branch: GH_BRANCH
+            };
+            if (mapSha) putMapBody.sha = mapSha;
+
+            var putMapUrl = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + GH_SITEMAP_FILE;
+            await fetch(putMapUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': authHeader,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(putMapBody)
             });
         }
 
@@ -538,7 +614,7 @@
             }
         }
 
-        // Dedicated GitHub Sync (Keeps newest 30 in news.json, moves overflow to archive.json)
+        // Dedicated GitHub Sync (Keeps newest 30 in news.json, moves overflow to archive.json, updates share & sitemap)
         async function syncToGitHub(articlesArray, shareArticleObj) {
             var token = localStorage.getItem('sgn_gh_token');
             if (!token) {
@@ -601,15 +677,17 @@
                 await publishShareCard(shareArticleObj, authHeader).catch(function() {});
             }
 
+            await updateSitemapXml(activeArticles, authHeader).catch(function() {});
+
             if (overflowArticles.length > 0) {
                 await appendToArchiveFile(overflowArticles, authHeader);
                 articles = activeArticles;
                 localStorage.setItem('sgn_articles', JSON.stringify(articles));
                 renderTable();
-                return GH_FILE + " (moved " + overflowArticles.length + " older to archive)";
+                return GH_FILE + " + sitemap (moved " + overflowArticles.length + " older to archive)";
             }
 
-            return GH_FILE;
+            return GH_FILE + " + sitemap.xml";
         }
 
         async function commitAllToGitHub() {
