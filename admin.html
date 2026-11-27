@@ -552,8 +552,7 @@
                 body: JSON.stringify(putMapBody)
             });
         }
-
-        // Helper: Move articles past #30 into public/data/archive.json (auto-creates file if missing)
+// Helper: Move articles past #30 into public/data/archive.json and auto-prune items older than 90 days
         async function appendToArchiveFile(overflowArticles, authHeader) {
             if (!overflowArticles || overflowArticles.length === 0) return;
 
@@ -582,14 +581,23 @@
             var existingIds = new Set(existingArchived.map(function(a) { return String(a.id); }));
             var uniqueOverflow = overflowArticles.filter(function(a) { return !existingIds.has(String(a.id)); });
 
-            var mergedArchive = uniqueOverflow.concat(existingArchived);
+            var ninetyDaysMs = 90 * 24 * 60 * 60 * 1000;
+            var cutoffTime = Date.now() - ninetyDaysMs;
+
+            var mergedArchive = uniqueOverflow.concat(existingArchived).filter(function(art) {
+                if (!art || !art.publishedAt) return true;
+                var pubTime = Date.parse(art.publishedAt);
+                if (isNaN(pubTime)) return true;
+                return pubTime >= cutoffTime;
+            });
+
             var archivePayload = {
                 updatedAt: new Date().toISOString(),
                 articles: mergedArchive
             };
 
             var putArchBody = {
-                message: "chore(archive): move " + uniqueOverflow.length + " older dispatch(es) to " + GH_ARCHIVE_FILE,
+                message: "chore(archive): sync overflow and prune items older than 90 days",
                 content: safeBase64Encode(JSON.stringify(archivePayload, null, 2)),
                 branch: GH_BRANCH
             };
